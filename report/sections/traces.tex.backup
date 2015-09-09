@@ -1,0 +1,38 @@
+\newcommand{\action}[2]{{\tt #1(#2)}}
+\newcommand{\todo}[1]{{\color{red}#1}}
+
+\begin{description}
+ \item[At least one door of a sluice is closed at any point in time] \hfill \\
+ For any sluice $s$:
+ \begin{itemize}
+  \item Between any \action{openInside}{$s$} and its most recent preceding \action{closeOutside}{$s$}, there may not be an \action{openOutside}{$s$}
+  \item Between any \action{openOutside}{$s$} and most its recent preceding \action{closeInside}{$s$}, there may not be an \action{openInside}{$s$}
+ \end{itemize}
+
+ \item[No robot may interact with a sluice whenever its access door is closed] \hfill \\
+ \todo{put/move/get definitie final maken}
+ 
+ \item[An unprocessed wafer will eventually be processed] \hfill \\
+ \todo{Kan niet echt (makkenlijk) in traces uitgedrukt worden...}
+ 
+ \item[Internal racks, sluices and the projector each contain one wafer] \hfill \\
+ \todo{put/move/get definitie final maken}
+ 
+ ``Voordat een robot iets op internal rack/sluice of projector kan leggen, moet de vorige zin weggehaald.''
+ 
+ \item[When the projector is at work, no interaction with the water is permissible] \hfill \\
+ \todo{\'of haal de requirement weg, \' of gebruik \action{beginProjection}{} en \action{endProjection}{} actions}
+ 
+ \item[Sluice pumps change the air pressure to either zero or one atmosphere.] \hfill \\
+ \todo{Tja... volgens mij een assumption, geen requirement. Dit valt niet in traces uit te drukken}
+ 
+ \item[A sluice door cannot open untill the pressure on both sides is equal] \hfill \\
+ For any sluice $s$:
+ \begin{enumerate}
+  \item Between any \action{openInside}{$s$} and its most recent preceding \action{Vacuum}{$s$}, there may not be a \action{deVacuum}{$s$}
+  \item Between any \action{openOutside}{$s$} and its most recent preceding \action{deVacuum}{$s$}, there may not be a \action{Vacuum}{$s$}
+ \end{enumerate}
+
+ \item[Sluice pumps cannot operate until both of its doors are closed]
+ 
+\end{description}

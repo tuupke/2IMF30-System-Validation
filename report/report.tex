@@ -1,0 +1,71 @@
+\documentclass[a4paper,twoside,11pt]{article}
+\usepackage{a4wide,graphicx,fancyhdr,amsmath,amssymb,float,longtable,chronology,caption,subcaption}
+\usepackage{algorithmic}
+\usepackage{hyperref}
+\usepackage{url}
+
+%----------------------- Macros and Definitions --------------------------
+
+\setlength\headheight{20pt}
+\addtolength\topmargin{-10pt}
+\addtolength\footskip{20pt}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\ch}{\mathcal{CH}}
+\everymath{\displaystyle}
+\newcommand{\define}[2]{\noindent{\bf #1}}
+\newcommand{\scg}{System Validation}
+
+\newcommand{\action}[2]{{\tt #1(#2)}}
+\newcommand{\todo}[1]{{\color{red}#1}}
+
+\fancypagestyle{plain}{%
+	\fancyhf{}
+	\fancyhead[LO,RE]{\sffamily\bfseries\large Technische Universiteit Eindhoven}
+	\fancyhead[RO,LE]{\sffamily\bfseries\large 2IMF30 \scg}
+	\fancyfoot[LO,RE]{\sffamily\bfseries\large Department of Mathematics and Computer Science}
+	\fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO,LE]{\sffamily\bfseries\large Technische Universiteit Eindhoven}
+\fancyhead[LO,RE]{\sffamily\bfseries\large 2IMF30 - System Validation}
+\fancyfoot[LO,RE]{\sffamily\bfseries\large Department of Mathematics and Computer Science}
+\fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{0pt}
+
+%-------------------------------- Title ----------------------------------
+
+\title{\sffamily\bfseries 2IMF30 \scg\ - Project 1}
+\author{Tom van Diggelen \qquad Student number: 0745801 \\{\tt t.w.t.v.diggelen@student.tue.nl}\\ \\ Huib Donkers \qquad Student number: 0769015 \\{\tt h.t.donkers@student.tue.nl} \\ \\ Jeroen Noten \qquad Student number: 0784113 \\{\tt j.f.h.noten@student.tue.nl}\\ \\ Mart Pluijmaekers \qquad Student number: 0753117 \\{\tt m.h.l.pluijmaekers@student.tue.nl} \\ \\ Hein van Beers \qquad Student number: 0765658 \\{\tt h.a.v.beers@student.tue.nl}}
+
+\date{\today}
+
+%--------------------------------- Text ----------------------------------
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+\section{Introduction}
+
+\section{Basic requirements}
+\input{sections/basicRequirements.tex}
+
+
+\section{Actions}
+\input{sections/actions.tex}
+
+\section{Traces}
+\input{sections/traces.tex}
+
+\begin{thebibliography}{9}
+
+\end{thebibliography}
+
+
+\end{document}

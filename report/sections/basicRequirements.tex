@@ -1,0 +1,24 @@
+% !TEX root = ../report.tex
+
+\begin{itemize}
+  \item At least one door of a sluice is closed at any point in time.
+  \item No robot may interact with a sluice whenever its access door is closed.
+  \item An unprocessed wafer will eventually be processed.
+  \item Internal racks, sluices, and the projector place each contain at most one wafer.
+  \item When the projector is at work, no interaction with the wafer is permissible.
+  \item \todo{Sluice pumps change the air pressure to either zero or one atmosphere. (controversy)}
+  \item A sluice door cannot open until the pressure on both sides is equal.
+  \item Sluice pumps will not operate until both of its doors are closed.
+  \item \emph{R3} will not take a wafer from \emph{I} when \emph{P} is occupied.
+  \item \emph{R3} will not put wafers in \emph{I}.
+  \item \emph{R3} will not take wafers from \emph{O}.
+  \item \todo{\emph{R3}  will not take a wafer from \emph{P} when the projector is at work.}
+\end{itemize}
+
+\subsection{Assumptions}
+\begin{itemize}
+  \item A wafer is considered processed when the projector has finished processing and the wafer has exited the stepper.
+  \item The doors are the only part of the machines that can malfunction.
+  \item The main room is assumed to always be a vacuum.
+  \item The external input and output racks are assumed to be infinite in size.
+\end{itemize}

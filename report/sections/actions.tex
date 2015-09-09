@@ -1,0 +1,25 @@
+\begin{tabular}{|l|l|l|p{4cm}|}
+\hline  
+  \textbf{Action} & \todo{\textbf{Executed by}} & \textbf{Variables} & \textbf{Meaning} \\
+  \hline
+  \todo{\action{get}{$p$}} & Robots & $p$: A place in the system & Get a wafer from place $p$\\
+  \hline
+  \todo{\action{put}{$p$}} & Robots & $p$: A place in the system & Put a wafer on place $p$\\
+  \hline
+  \action{project}{} & Projector & None & Project a wafer\\
+  \hline
+  \action{openInside}{$s$} & Inside sluice doors & $s$: The corresponding sluice & Open the inside sluice door of sluice $s$\\
+  \hline
+  \action{openOutside}{$s$} & Outside sluice doors & $s$: The corresponding sluice & Open the outside sluice door of sluice $s$\\
+  \hline
+  \action{closeInside}{$s$} & Inside sluice doors & $s$: The corresponding sluice & Close the inside sluice door of sluice $s$\\
+  \hline
+  \action{closeOutside}{$s$} & Outside sluice doors & $s$: The corresponding sluice & Close the outside sluice door of sluice $s$\\
+  \hline
+  \action{Vacuum}{$s$} & Pumps & $s$: The corresponding sluice & Make sluice $s$ into a vacuum\\
+  \hline
+  \action{deVacuum}{$s$} & Pumps & $s$: The corresponding sluice & Make sluice $s$ into normal air pressure\\
+  \hline
+  \action{read}{$s$} & Sensors & $s$: The corresponding sluice & Read the value of the sensor in sluice $s$\\
+  \hline
+\end{tabular}
