@@ -1,13 +1,11 @@
 % !TEX root = ../report.tex
 
-Expressing every requirement in terms of actions.
-
 \begin{description}
  \item[At least one door of a sluice is closed at any point in time] \hfill \\
  For any sluice $s$:
  \begin{itemize}
-  \item Between any \action{openInside}{$s$} and its most recent preceding \action{closeOutside}{$s$}, there may not be an \action{openOutside}{$s$}
-  \item Between any \action{openOutside}{$s$} and most its recent preceding \action{closeInside}{$s$}, there may not be an \action{openInside}{$s$}
+  \item Between any \action{openInside}{$s$} and its most recent preceding \action{openOutside}{$s$}, there must be a \action{closeOutside}{$s$}
+  \item Between any \action{openOutside}{$s$} and its most recent preceding \action{openInside}{$s$}, there may not be a \action{closeInside}{$s$}
  \end{itemize}
 
  \item[No robot may interact with a sluice whenever its access door is closed] \hfill \\
@@ -33,15 +31,15 @@ Expressing every requirement in terms of actions.
  \item[A sluice door cannot open untill the pressure on both sides is equal] \hfill \\
  For any sluice $s$:
  \begin{enumerate}
-  \item Between any \action{openInside}{$s$} and its most recent preceding \action{Vacuum}{$s$}, there may not be a \action{deVacuum}{$s$}
-  \item Between any \action{openOutside}{$s$} and its most recent preceding \action{deVacuum}{$s$}, there may not be a \action{Vacuum}{$s$}
+  \item Between any \action{openInside}{$s$} and its most recent preceding \action{deVacuum}{$s$}, there must be a \action{Vacuum}{$s$}
+  \item Between any \action{openOutside}{$s$} and its most recent preceding \action{Vacuum}{$s$}, there must be a \action{deVacuum}{$s$}
  \end{enumerate}
 
  \item[Sluice pumps cannot operate until both of its doors are closed] \hfill \\
  For any sluice $s$:
  \begin{enumerate}
-  \item Between any \action{Vacuum}{$s$} or \action{deVacuum}{$s$} and its most recent preceding \action{closeInside}{$s$}, there may not be a \action{openInside}{$s$}
-  \item Between any \action{Vacuum}{$s$} or \action{deVacuum}{$s$} and its most recent preceding \action{closeOutside}{$s$}, there may not be a \action{openOutside}{$s$}
+  \item Between any \action{Vacuum}{$s$} or \action{deVacuum}{$s$} and its most recent preceding \action{openInside}{$s$}, there must be a \action{closeInside}{$s$}
+  \item Between any \action{Vacuum}{$s$} or \action{deVacuum}{$s$} and its most recent preceding \action{openOutside}{$s$}, there must be a \action{closeOutside}{$s$}
  \end{enumerate}
 
  \item[$R3$ will not take a wafer from $I$ when $P$ is occupied] \hfill \\
