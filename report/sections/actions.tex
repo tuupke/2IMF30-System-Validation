@@ -1,23 +1,30 @@
 % !TEX root = ../report.tex
 
-\begin{tabular}{|l|l|l|p{4cm}|}
+\begin{tabular}{|l|l|p{7cm}|}
 \hline  
-  \textbf{Action} & \todo{\textbf{Executed by}} & \textbf{Variables} & \textbf{Meaning} \\
+  \textbf{Action} & \textbf{Variables} & \textbf{Meaning} \\
   \hline
-  \action{move}{$a,b$} & Robots & $a,b$: A place in the system & Get a wafer from place $a$ and put it in place $b$\\
+  \action{move}{$a,b$} & $a,b$: A place in the system & Get a wafer from place $a$ and put it in place $b$\\
   \hline
-  \action{project}{} & Projector & None & Project a wafer\\
+  \action{beginProject}{} & None & Start projection of a wafer\\
   \hline
-  \action{openInside}{$s$} & Inside sluice doors & $s$: The corresponding sluice & Open the inside sluice door of sluice $s$\\
+  \action{endProject}{} & None & End projection of a wafer\\
   \hline
-  \action{openOutside}{$s$} & Outside sluice doors & $s$: The corresponding sluice & Open the outside sluice door of sluice $s$\\
+  \action{openInside}{$s$} & $s$: The corresponding sluice & Open the inside sluice door of sluice $s$\\
   \hline
-  \action{closeInside}{$s$} & Inside sluice doors & $s$: The corresponding sluice & Close the inside sluice door of sluice $s$\\
+  \action{openOutside}{$s$} & $s$: The corresponding sluice & Open the outside sluice door of sluice $s$\\
   \hline
-  \action{closeOutside}{$s$} & Outside sluice doors & $s$: The corresponding sluice & Close the outside sluice door of sluice $s$\\
+  \action{closeInside}{$s$} & $s$: The corresponding sluice & Close the inside sluice door of sluice $s$\\
   \hline
-  \action{Vacuum}{$s$} & Pumps & $s$: The corresponding sluice & Make sluice $s$ into a vacuum\\
+  \action{closeOutside}{$s$} & $s$: The corresponding sluice & Close the outside sluice door of sluice $s$\\
   \hline
-  \action{deVacuum}{$s$} & Pumps & $s$: The corresponding sluice & Make sluice $s$ into normal air pressure\\
+  \action{Vacuum}{$s$} & $s$: The corresponding sluice & Start making sluice $s$ into a vacuum\\
+  \hline
+  \action{deVacuum}{$s$} & $s$: The corresponding sluice & Start making sluice $s$ into normal air pressure\\
+  \hline
+  \action{stopPumping}{$s$} & $s$: The corresponding sluice & Stop changing air pressure of sluice $s$\\
+  \hline
+  \action{read}{$s, p$} & $s$: The corresponding sluice & Stop changing air pressure of sluice $s$\\
+  & $p$: meassured air pressure & \\
   \hline
 \end{tabular}
