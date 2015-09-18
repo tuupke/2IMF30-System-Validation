@@ -41,11 +41,12 @@ For any sluice $s$:
  \end{enumerate}
 
 \item[No robot can place a projected wafer in $RI$] \hfill \\
-
+For any place $a$ in the system: before any \action{move}{$a, RI$}, a \action{detectWafer}{$a, \text{unprojected}$} must have been executed and in between, no \action{move}{$a, b$} has been executed for any $b$.
 
 \item[No robot can place an unprojected wafer in $RO$] \hfill \\
+For any place $a$ in the system: before any \action{move}{$a, RO$}, a \action{detectWafer}{$a, \text{projected}$} must have been executed and in between, no \action{move}{$a, b$} has been executed for any $b$.
 
 \item[No robot can take a wafer from $RO$] \hfill \\
-
+\action{move}{$RO, a$} cannot take place for any $a$.
  
 \end{description}
