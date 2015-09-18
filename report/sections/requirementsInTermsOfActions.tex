@@ -19,12 +19,12 @@ For any sluice $s$:
 \end{itemize}
  
  \item[Any wafer in the system will eventually be processed] \hfill \\
- \begin{enumerate}
+ \begin{itemize}
  \item There must be at least one \action{detectWafer}{$RI, s$} for some status $s$.
  \item After any \action{detectWafer}{$RI, s$} for some status $s$ there must be at least one \action{detectWafer}{$RI, t$} for some status $t$.
  \item After any \action{detectWafer}{$RI, \text{unprojected}$} there must be a \action{move}{$RI, a$} for some place $a$ in the system.
  \item After any \action{move}{$RI, a$} for some place $a$ in the system, there must a \action{move}{$b, RO$} for some place $b$ in the system.
- \end{enumerate}
+ \end{itemize}
  
  
 \item[Internal racks, sluices and the projector each contain at most one wafer] \hfill \\
@@ -35,17 +35,17 @@ For any place $p$: between any \action{move}{$P, p$} or \action{move}{$p, P$} an
  
  \item[A sluice door cannot open until the pressure on both sides is equal] \hfill \\
  For any sluice $s$:
- \begin{enumerate}
+ \begin{itemize}
   \item Between any \action{openInside}{$s$} and its most recent preceding \action{deVacuum}{$s$}, there must be a \action{Vacuum}{$s$}
   \item Between any \action{openOutside}{$s$} and its most recent preceding \action{Vacuum}{$s$}, there must be a \action{deVacuum}{$s$}
- \end{enumerate}
+ \end{itemize}
 
  \item[Sluice pumps cannot operate until both of its doors are closed] \hfill \\
  For any sluice $s$:
- \begin{enumerate}
+ \begin{itemize}
   \item Between any \action{Vacuum}{$s$} or \action{deVacuum}{$s$} and its most recent preceding \action{openInside}{$s$}, there must be a \action{closeInside}{$s$}
   \item Between any \action{Vacuum}{$s$} or \action{deVacuum}{$s$} and its most recent preceding \action{openOutside}{$s$}, there must be a \action{closeOutside}{$s$}
- \end{enumerate}
+ \end{itemize}
 
 \item[No robot can place a projected wafer in $RI$] \hfill \\
 For any place $a$ in the system: before any \action{move}{$a, RI$}, a \action{detectWafer}{$a, \text{unprojected}$} must have been executed and in between, no \action{move}{$a, b$} has been executed for any $b$.
