@@ -18,18 +18,15 @@ For any sluice $s$:
 	\item between any \action{move}{$s, a$} with $a \in \{ RI, RO \}$ and its most recent preceding \action{closeOutside}{$s$}, there must be a \action{openOutside}{$s$}.
 \end{itemize}
  
- \item[An unprocessed wafer will eventually be processed] \hfill \\
- 
- 
+ \item[Any wafer in the system will eventually be processed] \hfill \\
  
  \item[Internal racks, sluices and the projector each contain at most one wafer] \hfill \\
  For any internal place $p_i \in \{S1, S2, I, O, P\}$ and any three places $p_1, p_2, p_3 \in \{S1, S2, I, O, P, RI, RO\}$: between any \action{move}{$p_1, p_i$} and its most recent preceding \action{move}{$p_2, p_i$}, there must be a \action{move}{$p_i, p_3$}.
-
  
  \item[When the projector is at work, no interaction with the wafer is permissible] \hfill \\
  For any place $p$: between any \action{move}{$P, p$} or \action{move}{$p, P$} and its most recent preceding \action{beginProject}{}, there must be a \action{endProject}{}.
  
- \item[A sluice door cannot open untill the pressure on both sides is equal] \hfill \\
+ \item[A sluice door cannot open until the pressure on both sides is equal] \hfill \\
  For any sluice $s$:
  \begin{enumerate}
   \item Between any \action{openInside}{$s$} and its most recent preceding \action{deVacuum}{$s$}, there must be a \action{Vacuum}{$s$}
@@ -43,13 +40,12 @@ For any sluice $s$:
   \item Between any \action{Vacuum}{$s$} or \action{deVacuum}{$s$} and its most recent preceding \action{openOutside}{$s$}, there must be a \action{closeOutside}{$s$}
  \end{enumerate}
 
- \item[$R3$ will not take a wafer from $I$ when $P$ is occupied] \hfill \\
- \todo{put/move/get definitie final maken}
- 
- \item[$R3$ will not put wafers in $I$] \hfill \\
- \todo{put/move/get definitie final maken}
- 
- \item[$R3$ will not take wafers from $O$] \hfill \\
- \todo{put/move/get definitie final maken}
+\item[No robot can place a projected wafer in $RI$] \hfill \\
+
+
+\item[No robot can place an unprojected wafer in $RO$] \hfill \\
+
+\item[No robot can take a wafer from $RO$] \hfill \\
+
  
 \end{description}
