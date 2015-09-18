@@ -1,6 +1,6 @@
 % !TEX root = ../report.tex
 
-\begin{tabular}{|l|l|p{7cm}|}
+\begin{tabular}{|l|p{6cm}|p{5cm}|}
 \hline  
   \textbf{Action} & \textbf{Variables} & \textbf{Meaning} \\
   \hline
@@ -24,7 +24,8 @@
   \hline
   \action{stopPumping}{$s$} & $s$: The corresponding sluice & Stop changing air pressure of sluice $s$\\
   \hline
-  \action{read}{$s, p$} & $s$: The corresponding sluice & Stop changing air pressure of sluice $s$\\
-  & $p$: meassured air pressure & \\
+  \action{readAirPressure}{$s, p$} & $s$: The corresponding sluice, $p$: meassured air pressure & Read the air pressure $p$ in sluice $s$ \\
+  \hline
+  \action{detectWafer}{$a, s$} & $a$: A place in the system; $s \in \{ \text{processed}, \text{unprocessed}, \text{empty} \}$ & Detect an processed, unprocessed, or no wafer at place $a$ \\
   \hline
 \end{tabular}
