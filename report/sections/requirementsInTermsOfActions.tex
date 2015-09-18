@@ -22,15 +22,12 @@ For any sluice $s$:
  
  
  
- \item[Internal racks, sluices and the projector each contain one wafer] \hfill \\
+ \item[Internal racks, sluices and the projector each contain at most one wafer] \hfill \\
  For any internal place $p_i \in \{S1, S2, I, O, P\}$ and any three places $p_1, p_2, p_3 \in \{S1, S2, I, O, P, RI, RO\}$: between any \action{move}{$p_1, p_i$} and its most recent preceding \action{move}{$p_2, p_i$}, there must be a \action{move}{$p_i, p_3$}.
 
  
- \item[When the projector is at work, no interaction with the water is permissible] \hfill \\
- \todo{put/move/get definitie final maken}
- 
- \todo{\'of haal de requirement weg, \' of gebruik \action{beginProjection}{} en \action{endProjection}{} actions}
- 
+ \item[When the projector is at work, no interaction with the wafer is permissible] \hfill \\
+ For any place $p$: between any \action{move}{$P, p$} or \action{move}{$p, P$} and its most recent preceding \action{beginProject}{}, there must be a \action{endProject}{}.
  
  \item[A sluice door cannot open untill the pressure on both sides is equal] \hfill \\
  For any sluice $s$:
