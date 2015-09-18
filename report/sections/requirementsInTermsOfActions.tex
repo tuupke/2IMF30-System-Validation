@@ -13,9 +13,9 @@ For any sluice $s$:
 
 \begin{itemize}
 	\item Between any \action{move}{$RI, s$} and its most recent preceding \action{closeOutside}{$s$}, there must be a \action{openOutside}{$s$}.
-	\item between any \action{move}{$s, I$} and its most recent preceding \action{closeInside}{$s$}, there must be a \action{openInside}{$s$}.
-	\item between any \action{move}{$O, s$} and its most recent preceding \action{closeInside}{$s$}, there must be a \action{openInside}{$s$}.
-	\item between any \action{move}{$s, RO$} and its most recent preceding \action{closeOutside}{$s$}, there must be a \action{openOutside}{$s$}.
+	\item between any \action{move}{$s, a$} with $a \in \{ I, O \}$ and its most recent preceding \action{closeInside}{$s$}, there must be a \action{openInside}{$s$}.
+	\item between any \action{move}{$a, s$} with $a \in \{ I, O \}$ and its most recent preceding \action{closeInside}{$s$}, there must be a \action{openInside}{$s$}.
+	\item between any \action{move}{$s, a$} with $a \in \{ RI, RO \}$ and its most recent preceding \action{closeOutside}{$s$}, there must be a \action{openOutside}{$s$}.
 \end{itemize}
  
  \item[An unprocessed wafer will eventually be processed] \hfill \\
