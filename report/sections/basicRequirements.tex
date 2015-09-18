@@ -1,7 +1,8 @@
 % !TEX root = ../report.tex
 \subsection{Definitions}
 \begin{enumerate}
-  \item A wafer is considered processed when the projector has finished processing and the wafer has exited the stepper.
+  \item A wafer is considered projected when the projector has finished projecting the wafer.
+  \item A wafer is considered processed when the wafer is projected and the wafer has been placed in \textit{RO}.
 \end{enumerate}
 
 \subsection{Assumptions}
@@ -16,10 +17,12 @@
 \begin{enumerate}
   \item At least one door of a sluice is closed at any point in time.
   \item No robot may interact with a sluice whenever its access door is closed.
-  \item An unprocessed wafer will eventually be processed.
+  \item Any wafer in the system will eventually be processed.
   \item Internal racks, sluices, and the projector place each contain at most one wafer.
   \item When the projector is at work, no interaction with the wafer is permissible.
   \item A sluice door cannot open until the pressure on both sides is equal.
   \item Sluice pumps will not operate until both of its doors are closed.
-  \item \todo{Restricties voor robots toevoegen}
+  \item No robot can place a projected wafer in \textit{RI}.
+  \item No robot can place an unprojected wafer in \textit{RO}.
+  \item No robot can take a wafer from \textit{RO}.
 \end{enumerate}
