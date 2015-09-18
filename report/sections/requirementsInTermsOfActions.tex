@@ -9,7 +9,10 @@
  \end{itemize}
 
  \item[No robot may interact with a sluice whenever its access door is closed] \hfill \\
- \todo{put/move/get definitie final maken}
+\begin{itemize}
+	\item For any sluice $s$ and any $r \in \{ RI, RO \}$: between any,\action{move($r, s$)} and its most recent preceding \action{openOutside($r$)}, there must be a \action{closeOutside($s$)}.
+	\item For any sluice $s$ and any $r \in \{ I, O \}$: between any,\action{move($s, r$)} and its most recent preceding \action{openInside(r)}, there must be a \action{closeInside($s$)}.
+\end{itemize}
  
  \item[An unprocessed wafer will eventually be processed] \hfill \\
  \todo{Kan niet echt (makkenlijk) in traces uitgedrukt worden...}
