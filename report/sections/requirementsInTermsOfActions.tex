@@ -19,12 +19,24 @@ For any sluice $s$:
 \end{itemize}
  
  \item[Any wafer in the system will eventually be processed] \hfill \\
+ \begin{enumerate}
+ \item There must be at least one \action{detectWafer}{$RI, s$} for some status $s$.
+ \item After any \action{detectWafer}{$RI, s$} for some status $s$ there must be at least one \action{detectWafer}{$RI, t$} for some status $t$.
+ \item After any \action{detectWafer}{$RI, \text{unprojected}$} there must be a \action{move}{$RI, a$} for some place $a$ in the system.
+ \item After any \action{move}{$RI, a$} for some place $a$ in the system, there must a \action{move}{$b, RO$} for some place $b$ in the system.
+ \end{enumerate}
  
- \item[Internal racks, sluices and the projector each contain at most one wafer] \hfill \\
- For any internal place $p_i \in \{S1, S2, I, O, P\}$ and any three places $p_1, p_2, p_3 \in \{S1, S2, I, O, P, RI, RO\}$: between any \action{move}{$p_1, p_i$} and its most recent preceding \action{move}{$p_2, p_i$}, there must be a \action{move}{$p_i, p_3$}.
  
- \item[When the projector is at work, no interaction with the wafer is permissible] \hfill \\
- For any place $p$: between any \action{move}{$P, p$} or \action{move}{$p, P$} and its most recent preceding \action{beginProject}{}, there must be a \action{endProject}{}.
+ \item[Internal racks, sluices and the projector each contain one wafer] \hfill \\
+ \todo{put/move/get definitie final maken}
+ 
+ ``Voordat een robot iets op internal rack/sluice of projector kan leggen, moet de vorige zin weggehaald.''
+ 
+ \item[When the projector is at work, no interaction with the water is permissible] \hfill \\
+ \todo{put/move/get definitie final maken}
+ 
+ \todo{\'of haal de requirement weg, \' of gebruik \action{beginProjection}{} en \action{endProjection}{} actions}
+ 
  
  \item[A sluice door cannot open until the pressure on both sides is equal] \hfill \\
  For any sluice $s$:
