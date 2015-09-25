@@ -20,10 +20,10 @@ For any sluice $s$:
  
  \item[3. Any wafer in the system will eventually be processed] \hfill \\
  \begin{itemize}
- \item There must be at least one \action{detectWafer}{$RI, s$} for some status $s$.
- \item After any \action{detectWafer}{$RI, s$} for some status $s$ there must be at least one \action{detectWafer}{$RI, t$} for some status $t$.
- \item After any \action{detectWafer}{$RI, \text{unprojected}$} there must be a \action{move}{$RI, a$} for some place $a$ in the system.
- \item After any \action{move}{$RI, a$} for some place $a$ in the system, there must a \action{move}{$b, RO$} for some place $b$ in the system.
+ \item There must be at least one \action{detectInputWafer}{$s$} for some status $s$.
+ \item After any \action{detectInputWafer}{$s$} for some status $s$ there must be at least one \action{detectInputWafer}{$t$} for some status $t$.
+ \item After any \action{detectInputWafer}{$s$} there must be a \action{move}{$RI, a$} for some place $a$ in the system.
+ \item After any \action{move}{$RI, a$} for some place $a$ in the system, there must be a \action{move}{$b, RO$} for some place $b$ in the system.
  \end{itemize}
  
  
@@ -48,10 +48,10 @@ For any place $p$: between any \action{move}{$P, p$} or \action{move}{$p, P$} an
  \end{itemize}
 
 \item[8. No robot can place a projected wafer in $RI$] \hfill \\
-For any place $a$ in the system: before any \action{move}{$a, RI$}, a \action{detectWafer}{$a, \text{unprojected}$} must have been executed and in between, no \action{move}{$a, b$} has been executed for any $b$.
+For any place $a$ in the system: a \action{move}{$a, RI$} may only be executed when $position(a) = \texttt{unprojected}$.
 
 \item[9. No robot can place an unprojected wafer in $RO$] \hfill \\
-For any place $a$ in the system: before any \action{move}{$a, RO$}, a \action{detectWafer}{$a, \text{projected}$} must have been executed and in between, no \action{move}{$a, b$} has been executed for any $b$.
+For any place $a$ in the system: a \action{move}{$a, RO$} may only be executed when $position(a) = \texttt{projected}$.
 
 \item[10. No robot can take a wafer from $RO$] \hfill \\
 \action{move}{$RO, a$} cannot take place for any $a$.
