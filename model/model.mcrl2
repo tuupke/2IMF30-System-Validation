@@ -1,12 +1,41 @@
 sort
-  Place = struct ri | ro | s1 | s2 | i | o | p;
   Sluice = struct s1 | s2;
   Pressure = struct zero | one;
-  Status = struct true | false;
+  Door = struct open | closed | broken;
 
 act
-  move: Place # Place;
-  beginProject, endProject;
-  openInside,openOutside,closeInside,closeOutside,vacuum,devacuum,stopPumping,readAirPressure,detectInputWafer: Sluice;
+  moveRiS1,moveRiS2,moveS1Ri,moveS1I,moveIP,movePO,moveOS1,moveOS2,moveS1Ro,moveS2Ro,
+  beginProject, endProject,
+  openInsideS1,openOutsideS1,closeInsideS1,closeOutsideS1,vacuumS1,devacuumS1,stopPumpingS1,readAirPressureS1,
+  openInsideS2,openOutsideS2,closeInsideS2,closeOutsideS2,vacuumS2,devacuumS2,stopPumpingS2,readAirPressureS2,
+  moveRiS1Open,moveRiS2Open,moveS1IOpen,moveS2IOpen,moveS1RiOpen,moveS2RiOpen,moveOS1Open,moveOS2Open,moveS1RoOpen,moveS2RoOpen;
   readAirPressure: Sluice # Pressure;
-  detectInputWafer: Status;
+  detectInputWafer: Bool;
+
+proc
+  Sluice1 = (openOutsideS1.closeOutsideS1.vacuumS1.stopPumpingS1.openInsideS1.closeInsideS1+openInsideS1.closeInsideS1.devacuumS1.stopPumpingS1.openOutsideS1.closeOutsideS1).Sluice1;
+  Sluice2 = (openOutsideS2.closeOutsideS2.vacuumS2.stopPumpingS2.openInsideS2.closeInsideS2+openInsideS2.closeInsideS2.devacuumS2.stopPumpingS2.openOutsideS2.closeOutsideS2).Sluice2;
+  R1 = (moveRiS1+moveRiS2+moveRiS1+moveS2Ri+moveS1Ro+moveS2Ro).R1;
+  R2 = (moveS1I+moveS2I+moveOS1+moveOS2).R2;
+  R3P = moveIP.startProject.endProject.movePO.R3P;
+  %PositionTracker = ;
+
+init
+  allow({
+      moveRiS1Open,moveRiS2Open,moveS1IOpen,moveS2IOpen,moveS1RiOpen,moveS2RiOpen,moveS1RoOpen,moveS2RoOpen,moveOS1Open,moveOS2Open
+    },
+    comm({
+      moveRiS1|openOutsideS1->moveRiS1Open,
+      moveRiS2|openOutsideS2->moveRiS2Open,
+      moveOS1|openInsideS1->moveOS1Open,
+      moveOS2|openInsideS2->moveOS2Open,
+      moveS1Ri|openOutsideS1->moveS1RiOpen,
+      moveS2Ri|openOutsideS2->moveS2RiOpen,
+      moveS1Ro|openOutsideS1->moveS1RoOpen,
+      moveS2Ro|openOutsideS2->moveS2RoOpen,
+      moveS1I|openInsideS1->moveS1IOpen,
+      moveS2I|openInsideS2->moveS2IOpen
+    },
+      Sluice1 || Sluice2 || R1 || R2 || R3P %|| PositionTracker
+    )
+  );
