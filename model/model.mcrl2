@@ -1,0 +1,12 @@
+sort
+  Place = struct ri | ro | s1 | s2 | i | o | p;
+  Sluice = struct s1 | s2;
+  Pressure = struct zero | one;
+  Status = struct true | false;
+
+act
+  move: Place # Place;
+  beginProject, endProject;
+  openInside,openOutside,closeInside,closeOutside,vacuum,devacuum,stopPumping,readAirPressure,detectInputWafer: Sluice;
+  readAirPressure: Sluice # Pressure;
+  detectInputWafer: Status;
