@@ -1,7 +1,6 @@
 sort
   Sluice = struct s1 | s2;
   Pressure = struct zero | one;
-  Door = struct open | closed | broken;
 
 act
   moveRiS1,moveRiS2,moveS1Ri,moveS1I,moveIP,movePO,moveOS1,moveOS2,moveS1Ro,moveS2Ro,
