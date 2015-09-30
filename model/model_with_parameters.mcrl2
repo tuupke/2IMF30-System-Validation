@@ -1,0 +1,45 @@
+sort
+  Place = struct ri | ro | s1 | s2 | i | o | p;
+
+  Pressure = struct zero | one;
+
+act
+  move: Place # Place;
+  beginProject, endProject, moveIntoSluice, moveOut;
+  openInside, openOutside, closeInside, closeOutside, vacuum, devacuum, stopPumping: Sluice;
+  readAirPressure: Sluice # Pressure;
+  detectInputWafer: Bool;
+
+proc
+  Sluice(sluice:Sluice)
+    = readAirPressure(sluice, zero).(devacuum(sluice).readAirPressure(sluice, one).stopPumping(sluice).Sluice(sluice) + openInside(sluice).insideIsOpen(sluice).closeInside(sluice).Sluice(sluice))
+    + readAirPressure(sluice, one).(vacuum(sluice).readAirPressure(sluice, zero).stopPumping(sluice).Sluice(sluice) + openOutside(sluice).outsideIsOpen(sluice).closeOutside(sluice).Sluice(sluice));
+
+  R1 = (move(ri, s1) + move(ri,s2) + move(ri,s1) + move(s2, ri) + move(s1, ro) + move(s2, ro)).R1;
+  R2 = (move(s1, i) + move(s2, i) + move(o, s1) + move(o, s2)).R2;
+  R3P = move(I, P).startProject.endProject.move(P, O).R3P;
+
+init
+  allow({
+      moveToSluice,moveFromSluice,
+      move(I, P),move(P, O),
+      openInside,closeInside,openOutside,closeOutside,
+      vacuum,devacuum,stopPumping,readAirPressure,
+      beginProject,endProject,
+      detectInputWafer
+    },
+    comm({
+      move(ri, s1)|outsideIsOpen(sluice1)->moveToSluice,
+      move(ri, s2)|outsideIsOpen(sluice2)->moveToSluice,
+      move(o, s1)|insideIsOpen(sluice1)->moveToSluice,
+      move(o, s2)|insideIsOpen(sluice2)->moveToSluice,
+      move(s1, ri)|outsideIsOpen(sluice1)->moveFromSluice,
+      move(s2, ri)|outsideIsOpen(sluice2)->moveFromSluice,
+      move(s1, ro)|outsideIsOpen(sluice1)->moveFromSluice,
+      move(s2, ro)|outsideIsOpen(sluice2)->moveFromSluice,
+      move(s1, i)|insideIsOpen(sluice1)->moveFromSluice,
+      move(s2, i)|insideIsOpen(sluice2)->moveFromSluice
+    },
+      Sluice(sluice1) || Sluice(sluice2) || R1 || R2 || R3P
+    )
+  );
