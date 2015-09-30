@@ -5,7 +5,7 @@ sort
 
 act
   move: Place # Place;
-  beginProject, endProject, moveIntoSluice, moveOut;
+  beginProject, endProject, moveToSluice, moveFromSluice, moveOut;
   openInside, openOutside, closeInside, closeOutside, vacuum, devacuum, stopPumping: Sluice;
   readAirPressure: Sluice # Pressure;
   detectInputWafer: Bool;
