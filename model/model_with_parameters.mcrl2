@@ -1,6 +1,6 @@
 sort
   Place = struct ri | ro | s1 | s2 | i | o | p;
-
+  Sluice = struct sluice1 | sluice2;
   Pressure = struct zero | one;
 
 act
