@@ -1,0 +1,61 @@
+sort
+  Place = struct I | O | P | S1 | S2 | outside;
+  Door  = struct insideDoor | outsideDoor;
+  Sluice= struct Sluice1 | Sluice2;
+  WaferState = struct empty?isEmpty | unprojected?isUnprojected | projected?isProjected;
+  WaferPlacement = Place -> WaferState;
+map
+  emptyPlaces: WaferPlacement;
+var
+  p:Place;
+eqn
+  emptyPlaces(p) = empty;
+
+act
+  % Extenal
+  move: Place # Place;
+  closeDoor: Door # Sluice;
+  openDoor: Door # Sluice;
+  
+  % Sluicedoor Communication
+  isOpen: Door # Sluice;
+  moveThrough: Door # Sluice;
+  moving: Door # Sluice;
+  canClose: Door # Sluice;
+  signalClose: Door # Sluice;
+  
+  % Wafer tracking
+  moveRequest: Place # Place;
+  moveAllow:   Place # Place;
+
+proc
+  SluiceInit(s:Sluice)         = closeDoor(insideDoor, s).closeDoor(outsideDoor, s).Sluice(s);
+  Sluice(s:Sluice)             = openDoor(insideDoor, s).OpenSluice(insideDoor, s) + openDoor(outsideDoor, s).OpenSluice(outsideDoor, s);
+  OpenSluice(d:Door, s:Sluice) = isOpen(d, s).canClose(d, s).OpenSluice(d, s) + closeDoor(d, s).Sluice(s);
+  
+  RobotOutside = sum s:Sluice.moveThrough(outsideDoor, s).(moveRequest(S1, outside) + moveRequest(outside, S1)).signalClose(outsideDoor, s).RobotOutside;
+  
+  RobotInside  = sum s:Sluice.moveThrough(insideDoor, s).(moveRequest(O, S1 ) + moveRequest(S1 , I)).signalClose(insideDoor, s).RobotInside;
+  
+  WaferTracker(wp:WaferPlacement) = sum p:Place . sum p':Place . (isEmpty(wp(p')))->moveAllow(p, p').WaferTracker(wp[p'->wp(p)][p->empty]);
+
+init
+  hide({moving},
+  allow({
+	  moving, openDoor, closeDoor, move
+    },
+    comm({
+	    moveThrough|isOpen      -> moving,
+	    canClose   |signalClose -> moving,
+	    moveRequest|moveAllow   -> move
+	  },
+	    % Without init of sluices, only 1 sluice for PositionTracker debugging
+	    Sluice(Sluice1)|| RobotInside || RobotOutside || WaferTracker(emptyPlaces)
+	    
+	    % Without initilisation of sluices the LTS is much cleaner
+	    %Sluice(Sluice1) || Sluice(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces)
+	    
+	    % Complete process, complete mess :)
+	    %SluiceInit(Sluice1) || SluiceInit(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces)
+    )
+  ));
