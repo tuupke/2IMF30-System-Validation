@@ -1,0 +1,35 @@
+sort
+  Place = struct inside | sluice | outside;
+  Door  = struct insideDoor | outsideDoor;
+
+act
+  move: Place # Place;
+  closeDoor: Door;
+  openDoor: Door;
+  
+  isOpen: Door;
+  moveThrough: Door;
+  moving, moving2: Door;
+  canClose: Door;
+  signalClose: Door;
+
+proc
+  SluiceInit           = closeDoor(insideDoor).closeDoor(outsideDoor).Sluice;
+  Sluice               = openDoor(insideDoor).OpenSluice(insideDoor) + openDoor(outsideDoor).OpenSluice(outsideDoor);
+  OpenSluice(d:Door)   = isOpen(d).canClose(d).OpenSluice(d) + closeDoor(d).Sluice;
+  
+  RobotOutside         = moveThrough(outsideDoor).(move(sluice, outside) + move(outside, sluice)).signalClose(outsideDoor).RobotOutside;
+  RobotInside          = moveThrough(insideDoor) .(move(inside, sluice) + move(sluice , inside)).signalClose(insideDoor) .RobotInside ;
+
+init
+  %hide({moving, moving2},
+  allow({
+	  moving, moving2, openDoor, closeDoor, move
+    },
+    comm({
+	    moveThrough|isOpen->moving,
+	    canClose|signalClose->moving2
+	  },
+	    SluiceInit || RobotInside || RobotOutside
+    )
+  );%);
