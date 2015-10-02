@@ -1,0 +1,40 @@
+sort
+  Place = struct I | O | P | S1 | S2 | outside;
+  Door  = struct insideDoor | outsideDoor;
+  Sluice= struct Sluice1 | Sluice2;
+
+act
+  move: Place # Place;
+  closeDoor: Door # Sluice;
+  openDoor: Door # Sluice;
+  
+  isOpen: Door # Sluice;
+  moveThrough: Door # Sluice;
+  moving, moving2: Door # Sluice;
+  canClose: Door # Sluice;
+  signalClose: Door # Sluice;
+
+proc
+  SluiceInit(s:Sluice)         = closeDoor(insideDoor, s).closeDoor(outsideDoor, s).Sluice(s);
+  Sluice(s:Sluice)             = openDoor(insideDoor, s).OpenSluice(insideDoor, s) + openDoor(outsideDoor, s).OpenSluice(outsideDoor, s);
+  OpenSluice(d:Door, s:Sluice) = isOpen(d, s).canClose(d, s).OpenSluice(d, s) + closeDoor(d, s).Sluice(s);
+  
+  RobotOutside         = sum s:Sluice.moveThrough(outsideDoor, s).(move(S1, outside) + move(outside, S1)).signalClose(outsideDoor, s).RobotOutside;
+  
+  RobotInside          = sum s:Sluice.moveThrough(insideDoor, s).(move(O, S1 ) + move(S1 , I)).signalClose(insideDoor, s).RobotInside ;
+
+init
+  hide({moving, moving2},
+  allow({
+	  moving, moving2, openDoor, closeDoor, move
+    },
+    comm({
+	    moveThrough|isOpen->moving,
+	    canClose|signalClose->moving2
+	  },
+	    % Without initilisation of sluices the LTS is much cleaner
+	    %Sluice(Sluice1) || Sluice(Sluice2) || RobotInside || RobotOutside
+	    
+	    SluiceInit(Sluice1) || SluiceInit(Sluice2) || RobotInside || RobotOutside
+    )
+  ));
