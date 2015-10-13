@@ -1,0 +1,5 @@
+// At least one door of a sluice is closed at any point in time
+
+[true*.openOutside(s).!closeOutside(s)*.openInside(s)]false
+
+[true*.openInside(s).!closeInside(s)*.openOutside(s)]false
