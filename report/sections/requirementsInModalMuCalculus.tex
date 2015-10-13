@@ -1,0 +1,37 @@
+% !TEX root = ../report.tex
+
+\begin{description}
+ \item[1. At least one door of a sluice is closed at any point in time]
+	\begin{align*}
+		&[true^*.openOutside(s).\overline{closeOutside(s)^*}.openInside(s)]false \\
+		&[true^*.openInside(s).\overline{closeInside(s)^*}.openOutside(s)]false
+	\end{align*}
+
+ \item[2. No robot may interact with a sluice whenever its access door is closed]
+	\begin{align*}
+		&[true*.closeOutside(s).\overline{openOutside(s)^*}.move(RI,s)]false \\
+		&[true*.closeInside(s).\overline{openInside(s)^*}.move(s,I)]false \\
+		&[true*.closeInside(s).\overline{openInside(s)^*}.move(s,O)]false \\
+		&[true*.closeInside(s).\overline{openInside(s)^*}.move(I,S)]false \\
+		&[true*.closeInside(s).\overline{openInside(s)^*}.move(O,s)]false \\
+		&[true*.closeOutside(s).\overline{openOutside(s)^*}.move(s,RI)]false \\
+		&[true*.closeOutside(s).\overline{openOutside(s)^*}.move(s,RO)]false
+	\end{align*}
+ 
+ \item[3. Any wafer in the system will eventually be processed]
+
+ \item[4. Internal racks, sluices and the projector each contain at most one wafer]
+ 
+ \item[5. When the projector is at work, no interaction with the wafer is permissible]
+ 
+ \item[6. A sluice door cannot open until the pressure on both sides is equal]
+
+ \item[7. Sluice pumps cannot operate until both of its doors are closed]
+
+ \item[8. No robot can place a projected wafer in $RI$]
+
+ \item[9. No robot can place an unprojected wafer in $RO$]
+
+ \item[10. No robot can take a wafer from $RO$]
+
+\end{description}
