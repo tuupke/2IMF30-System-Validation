@@ -23,9 +23,16 @@
  \item[4. Internal racks, sluices and the projector each contain at most one wafer]
  
  \item[5. When the projector is at work, no interaction with the wafer is permissible]
- 
+ 	\begin{align*}
+ 		&[true^*.beginProject().\overline{endProject()^*}.move(P,O)]false
+	\end{align*}
+	
  \item[6. A sluice door cannot open until the pressure on both sides is equal]
-
+	\begin{align*}
+		&[true^*.vacuum(s).stopPumping(s).\overline{readAirPressure(s,0)^*}.openInside(s)]false \\
+		&[true^*.deVacuum(s).stopPumping(s).\overline{readAirPressure(s,1)^*}.openOutside(s)]false \\
+	\end{align*}
+	
  \item[7. Sluice pumps cannot operate until both of its doors are closed]
 
  \item[8. No robot can place a projected wafer in $RI$]
