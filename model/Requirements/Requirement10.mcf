@@ -1,0 +1,2 @@
+% No robot can take a wafer from RO
+forall p:P . [true*.move(RO, p)]false
