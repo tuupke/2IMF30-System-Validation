@@ -6,7 +6,7 @@
 
 [true*.closeInside(s).!openInside(s)*.move(s,O)]false
 
-[true*.closeInside(s).!openInside(s)*.move(I,S)]false
+[true*.closeInside(s).!openInside(s)*.move(I,s)]false
 
 [true*.closeInside(s).!openInside(s)*.move(O,s)]false
 
