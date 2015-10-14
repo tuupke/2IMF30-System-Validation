@@ -20,7 +20,21 @@
  
  \item[3. Any wafer in the system will eventually be processed]
 
+	\begin{align*}
+		&[true^*.detectInputWafer(s)]true\\
+		&[true^*.detectInputWafer(s).\overline{detectInputWafer(t)^*}]false\\
+		&[true^*.detectInputWafer(s).\overline{move(RI, a)^*}]false\\
+		&[true^*.move(RI, a).\overline{move(b,RO)^*}]false
+	\end{align*}
+
+ 
  \item[4. Internal racks, sluices and the projector each contain at most one wafer]
+    
+    For all $p$, there exist $p_1, p_2, p_3$:
+	\begin{align*}
+		&[true^*.move(p_1, p).\overline{move(p,p_3)^*}.move(p_2,p)]false
+	\end{align*}
+
  
  \item[5. When the projector is at work, no interaction with the wafer is permissible]
  	\begin{align*}
