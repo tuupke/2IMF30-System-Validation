@@ -1,25 +1,41 @@
 sort
-  Place = struct I | O | P | S1 | S2 | outside;
+  Place = struct I | O | P | S1 | S2 | RO | RI;
   Door  = struct insideDoor | outsideDoor;
   Sluice= struct Sluice1 | Sluice2;
   WaferState = struct empty?isEmpty | unprojected?isUnprojected | projected?isProjected;
   WaferPlacement = Place -> WaferState;
+  Pressure = struct vacuum | low | normal;
+  
 map
   emptyPlaces: WaferPlacement;
-  singleWafer: WaferPlacement;
   update: WaferPlacement # Place # Place -> WaferPlacement;
+  
+  sluicePlace: Sluice -> Place;
+  
+  maxQueue: Nat;
+  
 var
   p,p':Place;
   wp:WaferPlacement;
 eqn
   emptyPlaces(p) = empty;
   update(wp, p, p') = wp[p'->wp(p)][p->empty];
+  
+  sluicePlace(Sluice1) = S1;
+  sluicePlace(Sluice2) = S2;
+  
+  maxQueue = 3;
 
 act
   % Extenal
   move: Place # Place;
-  closeDoor: Door # Sluice;
-  openDoor: Door # Sluice;
+  closeDoor, openDoor: Door # Sluice;
+  vacuum, deVacuum, stopPumping: Sluice;
+  readAirPressure: Sluice # Pressure;
+  beginProject, endProject,  detectInputWafer;
+  
+  %aux
+  SKIP;
   
   % Sluicedoor Communication
   isOpen: Door # Sluice;
@@ -40,31 +56,58 @@ proc
   Sluice(s:Sluice)             = openDoor(insideDoor, s).OpenSluice(insideDoor, s) + openDoor(outsideDoor, s).OpenSluice(outsideDoor, s);
   OpenSluice(d:Door, s:Sluice) = isOpen(d, s).canClose(d, s).OpenSluice(d, s) + closeDoor(d, s).Sluice(s);
   
-  RobotOutside = sum s:Sluice.moveThrough(outsideDoor, s).(moveRequest(S1, outside) + moveRequest(outside, S1)).signalClose(outsideDoor, s).RobotOutside;
+  RobotOutside = sum s:Sluice.moveThrough(outsideDoor, s).(
+		moveRequest(sluicePlace(s), RO) +
+		moveRequest(sluicePlace(s), RI) +
+		moveRequest(RI, sluicePlace(s)) +
+		SKIP
+	).signalClose(outsideDoor, s).RobotOutside;
   
-  RobotInside  = sum s:Sluice.moveThrough(insideDoor, s).(moveRequest(O, S1 ) + moveRequest(S1 , I)).signalClose(insideDoor, s).RobotInside;
+  RobotInside  = sum s:Sluice.moveThrough(insideDoor, s).(
+		moveRequest(O, sluicePlace(s)) +
+		moveRequest(sluicePlace(s), I) +
+		SKIP
+	).signalClose(insideDoor, s).RobotInside;
   
-  WaferTracker(wp:WaferPlacement) = debug(wp).WaferTracker(wp) + sum p:Place . sum p':Place . (isEmpty(wp(p')) && !isEmpty(wp(p)))->moveAllow(p, p').WaferTracker(update(wp,p,p'));
-  %WaferTracker(wp:WaferPlacement) = sum p:Place . sum p':Place . (isEmpty(wp(p')))->moveAllow(p, p').WaferTracker(update(wp,p,p'));
-  %WaferTracker(wp:WaferPlacement) = sum p:Place . sum p':Place . (isEmpty(wp(p')))->moveAllow(p, p').debug(wp).WaferTracker(nonemptyPlaces);
+  ProjectorRobot = moveRequest(I, P).beginProject.endProject.moveRequest(P,O).ProjectorRobot;
+  
+  WaferTracker(wp:WaferPlacement) = % TODO: moet ook met q:Nat kunnen, maar dan gaat hij klagen dat q-1 kleiner dan 0 zou kunnen worden, terwijl we dat in de if al afvangen...
+	detectInputWafer.(isEmpty(wp(RI)))->
+			WaferTracker(wp[RI->unprojected])
+		<>
+			WaferTracker(wp)
+	+
+	sum p:Place . sum p':Place .
+		(isEmpty(wp(p')) && !isEmpty(wp(p)))->
+			moveAllow(p, p').WaferTracker(update(wp,p,p'));
 
 init
-  hide({moving},
-  allow({
-	  moving, openDoor, closeDoor, move, debug
-    },
-    comm({
-	    moveThrough|isOpen      -> moving,
-	    canClose   |signalClose -> moving,
-	    moveRequest|moveAllow   -> move
-	  },
-	    % Without init of sluices, only 1 sluice for PositionTracker debugging
-	    %Sluice(Sluice1)|| RobotInside || RobotOutside || WaferTracker(emptyPlaces[outside->unprojected])
-	    
-	    % Without initilisation of sluices the LTS is much cleaner
-	    %Sluice(Sluice1) || Sluice(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces[outside->unprojected])
-	    
-	    % Complete process, complete mess :)
-	    SluiceInit(Sluice1) || SluiceInit(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces[outside->unprojected])
-    )
-  ));
+	hide({
+		moving,
+		SKIP
+		},
+		allow({
+			moving,
+			openDoor,
+			closeDoor,
+			move,
+			detectInputWafer,
+			SKIP
+			},
+			comm({
+				moveThrough|isOpen      -> moving,
+				canClose   |signalClose -> moving,
+				moveRequest|moveAllow   -> move
+			},
+				% Without init of sluices, only 1 sluice for PositionTracker debugging
+				Sluice(Sluice1)|| RobotInside || RobotOutside || WaferTracker(emptyPlaces)
+				
+				% Without initilisation of sluices the LTS is much cleaner
+				%Sluice(Sluice1) || Sluice(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces)
+				
+				% Complete process, complete mess :)
+				%SluiceInit(Sluice1) || SluiceInit(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces)
+			)
+		)
+	)
+	;
