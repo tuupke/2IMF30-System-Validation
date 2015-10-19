@@ -1,2 +1,7 @@
 % No robot can take a wafer from RO
 forall p:Place . [true*.move(RO, p)]false
+
+% note that the formula above is equal to:
+% forall p:Place . [true*][move(RO, p)]false
+% which equals:
+% forall p:Place . nu X.([true]X && [move(RO, p)]false)
