@@ -57,8 +57,16 @@
 		&[true^*.openOutside(s).\overline{closeOutside(s)^*}.deVacuum(s)]false \\
 	\end{align*}
 
- \item[8. No robot can place a projected wafer in $RI$]
-
+ \item[8. No robot can place a projected wafer in $RI$]\mbox{}\\
+$
+[true^* \cdot detectInputWafer]\\
+\cdot \nu X(position:Place=RI, projecting:Bool=false, projected:Bool=false)\\
+.\forall a,b:Place.[move(a,b)]X(if(a \approx position, b, position), projecting \wedge a \not \approx position, projected)\\
+\wedge [\overline{\exists a,b:Place.move(a,b) + beginProject + endProject)}]X(position, projecting, projected)\\
+\wedge [beginProject]X(position, position \approx P, projected)\\
+\wedge [endProject]X(position, false, projected \vee (projecting \wedge position \approx P))\\
+\wedge (position \approx RI \implies \neg projected)
+$
  \item[9. No robot can place an unprojected wafer in $RO$] \mbox{}\\
 $
 [true^* \cdot detectInputWafer]\\
