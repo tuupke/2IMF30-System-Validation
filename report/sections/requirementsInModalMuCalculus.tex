@@ -1,22 +1,24 @@
 % !TEX root = ../report.tex
 
 \begin{description}
- \item[1. At least one door of a sluice is closed at any point in time]
-	\begin{align*}
-		&[true^*.openOutside(s).\overline{closeOutside(s)^*}.openInside(s)]false \\
-		&[true^*.openInside(s).\overline{closeInside(s)^*}.openOutside(s)]false
-	\end{align*}
+ \item[1. At least one door of a sluice is closed at any point in time]\mbox{}\\
+$
+		\forall s:Sluice .\newline
+		[true^* \cdot openDoor(outsideDoor,s) \cdot \overline{closeDoor(outsideDoor,s)}^* \cdot openDoor(insideDoor,s)]false \\
+		\wedge [true^* \cdot openDoor(insideDoor,s) \cdot \overline{closeDoor(insideDoor,s)}^* \cdot openDoor(outsideDoor,s)]false \\
+$
 
- \item[2. No robot may interact with a sluice whenever its access door is closed]
-	\begin{align*}
-		&[true*.closeOutside(s).\overline{openOutside(s)^*}.move(RI,s)]false \\
-		&[true*.closeInside(s).\overline{openInside(s)^*}.move(s,I)]false \\
-		&[true*.closeInside(s).\overline{openInside(s)^*}.move(s,O)]false \\
-		&[true*.closeInside(s).\overline{openInside(s)^*}.move(I,s)]false \\
-		&[true*.closeInside(s).\overline{openInside(s)^*}.move(O,s)]false \\
-		&[true*.closeOutside(s).\overline{openOutside(s)^*}.move(s,RI)]false \\
-		&[true*.closeOutside(s).\overline{openOutside(s)^*}.move(s,RO)]false
-	\end{align*}
+ \item[2. No robot may interact with a sluice whenever its access door is closed]\mbox{}\\
+$
+		\forall s:Sluice .\newline
+		[true* \cdot closeDoor(outsideDoor,s) \cdot \overline{openDoor(outsideDoor,s)}^* \cdot move(RI,sluicePlace(s))]false \\
+		\wedge [true* \cdot closeDoor(insideDoor,s) \cdot \overline{openDoor(insideDoor,s)}^* \cdot move(sluicePlace(s),I)]false \\
+		\wedge [true* \cdot closeDoor(insideDoor,s) \cdot \overline{openDoor(insideDoor,s)}^* \cdot move(sluicePlace(s),O)]false \\
+		\wedge [true* \cdot closeDoor(insideDoor,s) \cdot \overline{openDoor(insideDoor,s)}^* \cdot move(I,sluicePlace(s))]false \\
+		\wedge [true* \cdot closeDoor(insideDoor,s) \cdot \overline{openDoor(insideDoor,s)}^* \cdot move(O,sluicePlace(s))]false \\
+		\wedge [true* \cdot closeDoor(outsideDoor,s) \cdot \overline{openDoor(outsideDoor,s)}^* \cdot move(sluicePlace(s),RI)]false \\
+		\wedge [true* \cdot closeDoor(outsideDoor,s) \cdot \overline{openDoor(outsideDoor,s)}^* \cdot move(sluicePlace(s),RO)]false
+$
  
  \item[3. Any wafer in the system will eventually be processed]
 
