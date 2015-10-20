@@ -95,7 +95,11 @@ proc
 	+
 	sum p:Place . sum p':Place .
 		(isEmpty(wp(p')) && !isEmpty(wp(p)))->
-			moveAllow(p, p').WaferTracker(update(wp,p,p'));
+			(
+				!(p' == RO && isUnprojected(wp(p))) ||
+				!(p' == P  && isUnprojected(wp(p)))
+			)->
+				moveAllow(p, p').WaferTracker(update(wp,p,p'));
 
 init
 	hide({
