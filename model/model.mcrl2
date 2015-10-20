@@ -29,40 +29,38 @@ eqn
 act
   % Extenal
   move: Place # Place;
-  closeDoor, openDoor: Door # Sluice;
+  closeDoor, openDoor, doorStuck: Door # Sluice;
   vacuum, deVacuum, stopPumping: Sluice;
   readAirPressure: Sluice # Pressure;
   beginProject, endProject,  detectInputWafer;
   
-  %aux
-  SKIP;
-  
   % Sluicedoor Communication
-  isOpen: Door # Sluice;
-  moveThrough: Door # Sluice;
-  moving: Door # Sluice;
-  canClose: Door # Sluice;
-  signalClose: Door # Sluice;
+  isOpen, moveThrough, canClose, signalClose, moving: Door # Sluice;
+  tryOpenDoor, tryCloseDoor, allowOpenDoor, allowCloseDoor: Door # Sluice;
+  
   
   % Wafer tracking
   moveRequest: Place # Place;
   moveAllow:   Place # Place;
   endProject_internal, updateProjectedness;
   
+  % Auxiliary
+  SKIP;
+  
   % Debug
   debug: WaferPlacement;
 
 proc
-  SluiceInit(s:Sluice)         = closeDoor(insideDoor, s).closeDoor(outsideDoor, s).ClosedSluice(s);
+  SluiceInit(s:Sluice)         = tryCloseDoor(insideDoor, s).tryCloseDoor(outsideDoor, s).ClosedSluice(s);
   ClosedSluice(s:Sluice)       =
 	readAirPressure(s, vacuum).(
-		openDoor(insideDoor, s).OpenSluice(insideDoor, s)
+		tryOpenDoor(insideDoor, s).OpenSluice(insideDoor, s)
 		+
 		SKIP.ClosedSluice(s)
 	)
 	+
 	readAirPressure(s, normal).(
-		openDoor(outsideDoor, s).OpenSluice(outsideDoor, s)
+		tryOpenDoor(outsideDoor, s).OpenSluice(outsideDoor, s)
 		+
 		SKIP.ClosedSluice(s)
 	)
@@ -71,7 +69,10 @@ proc
 	+
 	deVacuum(s).stopPumping(s).ClosedSluice(s);
 	
-  OpenSluice(d:Door, s:Sluice) = isOpen(d, s).canClose(d, s).OpenSluice(d, s) + closeDoor(d, s).ClosedSluice(s);
+  OpenSluice(d:Door, s:Sluice) = isOpen(d, s).canClose(d, s).OpenSluice(d, s) + tryCloseDoor(d, s).ClosedSluice(s);
+  
+  SluiceDoorSafeguard          = SluiceDoor(insideDoor, Sluice1) || SluiceDoor(insideDoor, Sluice2) || SluiceDoor(outsideDoor, Sluice1) || SluiceDoor(outsideDoor, Sluice2);
+  SluiceDoor(d:Door, s:Sluice) = doorStuck(d,s) + (allowOpenDoor(d, s) + allowCloseDoor(d, s)).SluiceDoor(d,s);
   
   RobotOutside = sum s:Sluice.moveThrough(outsideDoor, s).(
 		moveRequest(sluicePlace(s), RO) +
@@ -126,6 +127,7 @@ init
 			stopPumping,
 			beginProject,
 			endProject,
+			doorStuck,
 			
 			moving,
 			SKIP
@@ -134,6 +136,8 @@ init
 				moveThrough        |isOpen              -> moving,
 				canClose           |signalClose         -> moving,
 				moveRequest        |moveAllow           -> move,
+				tryCloseDoor       |allowOpenDoor       -> closeDoor,
+				tryOpenDoor        |allowCloseDoor      -> openDoor,
 				endProject_internal|updateProjectedness -> endProject
 			},
 				% Without init of sluices, only 1 sluice for PositionTracker debugging
@@ -143,7 +147,7 @@ init
 				%ClosedSluice(Sluice1) || ClosedSluice(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces)
 				
 				% Complete process, complete mess :)
-				SluiceInit(Sluice1) || SluiceInit(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces) || ProjectorRobot
+				SluiceInit(Sluice1) || SluiceInit(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces) || ProjectorRobot || SluiceDoorSafeguard
 			)
 		)
 	)
