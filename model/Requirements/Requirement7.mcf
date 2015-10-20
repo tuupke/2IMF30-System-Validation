@@ -1,0 +1,12 @@
+% sluice pumps cannot operate until both doors are closed
+
+forall s:Sluice . [true*.openDoor(insideDoor,s).!closeDoor(insideDoor,s)*.vacuum(s)]false
+&&
+forall s:Sluice . [true*.openDoor(outsideDoor,s).!closeDoor(outsideDoor,s)*.vacuum(s)]false
+&&
+forall s:Sluice . [true*.openDoor(insideDoor,s).!closeDoor(insideDoor,s).deVacuum(s)]false
+&&
+forall s:Sluice . [true*.openDoor(outsideDoor,s).!closeDoor(outsideDoor,s)*.deVacuum(s)]false
+
+
+
