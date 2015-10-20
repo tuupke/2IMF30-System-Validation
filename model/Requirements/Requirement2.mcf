@@ -1,0 +1,15 @@
+% No robot may interact with a sluice whenever its access door is closed
+
+forall s:Sluice . [true*.closeDoor(outsideDoor,s).!openDoor(outsideDoor,s)*.move(RI,sluicePlace(s))]false
+&&
+forall s:Sluice . [true*.closeDoor(insideDoor,s).!openDoor(insideDoor,s)*.move(sluicePlace(s),I)]false
+&&
+forall s:Sluice . [true*.closeDoor(insideDoor,s).!openDoor(insideDoor,s)*.move(sluicePlace(s),O)]false
+&&
+forall s:Sluice . [true*.closeDoor(insideDoor,s).!openDoor(insideDoor,s)*.move(I,sluicePlace(s))]false
+&&
+forall s:Sluice . [true*.closeDoor(insideDoor,s).!openDoor(insideDoor,s)*.move(O,sluicePlace(s))]false
+&&
+forall s:Sluice . [true*.closeDoor(outsideDoor,s).!openDoor(outsideDoor,s)*.move(sluicePlace(s),RI)]false
+&&
+forall s:Sluice . [true*.closeDoor(outsideDoor,s).!openDoor(outsideDoor,s)*.move(sluicePlace(s),RO)]false
