@@ -44,9 +44,6 @@ act
   moveAllow:   Place # Place;
   endProject_internal, updateProjectedness;
   
-  % Auxiliary
-  SKIP;
-  
   % Debug
   debug: WaferPlacement;
 
@@ -56,13 +53,13 @@ proc
 	readAirPressure(s, vacuum).(
 		tryOpenDoor(insideDoor, s).OpenSluice(insideDoor, s)
 		+
-		SKIP.ClosedSluice(s)
+		ClosedSluice(s)
 	)
 	+
 	readAirPressure(s, normal).(
 		tryOpenDoor(outsideDoor, s).OpenSluice(outsideDoor, s)
 		+
-		SKIP.ClosedSluice(s)
+		ClosedSluice(s)
 	)
 	+
 	vacuum(s)  .stopPumping(s).ClosedSluice(s)
@@ -74,18 +71,20 @@ proc
   SluiceDoorSafeguard          = SluiceDoor(insideDoor, Sluice1) || SluiceDoor(insideDoor, Sluice2) || SluiceDoor(outsideDoor, Sluice1) || SluiceDoor(outsideDoor, Sluice2);
   SluiceDoor(d:Door, s:Sluice) = doorStuck(d,s) + (allowOpenDoor(d, s) + allowCloseDoor(d, s)).SluiceDoor(d,s);
   
-  RobotOutside = sum s:Sluice.moveThrough(outsideDoor, s).(
-		moveRequest(sluicePlace(s), RO) +
-		moveRequest(sluicePlace(s), RI) +
-		moveRequest(RI, sluicePlace(s)) +
-		SKIP
-	).signalClose(outsideDoor, s).RobotOutside;
+  RobotOutside = sum s:Sluice.moveThrough(outsideDoor, s).((
+			moveRequest(sluicePlace(s), RO) +
+			moveRequest(sluicePlace(s), RI) +
+			moveRequest(RI, sluicePlace(s))
+		).signalClose(outsideDoor, s)
+		+ signalClose(outsideDoor, s)
+	).RobotOutside;
   
-  RobotInside  = sum s:Sluice.moveThrough(insideDoor, s).(
-		moveRequest(O, sluicePlace(s)) +
-		moveRequest(sluicePlace(s), I) +
-		SKIP
-	).signalClose(insideDoor, s).RobotInside;
+  RobotInside  = sum s:Sluice.moveThrough(insideDoor, s).((
+			moveRequest(O, sluicePlace(s)) +
+			moveRequest(sluicePlace(s), I)
+		).signalClose(insideDoor, s)
+		+ signalClose(insideDoor, s)
+	).RobotInside;
   
   ProjectorRobot = moveRequest(I, P).beginProject.endProject_internal.moveRequest(P,O).ProjectorRobot;
   
@@ -113,24 +112,22 @@ proc
 
 init
 	hide({
-		moving,
-		SKIP
+			moving
 		},
 		allow({
-			openDoor,
-			closeDoor,
-			move,
-			detectInputWafer,
-			readAirPressure,
-			vacuum,
-			deVacuum,
-			stopPumping,
-			beginProject,
-			endProject,
-			doorStuck,
-			
-			moving,
-			SKIP
+				openDoor,
+				closeDoor,
+				move,
+				detectInputWafer,
+				readAirPressure,
+				vacuum,
+				deVacuum,
+				stopPumping,
+				beginProject,
+				endProject,
+				doorStuck,
+				
+				moving
 			},
 			comm({
 				moveThrough        |isOpen              -> moving,
