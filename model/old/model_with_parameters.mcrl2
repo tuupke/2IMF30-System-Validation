@@ -1,0 +1,43 @@
+sort
+  Place = struct ri | ro | s1 | s2 | i | o | p;
+  Sluice = struct sluice1 | sluice2;
+  Pressure = struct zero | one;
+
+act
+  moveToSluice1Inside, moveToSluice1Outside, moveFromSluice1Inside, moveFromSluice1Outside: Place;
+  moveToSluice2Inside, moveToSluice2Outside, moveFromSluice2Inside, moveFromSluice2Outside: Place;
+  insideSluice1IsOpen, insideSluice2IsOpen, outsideSluice1IsOpen, outsideSluice2IsOpen;
+  moveToOpenSluice1Inside, moveToOpenSluice2Inside, moveToOpenSluice1Outside, moveToOpenSluice2Outside: Place;
+  moveToProjector, moveFromProjector: Place;
+  openInside, openOutside, closeInside, closeOutside, vacuum, devacuum, stopPumping: Sluice;
+  beginProject, endProject;
+  readAirPressure: Sluice # Pressure;
+  detectInputWafer: Bool;
+
+proc
+  Sluice(sluice:Sluice)
+    = readAirPressure(sluice, zero).(devacuum(sluice).readAirPressure(sluice, one).stopPumping(sluice).Sluice(sluice) + openInside(sluice).((sluice == sluice1) -> insideSluice1IsOpen <> insideSluice2IsOpen).closeInside(sluice).Sluice(sluice))
+    + readAirPressure(sluice, one).(vacuum(sluice).readAirPressure(sluice, zero).stopPumping(sluice).Sluice(sluice) + openOutside(sluice).((sluice == sluice1) -> outsideSluice1IsOpen <> outsideSluice2IsOpen).closeOutside(sluice).Sluice(sluice));
+
+  R1 = (moveToSluice1Outside(ri) + moveToSluice2Outside(s2) + moveFromSluice1Outside(ri) + moveFromSluice2Outside(ri) + moveFromSluice1Outside(ro) + moveFromSluice2Outside(ro)).R1;
+  R2 = (moveFromSluice1Inside(i) + moveFromSluice2Inside(i) + moveToSluice1Inside(o) + moveToSluice2Inside(o)).R2;
+  R3P = moveToProjector(I).startProject.endProject.moveFromProjector(O).R3P;
+
+init
+  allow({
+      moveToOpenSluice1Inside, moveToOpenSluice2Inside, moveToOpenSluice1Outside, moveToOpenSluice2Outside,
+      moveToProjector,moveFromProjector,
+      openInside,closeInside,openOutside,closeOutside,
+      vacuum,devacuum,stopPumping,readAirPressure,
+      beginProject,endProject,
+      detectInputWafer
+    },
+    comm({
+      moveToSluice1Inside|insideSluice1IsOpen->moveToOpenSluice1Inside,
+      moveToSluice2Inside|insideSluice2IsOpen->moveToOpenSluice2Inside,
+      moveToSluice1Outside|outsideSluice1IsOpen->moveToOpenSluice1Outside,
+      moveToSluice2Outside|outsideSluice2IsOpen->moveToOpenSluice2Outside
+    },
+      Sluice(sluice1) || Sluice(sluice2) || R1 || R2 || R3P
+    )
+  );
