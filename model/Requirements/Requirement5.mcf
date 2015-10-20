@@ -1,0 +1,5 @@
+% When the projector is at work, no interaction with the wafer is permissable
+
+[true*.beginProject.!endProject*.move(P, O)]false
+
+
