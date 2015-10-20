@@ -1,0 +1,5 @@
+% A sluice door cannot open until the pressure on both sides is equal
+
+forall s:Sluice . [true*.vacuum(s).stopPumping(s).!readAirPressure(s, vacuum)*.openDoor(insideDoor,s)]false
+&&
+forall s:Sluice . [true*.deVacuum(s).stopPumping(s).!readAirPressure(s, normal)*.openDoor(outsideDoor,s)]false
