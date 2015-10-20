@@ -47,6 +47,7 @@ act
   % Wafer tracking
   moveRequest: Place # Place;
   moveAllow:   Place # Place;
+  endProject_internal, updateProjectedness;
   
   % Debug
   debug: WaferPlacement;
@@ -85,7 +86,7 @@ proc
 		SKIP
 	).signalClose(insideDoor, s).RobotInside;
   
-  ProjectorRobot = moveRequest(I, P).beginProject.endProject.moveRequest(P,O).ProjectorRobot;
+  ProjectorRobot = moveRequest(I, P).beginProject.endProject_internal.moveRequest(P,O).ProjectorRobot;
   
   WaferTracker(wp:WaferPlacement) =
 	detectInputWafer.(isEmpty(wp(RI)))->
@@ -93,11 +94,19 @@ proc
 		<>
 			WaferTracker(wp)
 	+
+	(!isEmpty(wp(P)))->updateProjectedness.WaferTracker(wp[P->projected])
+	+
 	sum p:Place . sum p':Place .
 		(isEmpty(wp(p')) && !isEmpty(wp(p)))->
 			(
-				!(p' == RO && isUnprojected(wp(p))) ||
-				!(p' == P  && isUnprojected(wp(p)))
+				% ensure that wafer go in the right direction (unprojected towards the projector, projected away from the projector)
+				% sluices work in two diretions, so they are excluded from this
+				
+				!(p' == RI && isProjected(wp(p))) &&
+				!(p' == I  && isProjected(wp(p))) &&
+				!(p' == P  && isProjected(wp(p))) &&
+				!(p' == O  && isUnprojected(wp(p))) &&
+				!(p' == RO && isUnprojected(wp(p)))
 			)->
 				moveAllow(p, p').WaferTracker(update(wp,p,p'));
 
@@ -115,14 +124,17 @@ init
 			vacuum,
 			deVacuum,
 			stopPumping,
+			beginProject,
+			endProject,
 			
 			moving,
 			SKIP
 			},
 			comm({
-				moveThrough|isOpen      -> moving,
-				canClose   |signalClose -> moving,
-				moveRequest|moveAllow   -> move
+				moveThrough        |isOpen              -> moving,
+				canClose           |signalClose         -> moving,
+				moveRequest        |moveAllow           -> move,
+				endProject_internal|updateProjectedness -> endProject
 			},
 				% Without init of sluices, only 1 sluice for PositionTracker debugging
 				%ClosedSluice(Sluice1)|| RobotInside || RobotOutside || WaferTracker(emptyPlaces)
@@ -131,7 +143,7 @@ init
 				%ClosedSluice(Sluice1) || ClosedSluice(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces)
 				
 				% Complete process, complete mess :)
-				SluiceInit(Sluice1) || SluiceInit(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces)
+				SluiceInit(Sluice1) || SluiceInit(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces) || ProjectorRobot
 			)
 		)
 	)
