@@ -4,7 +4,7 @@ sort
   Sluice= struct Sluice1 | Sluice2;
   WaferState = struct empty?isEmpty | unprojected?isUnprojected | projected?isProjected;
   WaferPlacement = Place -> WaferState;
-  Pressure = struct vacuum | low | normal;
+  Pressure = struct vacuum | normal;
   
 map
   emptyPlaces: WaferPlacement;
@@ -97,7 +97,7 @@ proc
 	(!isEmpty(wp(P)))->updateProjectedness.WaferTracker(wp[P->projected])
 	+
 	sum p:Place . sum p':Place .
-		(isEmpty(wp(p')) && !isEmpty(wp(p)))->
+		(isEmpty(wp(p')) && !isEmpty(wp(p)))-> % TODO: we should be able to move to RI/RO regardless of isEmpty
 			(
 				% ensure that wafer go in the right direction (unprojected towards the projector, projected away from the projector)
 				% sluices work in two diretions, so they are excluded from this
@@ -133,8 +133,8 @@ init
 				moveThrough        |isOpen              -> moving,
 				canClose           |signalClose         -> moving,
 				moveRequest        |moveAllow           -> move,
-				tryCloseDoor       |allowOpenDoor       -> closeDoor,
-				tryOpenDoor        |allowCloseDoor      -> openDoor,
+				tryCloseDoor       |allowCloseDoor      -> closeDoor,
+				tryOpenDoor        |allowOpenDoor       -> openDoor,
 				endProject_internal|updateProjectedness -> endProject
 			},
 				% Without init of sluices, only 1 sluice for PositionTracker debugging
