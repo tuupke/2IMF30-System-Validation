@@ -10,13 +10,9 @@
   \hline
   \action{endProject}{} & None & End projection of a wafer\\
   \hline
-  \action{openInside}{$s$} & $s$: The corresponding sluice & Open the inside sluice door of sluice $s$\\
+  \action{openDoor}{$d, s$} & $d$: inside or outside door, $s$: The corresponding sluice & Open door $d$ of sluice $s$\\
   \hline
-  \action{openOutside}{$s$} & $s$: The corresponding sluice & Open the outside sluice door of sluice $s$\\
-  \hline
-  \action{closeInside}{$s$} & $s$: The corresponding sluice & Close the inside sluice door of sluice $s$\\
-  \hline
-  \action{closeOutside}{$s$} & $s$: The corresponding sluice & Close the outside sluice door of sluice $s$\\
+  \action{closeDoor}{$d, s$} & $d$: inside or outside door, $s$: The corresponding sluice & Close  door $d$ of sluice $s$\\
   \hline
   \action{Vacuum}{$s$} & $s$: The corresponding sluice & Start making sluice $s$ into a vacuum\\
   \hline
@@ -24,10 +20,12 @@
   \hline
   \action{stopPumping}{$s$} & $s$: The corresponding sluice & Stop changing air pressure of sluice $s$\\
   \hline
-  \action{readAirPressure}{$s, p$} & $s$: The corresponding sluice, $p$: meassured air pressure & Read the air pressure $p$ in sluice $s$ \\
+  \action{readAirPressure}{$s, p$} & $s$: The corresponding sluice, $p \in \{$vacuum, normal$\}$: meassured air pressure & A sensor signals the airpressure in sluice $s$ is equal to inside the stepper ($p=$vacuum), or equal to outside the stepper ($p=$normal)\\
+  \hline
+  \action{doorStuck}{$d, s$} & $d$: inside or outside door, $s$: The corresponding sluice & A sensor signals the door is stuck and can no long move.\\
   \hline
 %  \action{detectWafer}{$a, s$} & $a$: A place in the system; $s \in \{ \text{project}, \text{unprojected}, \text{empty} \}$ & Detect a projected, unprojected, or no wafer at place $a$ \\
 %  \hline
-  \action{detectInputWafer}{s} & $s \in \{true, false\}$ & Detect if a wafer is available at $RI$ \\
+  \action{detectInputWafer}{} & None & A sensor signals that an input wafer is available $RI$ \\
   \hline
 \end{tabular}

@@ -1,9 +1,11 @@
 % !TEX root = ../report.tex
 
+Our model consists of 7 parallel processes that communicate.
 \begin{enumerate}
- \item Sluice: door and pump (twice)
- \item Projector and $R3$
- \item $R2$
- \item $R1$
- \item Position tracker
+ \item Two identical processes managing a single sluice each. They control the sluice doors and the pumps and communicate with the robots about whether or not they may reach into the sluice.
+ \item A process controlling $R3$ and the projector.
+ \item A process controlling $R2$.
+ \item A process controlling $R1$.
+ \item Position tracker, which tracks the positions and state of each wafer. This process communicates with the three processes controlling the robots and projector, both in order to track the wafer, as well as to prevent the robots from making illegal moves (e.g. placing a token on an occupied rack).
+ \item A safeguard process, which monitors the doors. This process itself consists of 4 parallel processes, each monitoring a single door. Each of these processes communicate with the process controlling their door. A safeguard terminates when a door gets stuck, which will prevent the door controlling from moving the stuck door (because it can no longer communicate with the terminated process).
 \end{enumerate}
