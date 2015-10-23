@@ -97,7 +97,7 @@ proc
 	(!isEmpty(wp(P)))->updateProjectedness.WaferTracker(wp[P->projected])
 	+
 	sum p:Place . sum p':Place .
-		(isEmpty(wp(p')) && !isEmpty(wp(p)))-> % TODO: we should be able to move to RI/RO regardless of isEmpty
+		((isEmpty(wp(p')) || p' == RO || p' == RI) && !isEmpty(wp(p)))->
 			(
 				% ensure that wafer go in the right direction (unprojected towards the projector, projected away from the projector)
 				% sluices work in two diretions, so they are excluded from this
