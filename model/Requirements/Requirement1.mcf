@@ -6,4 +6,4 @@
 
 % optimized:
 
-[true*]forall s:Sluice.forall d:Door.[openDoor(d,s).(!closeDoor(d,s))*.openDoor(d,s)]false
+[true*]forall s:Sluice,d:Door.[openDoor(d,s).(!closeDoor(d,s))*.openDoor(d,s)]false

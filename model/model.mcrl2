@@ -2,29 +2,39 @@ sort
   Place = struct I | O | P | S1 | S2 | RO | RI;
   Door  = struct insideDoor | outsideDoor;
   Sluice= struct Sluice1 | Sluice2;
+  SluiceDoor = struct InsideDoor1 | OutsideDoor1 | InsideDoor2 | OutsideDoor2;
   WaferState = struct empty?isEmpty | unprojected?isUnprojected | projected?isProjected;
   WaferPlacement = Place -> WaferState;
   Pressure = struct vacuum | normal;
-  
+
 map
   emptyPlaces: WaferPlacement;
+  nothingBroken: SluiceDoor -> Bool;
   update: WaferPlacement # Place # Place -> WaferPlacement;
-  
+
   sluicePlace: Sluice -> Place;
   sluicePressure: Sluice -> Pressure;
-  
+  sluiceDoor: Sluice # Door -> SluiceDoor;
+
 var
   p,p':Place;
   wp:WaferPlacement;
+  sd:SluiceDoor;
 eqn
   emptyPlaces(p) = empty;
+  nothingBroken(sd) = false;
   update(wp, p, p') = wp[p'->wp(p)][p->empty];
-  
+
   sluicePlace(Sluice1) = S1;
   sluicePlace(Sluice2) = S2;
-  
+
   sluicePressure(Sluice1) = normal;
   sluicePressure(Sluice2) = normal;
+
+  sluiceDoor(Sluice1, insideDoor) = InsideDoor1;
+  sluiceDoor(Sluice1, outsideDoor) = OutsideDoor1;
+  sluiceDoor(Sluice2, insideDoor) = InsideDoor2;
+  sluiceDoor(Sluice2, outsideDoor) = OutsideDoor2;
 
 act
   % Extenal
@@ -33,17 +43,17 @@ act
   vacuum, deVacuum, stopPumping: Sluice;
   readAirPressure: Sluice # Pressure;
   beginProject, endProject,  detectInputWafer;
-  
+
   % Sluicedoor Communication
   isOpen, moveThrough, canClose, signalClose, moving: Door # Sluice;
   tryOpenDoor, tryCloseDoor, allowOpenDoor, allowCloseDoor: Door # Sluice;
-  
-  
+
+
   % Wafer tracking
   moveRequest: Place # Place;
   moveAllow:   Place # Place;
   endProject_internal, updateProjectedness;
-  
+
   % Debug
   debug: WaferPlacement;
 
@@ -65,12 +75,12 @@ proc
   vacuum(s)  .stopPumping(s).ClosedSluice(s)
   +
   deVacuum(s).stopPumping(s).ClosedSluice(s);
-  
+
   OpenSluice(d:Door, s:Sluice) = isOpen(d, s).canClose(d, s).OpenSluice(d, s) + tryCloseDoor(d, s).ClosedSluice(s);
-  
+
   SluiceDoorSafeguard          = SluiceDoor(insideDoor, Sluice1) || SluiceDoor(insideDoor, Sluice2) || SluiceDoor(outsideDoor, Sluice1) || SluiceDoor(outsideDoor, Sluice2);
   SluiceDoor(d:Door, s:Sluice) = doorStuck(d,s) + (allowOpenDoor(d, s) + allowCloseDoor(d, s)).SluiceDoor(d,s);
-  
+
   RobotOutside = sum s:Sluice.moveThrough(outsideDoor, s).((
       moveRequest(sluicePlace(s), RO) +
       moveRequest(sluicePlace(s), RI) +
@@ -78,16 +88,16 @@ proc
     ).signalClose(outsideDoor, s)
     + signalClose(outsideDoor, s)
   ).RobotOutside;
-  
+
   RobotInside  = sum s:Sluice.moveThrough(insideDoor, s).((
       moveRequest(O, sluicePlace(s)) +
       moveRequest(sluicePlace(s), I)
     ).signalClose(insideDoor, s)
     + signalClose(insideDoor, s)
   ).RobotInside;
-  
+
   ProjectorRobot = moveRequest(I, P).beginProject.endProject_internal.moveRequest(P,O).ProjectorRobot;
-  
+
   WaferTracker(wp:WaferPlacement) =
   detectInputWafer.(isEmpty(wp(RI)))->
       WaferTracker(wp[RI->unprojected])
@@ -101,7 +111,7 @@ proc
       (
         % ensure that wafer go in the right direction (unprojected towards the projector, projected away from the projector)
         % sluices work in two diretions, so they are excluded from this
-        
+
         !(p' == RI && isProjected(wp(p))) &&
         !(p' == I  && isProjected(wp(p))) &&
         !(p' == P  && isProjected(wp(p))) &&
@@ -126,7 +136,7 @@ init
         beginProject,
         endProject,
         doorStuck,
-        
+
         moving
       },
       comm({
@@ -139,10 +149,10 @@ init
       },
         % Without init of sluices, only 1 sluice for PositionTracker debugging
         %ClosedSluice(Sluice1)|| RobotInside || RobotOutside || WaferTracker(emptyPlaces)
-        
+
         % Without initilisation of sluices the LTS is much cleaner
         %ClosedSluice(Sluice1) || ClosedSluice(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces)
-        
+
         % Complete process, complete mess :)
         SluiceInit(Sluice1) || SluiceInit(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces) || ProjectorRobot || SluiceDoorSafeguard
       )

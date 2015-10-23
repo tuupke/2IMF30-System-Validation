@@ -1,33 +1,64 @@
 % !TEX root = ../report.tex
 
+\newcommand{\tab}{\hspace{1em}}
+
 \begin{description}
  \item[1. At least one door of a sluice is closed at any point in time]\mbox{}\\
-$
-[true^*]\forall s:Sluice.\forall d:Door.[openDoor(d, s).\overline{closeDoor(d, s)}^*.openDoor(d, s)]false
-$
+\[
+[true^*]\forall s:Sluice,d:Door.[openDoor(d, s).\overline{closeDoor(d, s)}^*.openDoor(d, s)]false
+\]
 
 
  \item[2. No robot may interact with a sluice whenever its access door is closed]\mbox{}\\
-$
-[true^*]\forall s:Sluice.(  \newline
-\phantom{=} [closeDoor(outsideDoor, s).(\overline{openDoor(outsideDoor, s)}^*.( \newline
-\phantom{==} move(RI, sluicePlace(s)) \cup move(sluicePlace(s), RI) \cup \newline
-\phantom{==} move(RO, sluicePlace(s)) \cup move(sluicePlace(s), RO) \newline
-\phantom{=} )]false \wedge \newline
-\phantom{=} [closeDoor(insideDoor, s).(\overline{openDoor(insideDoor, s)}^*.( \newline
-\phantom{==} move(I, sluicePlace(s)) \cup move(sluicePlace(s), I) \cup \newline
-\phantom{==} move(O, sluicePlace(s)) \cup move(sluicePlace(s), O) \newline
-\phantom{=} )]false \newline
-)
-$
+\begin{align*}
+& [true^*]\forall s:Sluice.( \\
+& \tab [closeDoor(outsideDoor, s).(\overline{openDoor(outsideDoor, s)}^*.( \\
+& \tab\tab move(RI, sluicePlace(s)) \cup move(sluicePlace(s), RI) \cup \\
+& \tab\tab move(RO, sluicePlace(s)) \cup move(sluicePlace(s), RO) \\
+& \tab )]false \wedge \\
+& \tab [closeDoor(insideDoor, s).(\overline{openDoor(insideDoor, s)}^*.( \\
+& \tab\tab move(I, sluicePlace(s)) \cup move(sluicePlace(s), I) \cup \\
+& \tab\tab move(O, sluicePlace(s)) \cup move(sluicePlace(s), O) \\
+& \tab )]false \\
+& )
+\end{align*}
  
  \item[3. Any wafer in the system will eventually be processed]
 
 	\begin{align*}
-		&[true^*.detectInputWafer(s)]true\\
-		&[true^*.detectInputWafer(s).\overline{detectInputWafer(t)^*}]false\\
-		&[true^*.detectInputWafer(s).\overline{move(RI, a)^*}]false\\
-		&[true^*.move(RI, a).\overline{move(b,RO)^*}]false
+& [true^*.detectInputWafer] \mu X( \\
+&          \tab                          position: Place = RI,    \\  
+&          \tab                          projecting: Bool = false,  \\
+&          \tab                          projected: Bool = false,   \\
+&          \tab                          stuck: Bool = false,       \\
+&          \tab                          brokenDoors: SluiceDoor \to Bool = nothingBroken   \\
+&                                 ).( \\
+&  \tab ( \\
+&  \tab\tab  \forall a,b:Place.[move(a,b)]X( \\
+&  \tab\tab  \tab                              if(a \approx position, b, position), \\
+&  \tab\tab  \tab                              projecting \wedge a \not \approx position, \\
+&  \tab\tab  \tab                              projected, \\
+&  \tab\tab  \tab                              if(a \approx position \wedge \exists s:Sluice . sluicePlace(s) \approx b \wedge ( \\
+& \tab\tab\tab\tab (\neg projected \wedge brokenDoors(sluiceDoor(s, insideDoor))) \\ 
+& \tab\tab\tab\tab \vee (projected \wedge brokenDoors(sluiceDoor(s, outsideDoor))) \\
+& \tab\tab\tab ), true, stuck), \\
+&  \tab\tab  \tab                              brokenDoors \\
+&  \tab\tab                               ) \\
+&  \tab\tab  \wedge [\overline{(\exists a,b:Place.move(a,b)) \cup beginProject \cup endProject} \\
+& \tab\tab\tab\tab \overline{ \cup (\exists d:Door,s:Sluice.doorStuck(d, s))}]X( \\
+& \tab\tab\tab\tab\tab\tab position, projecting, projected, stuck, brokenDoors) \\
+&  \tab\tab  \wedge [beginProject]X(position, position \approx P, projected, stuck, brokenDoors)
+&  \tab\tab  \wedge [endProject]X(position, false, projected \vee (projecting \wedge position \approx P), stuck, brokenDoors) \\
+&  \tab\tab  \wedge \forall d:Door,s:Sluice.[doorStuck(d, s)]X( \\
+&  \tab\tab                        \tab                        position, \\
+&  \tab\tab                        \tab                        projecting, \\
+&  \tab\tab                        \tab                        projected, \\
+&  \tab\tab                        \tab                        if(sluicePlace(s) \approx position \wedge ((\neg projected \wedge d == insideDoor) \vee (projected \wedge d == outsideDoor)), true, stuck), \\
+&  \tab\tab                       \tab brokenDoors[sluiceDoor(s,d)\to true] \\
+&  \tab\tab                                              ) \\
+&  \tab ) \\
+&  \vee (position \approx RO \wedge projected) \vee stuck \\
+&)
 	\end{align*}
 
  
