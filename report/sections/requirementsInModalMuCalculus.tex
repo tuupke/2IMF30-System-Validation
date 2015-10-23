@@ -53,7 +53,8 @@
 &  \tab\tab                        \tab                        position, \\
 &  \tab\tab                        \tab                        projecting, \\
 &  \tab\tab                        \tab                        projected, \\
-&  \tab\tab                        \tab                        if(sluicePlace(s) \approx position \wedge ((\neg projected \wedge d == insideDoor) \vee (projected \wedge d == outsideDoor)), true, stuck), \\
+&  \tab\tab                        \tab                        if(sluicePlace(s) \approx position \wedge ((\neg projected \wedge d == insideDoor) \\
+& \tab\tab\tab\tab\tab \vee (projected \wedge d == outsideDoor)), true, stuck), \\
 &  \tab\tab                       \tab brokenDoors[sluiceDoor(s,d)\to true] \\
 &  \tab\tab                                              ) \\
 &  \tab ) \\
