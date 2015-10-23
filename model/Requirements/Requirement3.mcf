@@ -1,0 +1,8 @@
+% Any wafer in the system will eventually be processed
+true*.detectInputWafer(s)]true
+&&
+true*.detectInputWafer(s).!detectInputWafer(t)*]false
+&&
+true*.detectInputWafer(s).!move(RI, a)*]false
+&&
+true*.move(RI, a).!move(b,RO)*]false
