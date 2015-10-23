@@ -3,21 +3,22 @@
 \begin{description}
  \item[1. At least one door of a sluice is closed at any point in time]\mbox{}\\
 $
-		\forall s:Sluice .\newline
-		[true^* \cdot openDoor(outsideDoor,s) \cdot \overline{closeDoor(outsideDoor,s)}^* \cdot openDoor(insideDoor,s)]false \\
-		\wedge [true^* \cdot openDoor(insideDoor,s) \cdot \overline{closeDoor(insideDoor,s)}^* \cdot openDoor(outsideDoor,s)]false \\
+[true^*]\forall s:Sluice.\forall d:Door.[openDoor(d, s).\overline{closeDoor(d, s)}^*.openDoor(d, s)]false
 $
+
 
  \item[2. No robot may interact with a sluice whenever its access door is closed]\mbox{}\\
 $
-		\forall s:Sluice .\newline
-		[true* \cdot closeDoor(outsideDoor,s) \cdot \overline{openDoor(outsideDoor,s)}^* \cdot move(RI,sluicePlace(s))]false \\
-		\wedge [true* \cdot closeDoor(insideDoor,s) \cdot \overline{openDoor(insideDoor,s)}^* \cdot move(sluicePlace(s),I)]false \\
-		\wedge [true* \cdot closeDoor(insideDoor,s) \cdot \overline{openDoor(insideDoor,s)}^* \cdot move(sluicePlace(s),O)]false \\
-		\wedge [true* \cdot closeDoor(insideDoor,s) \cdot \overline{openDoor(insideDoor,s)}^* \cdot move(I,sluicePlace(s))]false \\
-		\wedge [true* \cdot closeDoor(insideDoor,s) \cdot \overline{openDoor(insideDoor,s)}^* \cdot move(O,sluicePlace(s))]false \\
-		\wedge [true* \cdot closeDoor(outsideDoor,s) \cdot \overline{openDoor(outsideDoor,s)}^* \cdot move(sluicePlace(s),RI)]false \\
-		\wedge [true* \cdot closeDoor(outsideDoor,s) \cdot \overline{openDoor(outsideDoor,s)}^* \cdot move(sluicePlace(s),RO)]false
+[true^*]\forall s:Sluice.(  \newline
+\phantom{=} [closeDoor(outsideDoor, s).(\overline{openDoor(outsideDoor, s)}^*.( \newline
+\phantom{==} move(RI, sluicePlace(s)) \cup move(sluicePlace(s), RI) \cup \newline
+\phantom{==} move(RO, sluicePlace(s)) \cup move(sluicePlace(s), RO) \newline
+\phantom{=} )]false \wedge \newline
+\phantom{=} [closeDoor(insideDoor, s).(\overline{openDoor(insideDoor, s)}^*.( \newline
+\phantom{==} move(I, sluicePlace(s)) \cup move(sluicePlace(s), I) \cup \newline
+\phantom{==} move(O, sluicePlace(s)) \cup move(sluicePlace(s), O) \newline
+\phantom{=} )]false \newline
+)
 $
  
  \item[3. Any wafer in the system will eventually be processed]
