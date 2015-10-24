@@ -1,7 +1,14 @@
-[true*.detectInputWafer] nu X(position:Place=RI,projecting:Bool=false,projected:Bool=false).(
-  forall a,b:Place.[move(a,b)]X(if(a == position, b, position), projecting && a != position, projected)
-  && [!((exists a,b:Place.move(a,b)) && beginProject && endProject)]X(position, projecting, projected)
-  && [beginProject]X(position, position == P, projected)
-  && [endProject]X(position, false, projected || (projecting && position == P))
-  && val(position == RI => !projected)
+%[true*.detectInputWafer] nu X(position:Place=RI,projecting:Bool=false,projected:Bool=false).(
+%  forall a,b:Place.[move(a,b)]X(if(a == position, b, position), projecting && a != position, projected)
+%  && [!((exists a,b:Place.move(a,b)) && beginProject && endProject)]X(position, projecting, projected)
+%  && [beginProject]X(position, position == P, projected)
+%  && [endProject]X(position, false, projected || (projecting && position == P))
+%  && val(position == RI => !projected)
+%)
+
+[true*] nu X(status:Place->Status=emptyPlaces).(
+  [!((exists a,b:Place.move(a,b)) || detectInputWafer || endProject)]X(status)
+  && [detectInputWafer]X(status[RI->unprojected])
+  && forall a,b:Place.[move(a, b)](val((b == RI) => (status(a) != projected)) && X(status[b->status(a)][a->empty]))
+  && [endProject]X(status[P->projected])
 )
