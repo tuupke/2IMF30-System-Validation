@@ -1,2 +1,2 @@
 % Internal racks, sluices and the projector each contain at most one wafer
-forall p:Place . exists p1,p2,p3:Place . [true*.move(p1,p).!move(p,p3)*.move(p2,p)]false
+[true*]forall p:Place . exists p1,p2,p3:Place . [move(p1,p).!move(p,p3)*.move(p2,p)]false
