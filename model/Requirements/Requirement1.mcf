@@ -1,9 +1,3 @@
 % At least one door of a sluice is closed at any point in time
 
-% forall s:Sluice . [true*.openDoor(outsideDoor,s).!closeDoor(outsideDoor,s)*.openDoor(insideDoor,s)]false
-% &&
-% forall s:Sluice . [true*.openDoor(insideDoor,s).!closeDoor(insideDoor,s)*.openDoor(outsideDoor,s)]false
-
-% optimized:
-
 [true*]forall s:Sluice,d:Door.[openDoor(d,s).(!closeDoor(d,s))*.openDoor(d,s)]false
