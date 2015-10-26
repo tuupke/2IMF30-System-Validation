@@ -20,10 +20,10 @@ For any sluice $s$:
  
  \item[\smash{\shortstack[l]{3. Any wafer in the system will eventually be processed unless the system breaks,\\ or the wafer is inside a sluice when the sluice itself breaks}}] \hfill 
  \begin{itemize}
- \item There must be at least one \action{detectInputWafer}{$s$} for some status $s$.
- \item After any \action{detectInputWafer}{$s$} for some status $s$ there must be at least one \action{detectInputWafer}{$t$} for some status $t$.
- \item After any \action{detectInputWafer}{$s$} there must be a \action{move}{$RI, a$} for some place $a$ in the system.
- \item After any \action{move}{$RI, a$} for some place $a$ in the system, there must be a \action{move}{$b, RO$} for some place $b$ in the system.
+ \item After any \action{detectInputWafer}{}, there must be a sequence of move actions (\action{move}{RI, $p_1$}, ... , \action{move}{I,P}),
+ Unless\\
+ \item For any Door $d_1$,$d_2$: \action{doorStuck}{$d_1$, Sluice1} and \action{doorStuck}{$d_2$, Sluice2} both happen.
+ \item For any Sluice s, Door d, Place $p_1,p_2$: Between a \action{doorStuck}{d,s} and most recent preceding \action{move}{$p_1$, s} there is no \action{move}{s, $p_2$}. 
  \end{itemize}
  
  
