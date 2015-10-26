@@ -2,27 +2,32 @@ sort
   Place = struct I | O | P | S1 | S2 | RO | RI;
   Door  = struct insideDoor | outsideDoor;
   Sluice= struct Sluice1 | Sluice2;
-  SluiceDoor = struct InsideDoor1 | OutsideDoor1 | InsideDoor2 | OutsideDoor2;
   WaferState = struct empty?isEmpty | unprojected?isUnprojected | projected?isProjected;
   WaferPlacement = Place -> WaferState;
   Pressure = struct vacuum | normal;
+  
+  % used for requirements checking
+  SluiceDoor = struct InsideDoor1 | OutsideDoor1 | InsideDoor2 | OutsideDoor2;
 
 map
   emptyPlaces: WaferPlacement;
-  nothingBroken: SluiceDoor -> Bool;
   update: WaferPlacement # Place # Place -> WaferPlacement;
 
   sluicePlace: Sluice -> Place;
   sluicePressure: Sluice -> Pressure;
+  
+  % used for requirements checking
+  nothingBroken: SluiceDoor -> Bool;
   sluiceDoor: Sluice # Door -> SluiceDoor;
 
 var
   p,p':Place;
   wp:WaferPlacement;
+  
+  % used for requirements checking
   sd:SluiceDoor;
 eqn
   emptyPlaces(p) = empty;
-  nothingBroken(sd) = false;
   update(wp, p, p') = wp[p'->wp(p)][p->empty];
 
   sluicePlace(Sluice1) = S1;
@@ -31,6 +36,8 @@ eqn
   sluicePressure(Sluice1) = normal;
   sluicePressure(Sluice2) = normal;
 
+  % used for requirements checking
+  nothingBroken(sd) = false;
   sluiceDoor(Sluice1, insideDoor) = InsideDoor1;
   sluiceDoor(Sluice1, outsideDoor) = OutsideDoor1;
   sluiceDoor(Sluice2, insideDoor) = InsideDoor2;
