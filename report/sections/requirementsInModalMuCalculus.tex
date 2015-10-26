@@ -93,13 +93,13 @@
 	
  \item[7. Sluice pumps cannot operate until both of its doors are closed]
  
-  For $s \in \{sluice1, sluice2\}:$
  \begin{align*}
-		&[true^*.openInside(s).\overline{closeInside(s)^*}.vacuum(s)]false \\
-		&[true^*.openInside(s).\overline{closeInside(s)^*}.deVacuum(s)]false \\
-		&[true^*.openOutside(s).\overline{closeOutside(s)^*}.vacuum(s)]false \\
-		&[true^*.openOutside(s).\overline{closeOutside(s)^*}.deVacuum(s)]false \\
-	\end{align*}
+ &[true^*]\forall s:Sluice, d:Door . ( \\
+ &\tab [openDoor(d,s).\overline{closeDoor(d,s)}*.vacuum(s)]false \\
+ &\tab \wedge [openDoor(d,s).\overline{closeDoor(d,s)}*.vacuum(s)]false \\
+ &)
+ \end{align*}
+
 
  \item[8. No robot can place a projected wafer in $RI$]\mbox{}\\
 $
