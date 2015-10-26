@@ -94,10 +94,10 @@
  \item[7. Sluice pumps cannot operate until both of its doors are closed]
  
  \begin{align*}
-		&\forall s:Sluice :[true^*.openInside(s).\overline{closeInside(s)^*}.vacuum(s)]false \\
+		&\forall s:Sluice .([true^*.openInside(s).\overline{closeInside(s)^*}.vacuum(s)]false \\
 		& \wedge [true^*.openInside(s).\overline{closeInside(s)^*}.deVacuum(s)]false \\
 		& \wedge [true^*.openOutside(s).\overline{closeOutside(s)^*}.vacuum(s)]false \\
-		& \wedge [true^*.openOutside(s).\overline{closeOutside(s)^*}.deVacuum(s)]false \\
+		& \wedge [true^*.openOutside(s).\overline{closeOutside(s)^*}.deVacuum(s)]false) \\
 	\end{align*}
 
  \item[8. No robot can place a projected wafer in $RI$]\mbox{}\\
