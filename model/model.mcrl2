@@ -85,7 +85,17 @@ proc
 
   OpenSluice(d:Door, s:Sluice) = isOpen(d, s).canClose(d, s).OpenSluice(d, s) + tryCloseDoor(d, s).ClosedSluice(s);
 
+  % Alternative process for sluice
+  Sluice2(s:Sluice) = tryOpenDoor(outsideDoor, s).(
+    tryCloseDoor(outsideDoor, s) +
+    isOpen(outsideDoor, s).canClose(outsideDoor, s).tryCloseDoor(outsideDoor, s)
+  ).vacuum(s).readAirPressure(s,vacuum).stopPumping(s).tryOpenDoor(insideDoor, s).(
+    tryCloseDoor(insideDoor, s) +
+    isOpen(insideDoor, s).canClose(insideDoor, s).tryCloseDoor(insideDoor, s)
+  ).deVacuum(s).readAirPressure(s, normal).stopPumping(s).Sluice2(s);
+  
   SluiceDoorSafeguard          = SluiceDoor(insideDoor, Sluice1) || SluiceDoor(insideDoor, Sluice2) || SluiceDoor(outsideDoor, Sluice1) || SluiceDoor(outsideDoor, Sluice2);
+  
   SluiceDoor(d:Door, s:Sluice) = doorStuck(d,s) + (allowOpenDoor(d, s) + allowCloseDoor(d, s)).SluiceDoor(d,s);
 
   RobotOutside = sum s:Sluice.moveThrough(outsideDoor, s).((
@@ -154,14 +164,7 @@ init
         tryOpenDoor        |allowOpenDoor       -> openDoor,
         endProject_internal|updateProjectedness -> endProject
       },
-        % Without init of sluices, only 1 sluice for PositionTracker debugging
-        %ClosedSluice(Sluice1)|| RobotInside || RobotOutside || WaferTracker(emptyPlaces)
-
-        % Without initilisation of sluices the LTS is much cleaner
-        %ClosedSluice(Sluice1) || ClosedSluice(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces)
-
-        % Complete process, complete mess :)
-        SluiceInit(Sluice1) || SluiceInit(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces) || ProjectorRobot || SluiceDoorSafeguard
+        Sluice2(Sluice1) || Sluice2(Sluice2) || RobotInside || RobotOutside || WaferTracker(emptyPlaces) || ProjectorRobot || SluiceDoorSafeguard
       )
     )
   )
