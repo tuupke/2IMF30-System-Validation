@@ -36,8 +36,8 @@ For any place $p$: between any \action{move}{$P, p$} or \action{move}{$p, P$} an
  \item[6. A sluice door cannot open until the pressure on both sides is equal] \hfill \\
  For any sluice $s$:
  \begin{itemize}
-  \item Between any \action{openDoor}{inside, $s$} and its most recent preceding \action{deVacuum}{$s$}, there must be a \action{Vacuum}{$s$}
-  \item Between any \action{openDoor}{outside, $s$} and its most recent preceding \action{Vacuum}{$s$}, there must be a \action{deVacuum}{$s$}
+  \item Between any \action{openDoor}{inside, $s$} and its most recent preceding \action{stopPumping}{$s$}, there must be a \action{readAirPressure}{$s$, vacuum}
+  \item Between any \action{openDoor}{outside, $s$} and its most recent preceding \action{stopPumping}{$s$}, there must be a \action{readAirPressure}{$s$, normal}
  \end{itemize}
 
  \item[7. Sluice pumps cannot operate until both of its doors are closed] \hfill \\
