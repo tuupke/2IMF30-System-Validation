@@ -69,7 +69,7 @@
 		&[true^*] \nu X(status:Place \to WaferState=emptyPlaces).(\\
   & \tab\tab [\overline{((\exists a,b:Place.move(a,b)) \cup detectInputWafer)}]X(status)\\
   & \tab\tab  \wedge [detectInputWafer]X(status[RI \to unprojected])\\
-  & \tab\tab  \wedge \forall a,b:Place.[move(a, b)](val(status(a) != empty \implies status(b)  == empty) \wedge \\ & \tab \tab X(status[b \to status(a)][a \to empty]))\\
+  & \tab\tab  \wedge \forall a,b:Place.[move(a, b)](val(status(a) \not \approx empty \implies status(b)  \approx empty) \wedge \\ & \tab \tab X(status[b \to status(a)][a \to empty]))\\
 &)
 	\end{align*}
 
