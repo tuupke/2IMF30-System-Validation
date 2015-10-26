@@ -5,5 +5,5 @@
 [true*] nu X(status:Place->WaferState=emptyPlaces).(
   [!((exists a,b:Place.move(a,b)) || detectInputWafer)]X(status)
   && [detectInputWafer]X(status[RI->unprojected])
-  && forall a,b:Place.[move(a, b)](val(status(a) != empty) && val(status(b) == empty) && X(status[b->status(a)][a->empty]))
+  && forall a,b:Place.[move(a, b)](val(status(a) != empty => status(b) == empty) && X(status[b->status(a)][a->empty]))
 )
