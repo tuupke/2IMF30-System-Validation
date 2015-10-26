@@ -4,26 +4,27 @@
  \item[1. At least one door of a sluice is closed at any point in time] \hfill \\
  For any sluice $s$:
  \begin{itemize}
-  \item Between any \action{openInside}{$s$} and its most recent preceding \action{openOutside}{$s$}, there must be a \action{closeOutside}{$s$}
-  \item Between any \action{openOutside}{$s$} and its most recent preceding \action{openInside}{$s$}, there may not be a \action{closeInside}{$s$}
+  \item Between any \action{openDoor}{inside, $s$} and its most recent preceding \action{openDoor}{outside, $s$}, there must be a \action{closeDoor}{outside, $s$}
+  \item Between any \action{openDoor}{outside, $s$} and its most recent preceding \action{openDoor}{inside, $s$}, there may not be a \action{closeDoor}{inside, $s$}
  \end{itemize}
 
  \item[2. No robot may interact with a sluice whenever its access door is closed] \hfill \\
 For any sluice $s$:
 
 \begin{itemize}
-	\item Between any \action{move}{$RI, s$} and its most recent preceding \action{closeOutside}{$s$}, there must be a \action{openOutside}{$s$}.
-	\item between any \action{move}{$s, a$} with $a \in \{ I, O \}$ and its most recent preceding \action{closeInside}{$s$}, there must be a \action{openInside}{$s$}.
-	\item between any \action{move}{$a, s$} with $a \in \{ I, O \}$ and its most recent preceding \action{closeInside}{$s$}, there must be a \action{openInside}{$s$}.
-	\item between any \action{move}{$s, a$} with $a \in \{ RI, RO \}$ and its most recent preceding \action{closeOutside}{$s$}, there must be a \action{openOutside}{$s$}.
+	\item Between any \action{move}{$RI, s$} and its most recent preceding \action{closeDoor}{outside,$s$}, there must be a \action{openDoor}{outside, $s$}.
+	\item between any \action{move}{$s, a$} with $a \in \{ I, O \}$ and its most recent preceding \action{closeDoor}{inside, $s$}, there must be a \action{openDoor}{inside, $s$}.
+	\item between any \action{move}{$a, s$} with $a \in \{ I, O \}$ and its most recent preceding \action{closeDoor}{inside, $s$}, there must be a \action{openDoor}{inside, $s$}.
+	\item between any \action{move}{$s, a$} with $a \in \{ RI, RO \}$ and its most recent preceding \action{closeDoor}{outside, $s$}, there must be a \action{openDoor}{outside, $s$}.
 \end{itemize}
  
  \item[\smash{\shortstack[l]{3. Any wafer in the system will eventually be processed unless the system breaks,\\ or the wafer is inside a sluice when the sluice itself breaks}}] \hfill 
+ Define a "chain" of move actions to be a list of actions $L$  in which a set of $n$ move actions $M$ is contained. For $1 \leq i \leq n$, the destination of move $M_{i-1}$ equals the origin of move $M_{i}$ and the there is no move action between these two actions in $L$ with the same origin as $M_{i}$.
  \begin{itemize}
- \item There must be at least one \action{detectInputWafer}{$s$} for some status $s$.
- \item After any \action{detectInputWafer}{$s$} for some status $s$ there must be at least one \action{detectInputWafer}{$t$} for some status $t$.
- \item After any \action{detectInputWafer}{$s$} there must be a \action{move}{$RI, a$} for some place $a$ in the system.
- \item After any \action{move}{$RI, a$} for some place $a$ in the system, there must be a \action{move}{$b, RO$} for some place $b$ in the system.
+ \item After any \action{detectInputWafer}{}, there must be a chain of move actions connecting $RI$ to $P$, followed by a $beginProject()$ and $endProject()$ without intervening move actions with $P$, followed by a chain of move actions from $P$ to $RO$.\\
+ Unless\\
+ \item For any Door $d_1$,$d_2$: \action{doorStuck}{$d_1$, Sluice1} and \action{doorStuck}{$d_2$, Sluice2} both happen.
+ \item For any Sluice s, Door d, Place $p_1,p_2$: Between a \action{doorStuck}{d,s} and most recent preceding \action{move}{$p_1$, s} there is no \action{move}{s, $p_2$}. 
  \end{itemize}
  
  
@@ -36,15 +37,15 @@ For any place $p$: between any \action{move}{$P, p$} or \action{move}{$p, P$} an
  \item[6. A sluice door cannot open until the pressure on both sides is equal] \hfill \\
  For any sluice $s$:
  \begin{itemize}
-  \item Between any \action{openInside}{$s$} and its most recent preceding \action{deVacuum}{$s$}, there must be a \action{Vacuum}{$s$}
-  \item Between any \action{openOutside}{$s$} and its most recent preceding \action{Vacuum}{$s$}, there must be a \action{deVacuum}{$s$}
+  \item Between any \action{openDoor}{inside, $s$} and its most recent preceding \action{stopPumping}{$s$}, there must be a \action{readAirPressure}{$s$, vacuum}
+  \item Between any \action{openDoor}{outside, $s$} and its most recent preceding \action{stopPumping}{$s$}, there must be a \action{readAirPressure}{$s$, normal}
  \end{itemize}
 
  \item[7. Sluice pumps cannot operate until both of its doors are closed] \hfill \\
  For any sluice $s$:
  \begin{itemize}
-  \item Between any \action{Vacuum}{$s$} or \action{deVacuum}{$s$} and its most recent preceding \action{openInside}{$s$}, there must be a \action{closeInside}{$s$}
-  \item Between any \action{Vacuum}{$s$} or \action{deVacuum}{$s$} and its most recent preceding \action{openOutside}{$s$}, there must be a \action{closeOutside}{$s$}
+  \item Between any \action{Vacuum}{$s$} or \action{deVacuum}{$s$} and its most recent preceding \action{openDoor}{inside, $s$}, there must be a \action{closeDoor}{inside, $s$}
+  \item Between any \action{Vacuum}{$s$} or \action{deVacuum}{$s$} and its most recent preceding \action{openDoor}{outside, $s$}, there must be a \action{closeDoor}{outside, $s$}
  \end{itemize}
 
 \item[8. No robot can place a projected wafer in $RI$] \hfill \\

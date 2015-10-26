@@ -1,4 +1,4 @@
-% Any wafer in the system will eventually be processed
+% Any wafer in the system will eventually be processed unless the system breaks, or the wafer is inside a sluice when the sluice itself breaks
 
 [true*.detectInputWafer] mu X(
                               position: Place = RI,                             % Position of the wafer
