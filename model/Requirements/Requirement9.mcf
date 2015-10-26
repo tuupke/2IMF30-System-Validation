@@ -1,7 +1,6 @@
 % No robot can place an unprojected wafer in RO
-% In other words: when move(p, RO) happens, there must be a projected wafer in p
 
-[true*] nu X(status:Place->Status=emptyPlaces).(
+[true*] nu X(status:Place->WaferState=emptyPlaces).(
   [!((exists a,b:Place.move(a,b)) || detectInputWafer || endProject)]X(status)
   && [detectInputWafer]X(status[RI->unprojected])
   && forall a,b:Place.[move(a, b)](val((b == RO) => (status(a) != unprojected)) && X(status[b->status(a)][a->empty]))
