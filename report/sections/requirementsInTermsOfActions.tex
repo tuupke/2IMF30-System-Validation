@@ -18,7 +18,7 @@ For any sluice $s$:
 	\item between any \action{move}{$s, a$} with $a \in \{ RI, RO \}$ and its most recent preceding \action{closeOutside}{$s$}, there must be a \action{openOutside}{$s$}.
 \end{itemize}
  
- \item[3. Any wafer in the system will eventually be processed] \hfill \\
+ \item[\smash{\shortstack[l]{3. Any wafer in the system will eventually be processed unless the system breaks,\\ or the wafer is inside a sluice when the sluice itself breaks}}] \hfill 
  \begin{itemize}
  \item There must be at least one \action{detectInputWafer}{$s$} for some status $s$.
  \item After any \action{detectInputWafer}{$s$} for some status $s$ there must be at least one \action{detectInputWafer}{$t$} for some status $t$.
