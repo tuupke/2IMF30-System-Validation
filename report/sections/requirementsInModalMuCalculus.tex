@@ -66,7 +66,7 @@
  \item[4. Internal racks, sluices and the projector each contain at most one wafer]
     
 \begin{align*}
-		&[true*] \nu X(status:Place \to WaferState=emptyPlaces).(\\
+		&[true^*] \nu X(status:Place \to WaferState=emptyPlaces).(\\
   & \tab\tab [\overline{((\exists a,b:Place.move(a,b)) \cup detectInputWafer)}]X(status)\\
   & \tab\tab  \wedge [detectInputWafer]X(status[RI \to unprojected])\\
   & \tab\tab  \wedge \forall a,b:Place.[move(a, b)](val(status(a) != empty \implies status(b)  == empty) \wedge \\ & \tab \tab X(status[b \to status(a)][a \to empty]))\\
@@ -101,15 +101,17 @@
 	\end{align*}
 
  \item[8. No robot can place a projected wafer in $RI$]\mbox{}\\
-$
-[true^* \cdot detectInputWafer]\\
-\nu X(position:Place=RI, projecting:Bool=false, projected:Bool=false)\\
-.\forall a,b:Place.[move(a,b)]X(if(a \approx position, b, position), projecting \wedge a \not \approx position, projected)\\
-\wedge [\overline{\exists a,b:Place.move(a,b) \cup beginProject \cup endProject)}]X(position, projecting, projected)\\
-\wedge [beginProject]X(position, position \approx P, projected)\\
-\wedge [endProject]X(position, false, projected \vee (projecting \wedge position \approx P))\\
-\wedge (position \approx RI \implies \neg projected)
-$
+ 
+ \begin{align*}
+&[true^*] \nu X(status:Place \to WaferState=emptyPlaces).(\\
+  & \tab \tab [\overline{((\exists a,b:Place.move(a,b)) \cup detectInputWafer \cup endProject)}]X(status)\\
+ & \tab \tab  \wedge [detectInputWafer]X(status[RI \to unprojected])\\
+  & \tab \tab \wedge \forall a,b:Place.[move(a, b)](val((b == RI) \implies (status(a) != projected))\\
+  & \tab \tab \tab \wedge X(status[b \to status(a)][a \to empty]))\\
+  & \tab \tab \wedge [endProject]X(status[P \to projected])\\
+&)
+	\end{align*}
+
  \item[9. No robot can place an unprojected wafer in $RO$] \mbox{}\\
 $
 [true^* \cdot detectInputWafer]\\
