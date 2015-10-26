@@ -1,3 +1,5 @@
+% No robot can place a projected wafer in RI
+
 [true*] nu X(status:Place->WaferState=emptyPlaces).(
   [!((exists a,b:Place.move(a,b)) || detectInputWafer || endProject)]X(status)
   && [detectInputWafer]X(status[RI->unprojected])

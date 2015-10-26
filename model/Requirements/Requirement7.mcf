@@ -1,4 +1,4 @@
-% sluice pumps cannot operate until both doors are closed
+% Sluice pumps cannot operate until both doors are closed
 
 [true*]forall s:Sluice,d:Door . (
   [openDoor(d,s).(!closeDoor(d,s))*.vacuum(s)]false
