@@ -65,7 +65,6 @@ act
   debug: WaferPlacement;
 
 proc
-  SluiceInit(s:Sluice)         = tryCloseDoor(insideDoor, s).tryCloseDoor(outsideDoor, s).ClosedSluice(s);
   ClosedSluice(s:Sluice)       =
   readAirPressure(s, vacuum).(
     tryOpenDoor(insideDoor, s).OpenSluice(insideDoor, s)

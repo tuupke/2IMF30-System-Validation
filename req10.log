@@ -1,0 +1,1298 @@
+[12:25:47 verbose] Guessing input format: PBES in internal format
+[12:25:47 verbose] pbes2bool parameters:
+[12:25:47 verbose]   input file:            model_2.pbes
+[12:25:47 verbose]   data rewriter:         jittyc
+[12:25:47 verbose]   substitution strategy: 0
+[12:25:47 verbose]   search strategy:       breadth-first
+[12:25:47 verbose]   erase level:           none
+[12:25:47 verbose] Loading PBES in pbes format...
+
+[12:25:47 verbose] using '/usr/bin/mcrl2compilerewriter' to compile rewriter.
+
+[12:25:48 verbose] compiling rewriter...
+
+[12:25:54 verbose] loading rewriter...
+[12:25:54 verbose] rewriter loaded successfully.
+[12:25:54 verbose] Retrieving pbes_equations from equation system...
+[12:25:54 verbose] Computing a BES from the PBES....
+[12:25:54 status]  Processed 2 and generated 13 boolean variables with a todo buffer of size 11.     
+
+[12:25:55 status]  Processed 6039 and generated 7762 boolean variables with a todo buffer of size 1723.     
+
+[12:25:56 status]  Processed 11525 and generated 13726 boolean variables with a todo buffer of size 2201.     
+
+[12:25:57 status]  Processed 16534 and generated 19217 boolean variables with a todo buffer of size 2683.     
+
+[12:25:58 status]  Processed 21417 and generated 25213 boolean variables with a todo buffer of size 3796.     
+
+[12:25:59 status]  Processed 26387 and generated 31445 boolean variables with a todo buffer of size 5058.     
+
+[12:26:00 status]  Processed 31354 and generated 37366 boolean variables with a todo buffer of size 6012.     
+
+[12:26:01 status]  Processed 36436 and generated 43009 boolean variables with a todo buffer of size 6573.     
+
+[12:26:02 status]  Processed 41416 and generated 48348 boolean variables with a todo buffer of size 6932.     
+
+[12:26:03 status]  Processed 46125 and generated 53390 boolean variables with a todo buffer of size 7265.     
+
+[12:26:04 status]  Processed 51181 and generated 58614 boolean variables with a todo buffer of size 7433.     
+
+[12:26:05 status]  Processed 55868 and generated 63767 boolean variables with a todo buffer of size 7899.     
+
+[12:26:06 status]  Processed 59869 and generated 68283 boolean variables with a todo buffer of size 8414.     
+
+[12:26:07 status]  Processed 63810 and generated 72702 boolean variables with a todo buffer of size 8892.     
+
+[12:26:08 status]  Processed 67933 and generated 77323 boolean variables with a todo buffer of size 9390.     
+
+[12:26:09 status]  Processed 72194 and generated 82208 boolean variables with a todo buffer of size 10014.     
+
+[12:26:10 status]  Processed 76347 and generated 86648 boolean variables with a todo buffer of size 10301.     
+
+[12:26:11 status]  Processed 80507 and generated 91313 boolean variables with a todo buffer of size 10806.     
+
+[12:26:12 status]  Processed 84795 and generated 95748 boolean variables with a todo buffer of size 10953.     
+
+[12:26:13 status]  Processed 88707 and generated 99962 boolean variables with a todo buffer of size 11255.     
+
+[12:26:14 status]  Processed 92975 and generated 104117 boolean variables with a todo buffer of size 11142.     
+
+[12:26:15 status]  Processed 96870 and generated 107750 boolean variables with a todo buffer of size 10880.     
+
+[12:26:16 status]  Processed 100668 and generated 111734 boolean variables with a todo buffer of size 11066.     
+
+[12:26:17 status]  Processed 104907 and generated 115535 boolean variables with a todo buffer of size 10628.     
+
+[12:26:18 status]  Processed 108574 and generated 118912 boolean variables with a todo buffer of size 10338.     
+
+[12:26:19 status]  Processed 112156 and generated 122734 boolean variables with a todo buffer of size 10578.     
+
+[12:26:20 status]  Processed 116167 and generated 126292 boolean variables with a todo buffer of size 10125.     
+
+[12:26:21 status]  Processed 119435 and generated 129544 boolean variables with a todo buffer of size 10109.     
+
+[12:26:22 status]  Processed 123267 and generated 133704 boolean variables with a todo buffer of size 10437.     
+
+[12:26:23 status]  Processed 127160 and generated 137647 boolean variables with a todo buffer of size 
+10487.     
+
+[12:26:24 status]  Processed 130728 and generated 141364 boolean variables with a todo buffer of size 10636.     
+
+[12:26:25 status]  Processed 134086 and generated 145103 boolean variables with a todo buffer of size 11017.     
+
+[12:26:26 status]  Processed 138013 and generated 149313 boolean variables with a todo buffer of size 11300.     
+
+[12:26:27 status]  Processed 141528 and generated 153216 boolean variables with a todo buffer of size 11688.     
+
+[12:26:28 status]  Processed 145110 and generated 157033 boolean variables with a todo buffer of size 11923.     
+
+[12:26:29 status]  Processed 149331 and generated 161522 boolean variables with a todo buffer of size 12191.     
+
+[12:26:30 status]  Processed 152723 and generated 165215 boolean variables with a todo buffer of size 12492.     
+
+[12:26:31 status]  Processed 156542 and generated 169362 boolean variables with a todo buffer of size 12820.     
+
+[12:26:32 status]  Processed 160384 and generated 173528 boolean variables with a todo buffer of size 13144.     
+
+[12:26:33 status]  Processed 164323 and generated 177632 boolean variables with a todo buffer of size 13309.     
+
+[12:26:34 status]  Processed 168160 and generated 181874 boolean variables with a todo buffer of size 13714.     
+
+[12:26:35 status]  Processed 171903 and generated 185685 boolean variables with a todo buffer of size 13782.     
+
+[12:26:36 status]  Processed 175744 and generated 189601 boolean variables with a todo buffer of size 13857.     
+
+[12:26:37 status]  Processed 179546 and generated 194001 boolean variables with a todo buffer of size 14455.     
+
+[12:26:38 status]  Processed 182975 and generated 197495 boolean variables with a todo buffer of size 14520.     
+
+[12:26:39 status]  Processed 186957 and generated 201674 boolean variables with a todo buffer of size 14717.     
+
+[12:26:40 status]  Processed 189671 and generated 204575 boolean variables with a todo buffer of size 14904.     
+
+[12:26:41 status]  Processed 193021 and generated 208257 boolean variables with a todo buffer of size 15236.     
+
+[12:26:42 status]  Processed 196797 and generated 212438 boolean variables with a todo buffer of size 15641.     
+
+[12:26:43 status]  Processed 200977 and generated 216969 boolean variables with a todo buffer of size 15992.     
+
+[12:26:44 status]  Processed 204317 and generated 220610 boolean variables with a todo buffer of size 16293.     
+
+[12:26:45 status]  Processed 208190 and generated 224865 boolean variables with a todo buffer of size 16675.     
+
+[12:26:46 status]  Processed 212040 and generated 229225 boolean variables with a todo buffer of size 17185.     
+
+[12:26:47 status]  Processed 215520 and generated 233030 boolean variables with a todo buffer of size 17510.     
+
+[12:26:48 status]  Processed 219550 and generated 237536 boolean variables with a todo buffer of size 17986.     
+
+[12:26:49 status]  Processed 223542 and generated 241926 boolean variables with a todo buffer of size 18384.     
+
+[12:26:50 status]  Processed 227365 and generated 246227 boolean variables with a todo buffer of size 18862.     
+
+[12:26:51 status]  Processed 230872 and generated 249961 boolean variables with a todo buffer of size 19089.     
+
+[12:26:52 status]  Processed 234877 and generated 254595 boolean variables with a todo buffer of size 19718.     
+
+[12:26:53 status]  Processed 238507 and generated 258674 boolean variables with a todo buffer of size 20167.     
+
+[12:26:54 status]  Processed 242002 and generated 262342 boolean variables with a todo buffer of size 20340.     
+
+[12:26:55 status]  Processed 245991 and generated 266976 boolean variables with a todo buffer of size 20985.     
+
+[12:26:56 status]  Processed 249700 and generated 270681 boolean variables with a todo buffer of size 20981.     
+
+[12:26:57 status]  Processed 253889 and generated 275610 boolean variables with a todo buffer of size 21721.     
+
+[12:26:58 status]  Processed 257177 and generated 279378 boolean variables with a todo buffer of size 22201.     
+
+[12:26:59 status]  Processed 261040 and generated 283529 boolean variables with a todo buffer of size 22489.     
+
+[12:27:00 status]  Processed 264818 and generated 287782 boolean variables with a todo buffer of size 22964.     
+
+[12:27:01 status]  Processed 268530 and generated 291594 boolean variables with a todo buffer of size 23064.     
+
+[12:27:02 status]  Processed 271683 and generated 294922 boolean variables with a todo buffer of size 23239.     
+
+[12:27:03 status]  Processed 275802 and generated 299586 boolean variables with a todo buffer of size 23784.     
+
+[12:27:04 status]  Processed 279587 and generated 303710 boolean variables with a todo buffer of size 24123.     
+
+[12:27:05 status]  Processed 283243 and generated 307669 boolean variables with a todo buffer of size 24426.     
+
+[12:27:06 status]  Processed 286851 and generated 311544 boolean variables with a todo buffer of size 24693.     
+
+[12:27:07 status]  Processed 290034 and generated 315072 boolean variables with a todo buffer of size 25038.     
+
+[12:27:08 status]  Processed 293499 and generated 318323 boolean variables with a todo buffer of size 24824.     
+
+[12:27:09 status]  Processed 297538 and generated 322525 boolean variables with a todo buffer of size 24987.     
+
+[12:27:10 status]  Processed 301435 and generated 326653 boolean variables with a todo buffer of size 25218.     
+
+[12:27:11 status]  Processed 304838 and generated 330344 boolean variables with a todo buffer of size 25506.     
+
+[12:27:12 status]  Processed 307768 and generated 333379 boolean variables with a todo buffer of size 25611.     
+
+[12:27:13 status]  Processed 311394 and generated 337125 boolean variables with a todo buffer of size 25731.     
+
+[12:27:14 status]  Processed 315117 and generated 341009 boolean variables with a todo buffer of size 25892.     
+
+[12:27:15 status]  Processed 318456 and generated 344255 boolean variables with a todo buffer of size 25799.     
+
+[12:27:16 status]  Processed 322272 and generated 347945 boolean variables with a todo buffer of size 25673.     
+
+[12:27:17 status]  Processed 325456 and generated 351070 boolean variables with a todo buffer of size 25614.     
+
+[12:27:18 status]  Processed 329037 and generated 354761 boolean variables with a todo buffer of size 25724.     
+
+[12:27:19 status]  Processed 332633 and generated 358476 boolean variables with a todo buffer of size 25843.     
+
+[12:27:20 status]  Processed 336078 and generated 361860 boolean variables with a todo buffer of size 25782.     
+
+[12:27:21 status]  Processed 339386 and generated 365203 boolean variables with a todo buffer of size 25817.     
+
+[12:27:22 status]  Processed 342688 and generated 368582 boolean variables with a todo buffer of size 25894.     
+
+[12:27:23 status]  Processed 345703 and generated 371549 boolean variables with a todo buffer of size 25846.     
+
+[12:27:24 status]  Processed 349306 and generated 374954 boolean variables with a todo buffer of size 25648.     
+
+[12:27:25 status]  Processed 353058 and generated 378401 boolean variables with a todo buffer of size 25343.     
+
+[12:27:26 status]  Processed 356530 and generated 382025 boolean variables with a todo buffer of size 25495.     
+
+[12:27:27 status]  Processed 359904 and generated 385273 boolean variables with a todo buffer of size 25369.     
+
+[12:27:28 status]  Processed 363109 and generated 388518 boolean variables with a todo buffer of size 25409.     
+
+[12:27:29 status]  Processed 365878 and generated 391092 boolean variables with a todo buffer of size 25214.     
+
+[12:27:30 status]  Processed 367801 and generated 393150 boolean variables with a todo buffer of size 25349.     
+
+[12:27:31 status]  Processed 371010 and generated 396338 boolean variables with a todo buffer of size 25328.     
+
+[12:27:32 status]  Processed 374721 and generated 399741 boolean variables with a todo buffer of size 25020.     
+
+[12:27:33 status]  Processed 378396 and generated 403023 boolean variables with a todo buffer of size 24627.     
+
+[12:27:34 status]  Processed 381755 and generated 406525 boolean variables with a todo buffer of size 24770.     
+
+[12:27:35 status]  Processed 385172 and generated 409724 boolean variables with a todo buffer of size 24552.     
+
+[12:27:36 status]  Processed 388437 and generated 412997 boolean variables with a todo buffer of size 24560.     
+
+[12:27:37 status]  Processed 391284 and generated 415831 boolean variables with a todo buffer of size 24547.     
+
+[12:27:38 status]  Processed 394246 and generated 418915 boolean variables with a todo buffer of size 24669.     
+
+[12:27:39 status]  Processed 397751 and generated 422157 boolean variables with a todo buffer of size 24406.     
+
+[12:27:40 status]  Processed 401464 and generated 425483 boolean variables with a todo buffer of size 24019.     
+
+[12:27:41 status]  Processed 404659 and generated 428728 boolean variables with a todo buffer of size 24069.     
+
+[12:27:42 status]  Processed 407704 and generated 431700 boolean variables with a todo buffer of size 23996.     
+
+[12:27:43 status]  Processed 411004 and generated 435016 boolean variables with a todo buffer of size 24012.     
+
+[12:27:44 status]  Processed 414070 and generated 438212 boolean variables with a todo buffer of size 24142.     
+
+[12:27:45 status]  Processed 416762 and generated 440996 boolean variables with a todo buffer of size 24234.     
+
+[12:27:46 status]  Processed 419531 and generated 443595 boolean variables with a todo buffer of size 24064.     
+
+[12:27:47 status]  Processed 423031 and generated 446984 boolean variables with a todo buffer of size 23953.     
+
+[12:27:48 status]  Processed 426559 and generated 450427 boolean variables with a todo buffer of size 23868.     
+
+[12:27:49 status]  Processed 429606 and generated 453491 boolean variables with a todo buffer of size 23885.     
+
+[12:27:50 status]  Processed 432633 and generated 456422 boolean variables with a todo buffer of size 23789.     
+
+[12:27:51 status]  Processed 435860 and generated 459714 boolean variables with a todo buffer of size 23854.     
+
+[12:27:52 status]  Processed 438833 and generated 463017 boolean variables with a todo buffer of size 24184.     
+
+[12:27:53 status]  Processed 441872 and generated 465962 boolean variables with a todo buffer of size 24090.     
+
+[12:27:54 status]  Processed 444350 and generated 468297 boolean variables with a todo buffer of size 23947.     
+
+[12:27:55 status]  Processed 447190 and generated 471321 boolean variables with a todo buffer of size 24131.     
+
+[12:27:56 status]  Processed 450335 and generated 474546 boolean variables with a todo buffer of size 24211.     
+
+[12:27:57 status]  Processed 452789 and generated 476908 boolean variables with a todo buffer of size 24119.     
+
+[12:27:58 status]  Processed 455401 and generated 479480 boolean variables with a todo buffer of size 24079.     
+
+[12:27:59 status]  Processed 458215 and generated 482425 boolean variables with a todo buffer of size 24210.     
+
+[12:28:00 status]  Processed 461112 and generated 485611 boolean variables with a todo buffer of size 24499.     
+
+[12:28:01 status]  Processed 464136 and generated 488636 boolean variables with a todo buffer of size 24500.     
+
+[12:28:02 status]  Processed 466837 and generated 490877 boolean variables with a todo buffer of size 24040.     
+
+[12:28:03 status]  Processed 469978 and generated 494093 boolean variables with a todo buffer of size 24115.     
+
+[12:28:04 status]  Processed 473369 and generated 497737 boolean variables with a todo buffer of size 24368.     
+
+[12:28:05 status]  Processed 475605 and generated 500041 boolean variables with a todo buffer of size 24436.     
+
+[12:28:06 status]  Processed 478385 and generated 502457 boolean variables with a todo buffer of size 24072.     
+
+[12:28:07 status]  Processed 481515 and generated 505716 boolean variables with a todo buffer of size 24201.     
+
+[12:28:08 status]  Processed 484449 and generated 508809 boolean variables with a todo buffer of size 24360.     
+
+[12:28:09 status]  Processed 487427 and generated 511912 boolean variables with a todo buffer of size 24485.     
+
+[12:28:10 status]  Processed 490348 and generated 514303 boolean variables with a todo buffer of size 23955.     
+
+[12:28:11 status]  Processed 493385 and generated 517289 boolean variables with a todo buffer of size 23904.     
+
+[12:28:12 status]  Processed 496730 and generated 520739 boolean variables with a todo buffer of size 24009.     
+
+[12:28:13 status]  Processed 499759 and generated 523749 boolean variables with a todo buffer of size 23990.     
+
+[12:28:14 status]  Processed 502394 and generated 525960 boolean variables with a todo buffer of size 23566.     
+
+[12:28:15 status]  Processed 505371 and generated 529008 boolean variables with a todo buffer of size 23637.     
+
+[12:28:16 status]  Processed 508214 and generated 531904 boolean variables with a todo buffer of size 23690.     
+
+[12:28:17 status]  Processed 510566 and generated 534636 boolean variables with a todo buffer of size 24070.     
+
+[12:28:18 status]  Processed 513479 and generated 537097 boolean variables with a todo buffer of size 23618.     
+
+[12:28:19 status]  Processed 516359 and generated 539542 boolean variables with a todo buffer of size 23183.     
+
+[12:28:20 status]  Processed 519675 and generated 542807 boolean variables with a todo buffer of size 23132.     
+
+[12:28:21 status]  Processed 522887 and generated 545968 boolean variables with a todo buffer of size 23081.     
+
+[12:28:22 status]  Processed 525625 and generated 548234 boolean variables with a todo buffer of size 22609.     
+
+[12:28:23 status]  Processed 528565 and generated 551097 boolean variables with a todo buffer of size 22532.     
+
+[12:28:24 status]  Processed 531619 and generated 554227 boolean variables with a todo buffer of size 22608.     
+
+[12:28:25 status]  Processed 534555 and generated 557566 boolean variables with a todo buffer of size 23011.     
+
+[12:28:26 status]  Processed 537413 and generated 559929 boolean variables with a todo buffer of size 22516.     
+
+[12:28:27 status]  Processed 540205 and generated 562458 boolean variables with a todo buffer of size 22253.     
+
+[12:28:28 status]  Processed 543196 and generated 565356 boolean variables with a todo buffer of size 22160.     
+
+[12:28:29 status]  Processed 546208 and generated 568121 boolean variables with a todo buffer of size 21913.     
+
+[12:28:30 status]  Processed 548168 and generated 569786 boolean variables with a todo buffer of size 21618.     
+
+[12:28:31 status]  Processed 551003 and generated 572584 boolean variables with a todo buffer of size 21581.     
+
+[12:28:32 status]  Processed 553944 and generated 575687 boolean variables with a todo buffer of size 21743.     
+
+[12:28:33 status]  Processed 556617 and generated 578735 boolean variables with a todo buffer of size 22118.     
+
+[12:28:34 status]  Processed 559603 and generated 581536 boolean variables with a todo buffer of size 21933.     
+
+[12:28:35 status]  Processed 562526 and generated 584303 boolean variables with a todo buffer of size 21777.     
+
+[12:28:36 status]  Processed 565767 and generated 587612 boolean variables with a todo buffer of size 21845.     
+
+[12:28:37 status]  Processed 568579 and generated 590378 boolean variables with a todo buffer of size 21799.     
+
+[12:28:38 status]  Processed 571321 and generated 593067 boolean variables with a todo buffer of size 21746.     
+
+[12:28:39 status]  Processed 574429 and generated 596387 boolean variables with a todo buffer of size 21958.     
+
+[12:28:40 status]  Processed 577135 and generated 599444 boolean variables with a todo buffer of size 22309.     
+
+[12:28:41 status]  Processed 580251 and generated 602863 boolean variables with a todo buffer of size 22612.     
+
+[12:28:42 status]  Processed 582797 and generated 605441 boolean variables with a todo buffer of size 22644.     
+
+[12:28:43 status]  Processed 585854 and generated 608673 boolean variables with a todo buffer of size 22819.     
+
+[12:28:44 status]  Processed 588345 and generated 611317 boolean variables with a todo buffer of size 22972.     
+
+[12:28:45 status]  Processed 590805 and generated 614028 boolean variables with a todo buffer of size 23223.     
+
+[12:28:46 status]  Processed 593571 and generated 617025 boolean variables with a todo buffer of size 23454.     
+
+[12:28:47 status]  Processed 596591 and generated 620324 boolean variables with a todo buffer of size 23733.     
+
+[12:28:48 status]  Processed 599289 and generated 623464 boolean variables with a todo buffer of size 24175.     
+
+[12:28:49 status]  Processed 602254 and generated 626831 boolean variables with a todo buffer of size 24577.     
+
+[12:28:50 status]  Processed 604943 and generated 629553 boolean variables with a todo buffer of size 24610.     
+
+[12:28:51 status]  Processed 608018 and generated 632952 boolean variables with a todo buffer of size 24934.     
+
+[12:28:52 status]  Processed 611277 and generated 636649 boolean variables with a todo buffer of size 25372.     
+
+[12:28:53 status]  Processed 613959 and generated 639683 boolean variables with a todo buffer of size 25724.     
+
+[12:28:54 status]  Processed 616602 and generated 642644 boolean variables with a todo buffer of size 26042.     
+
+[12:28:55 status]  Processed 619608 and generated 645906 boolean variables with a todo buffer of size 26298.     
+
+[12:28:56 status]  Processed 622228 and generated 648848 boolean variables with a todo buffer of size 26620.     
+
+[12:28:57 status]  Processed 624971 and generated 652076 boolean variables with a todo buffer of size 27105.     
+
+[12:28:58 status]  Processed 627697 and generated 654780 boolean variables with a todo buffer of size 27083.     
+
+[12:28:59 status]  Processed 630218 and generated 657289 boolean variables with a todo buffer of size 27071.     
+
+[12:29:00 status]  Processed 632282 and generated 659664 boolean variables with a todo buffer of size 27382.     
+
+[12:29:01 status]  Processed 635467 and generated 663320 boolean variables with a todo buffer of size 27853.     
+
+[12:29:02 status]  Processed 638464 and generated 666708 boolean variables with a todo buffer of size 28244.     
+
+[12:29:03 status]  Processed 641049 and generated 669325 boolean variables with a todo buffer of size 28276.     
+
+[12:29:04 status]  Processed 643901 and generated 672399 boolean variables with a todo buffer of size 28498.     
+
+[12:29:05 status]  Processed 646986 and generated 675639 boolean variables with a todo buffer of size 28653.     
+
+[12:29:06 status]  Processed 649517 and generated 678529 boolean variables with a todo buffer of size 29012.     
+
+[12:29:07 status]  Processed 652295 and generated 681682 boolean variables with a todo buffer of size 29387.     
+
+[12:29:08 status]  Processed 655036 and generated 684148 boolean variables with a todo buffer of size 29112.     
+
+[12:29:09 status]  Processed 657691 and generated 686816 boolean variables with a todo buffer of size 29125.     
+
+[12:29:10 status]  Processed 660777 and generated 690221 boolean variables with a todo buffer of size 29444.     
+
+[12:29:11 status]  Processed 663756 and generated 693502 boolean variables with a todo buffer of size 29746.     
+
+[12:29:12 status]  Processed 666387 and generated 696375 boolean variables with a todo buffer of size 29988.     
+
+[12:29:13 status]  Processed 668899 and generated 698763 boolean variables with a todo buffer of size 29864.     
+
+[12:29:14 status]  Processed 671480 and generated 701451 boolean variables with a todo buffer of size 29971.     
+
+[12:29:15 status]  Processed 674326 and generated 704333 boolean variables with a todo buffer of size 30007.     
+
+[12:29:16 status]  Processed 676935 and generated 707052 boolean variables with a todo buffer of size 30117.     
+
+[12:29:17 status]  Processed 679340 and generated 709724 boolean variables with a todo buffer of size 30384.     
+
+[12:29:18 status]  Processed 681087 and generated 711662 boolean variables with a todo buffer of size 30575.     
+
+[12:29:19 status]  Processed 683841 and generated 714183 boolean variables with a todo buffer of size 30342.     
+
+[12:29:20 status]  Processed 686349 and generated 716636 boolean variables with a todo buffer of size 30287.     
+
+[12:29:21 status]  Processed 689353 and generated 719877 boolean variables with a todo buffer of size 30524.     
+
+[12:29:22 status]  Processed 692336 and generated 722947 boolean variables with a todo buffer of size 30611.     
+
+[12:29:23 status]  Processed 695185 and generated 725778 boolean variables with a todo buffer of size 30593.     
+
+[12:29:24 status]  Processed 697635 and generated 728135 boolean variables with a todo buffer of size 30500.     
+
+[12:29:25 status]  Processed 700078 and generated 730532 boolean variables with a todo buffer of size 30454.     
+
+[12:29:26 status]  Processed 702760 and generated 733256 boolean variables with a todo buffer of size 30496.     
+
+[12:29:27 status]  Processed 705578 and generated 736152 boolean variables with a todo buffer of size 30574.     
+
+[12:29:28 status]  Processed 707865 and generated 738561 boolean variables with a todo buffer of size 30696.     
+
+[12:29:29 status]  Processed 710451 and generated 741405 boolean variables with a todo buffer of size 30954.     
+
+[12:29:30 status]  Processed 713027 and generated 743809 boolean variables with a todo buffer of size 30782.     
+
+[12:29:31 status]  Processed 715601 and generated 746325 boolean variables with a todo buffer of size 30724.     
+
+[12:29:32 status]  Processed 718119 and generated 748863 boolean variables with a todo buffer of size 30744.     
+
+[12:29:33 status]  Processed 720922 and generated 751630 boolean variables with a todo buffer of size 30708.     
+
+[12:29:34 status]  Processed 723688 and generated 754612 boolean variables with a todo buffer of size 30924.     
+
+[12:29:35 status]  Processed 726205 and generated 756982 boolean variables with a todo buffer of size 30777.     
+
+[12:29:36 status]  Processed 728604 and generated 759289 boolean variables with a todo buffer of size 30685.     
+
+[12:29:37 status]  Processed 730030 and generated 760752 boolean variables with a todo buffer of size 30722.     
+
+[12:29:38 status]  Processed 732678 and generated 763322 boolean variables with a todo buffer of size 30644.     
+
+[12:29:39 status]  Processed 735623 and generated 766310 boolean variables with a todo buffer of size 30687.     
+
+[12:29:40 status]  Processed 738103 and generated 768826 boolean variables with a todo buffer of size 30723.     
+
+[12:29:41 status]  Processed 740576 and generated 771376 boolean variables with a todo buffer of size 30800.     
+
+[12:29:42 status]  Processed 743131 and generated 774044 boolean variables with a todo buffer of size 30913.     
+
+[12:29:43 status]  Processed 745874 and generated 776810 boolean variables with a todo buffer of size 30936.     
+
+[12:29:44 status]  Processed 748370 and generated 779359 boolean variables with a todo buffer of size 30989.     
+
+[12:29:45 status]  Processed 751263 and generated 782259 boolean variables with a todo buffer of size 30996.     
+
+[12:29:46 status]  Processed 754125 and generated 785261 boolean variables with a todo buffer of size 31136.     
+
+[12:29:47 status]  Processed 756542 and generated 787592 boolean variables with a todo buffer of size 31050.     
+
+[12:29:48 status]  Processed 758914 and generated 789999 boolean variables with a todo buffer of size 31085.     
+
+[12:29:49 status]  Processed 761280 and generated 792485 boolean variables with a todo buffer of size 31205.     
+
+[12:29:50 status]  Processed 763813 and generated 794933 boolean variables with a todo buffer of size 31120.     
+
+[12:29:51 status]  Processed 766583 and generated 797744 boolean variables with a todo buffer of size 31161.     
+
+[12:29:52 status]  Processed 768873 and generated 800080 boolean variables with a todo buffer of size 31207.     
+
+[12:29:53 status]  Processed 769295 and generated 800496 boolean variables with a todo buffer of size 31201.     
+
+[12:29:54 status]  Processed 771730 and generated 803106 boolean variables with a todo buffer of size 31376.     
+
+[12:29:55 status]  Processed 774223 and generated 805565 boolean variables with a todo buffer of size 31342.     
+
+[12:29:56 status]  Processed 776896 and generated 808327 boolean variables with a todo buffer of size 31431.     
+
+[12:29:57 status]  Processed 779208 and generated 810785 boolean variables with a todo buffer of size 31577.     
+
+[12:29:58 status]  Processed 781940 and generated 813578 boolean variables with a todo buffer of size 31638.     
+
+[12:29:59 status]  Processed 783594 and generated 815275 boolean variables with a todo buffer of size 31681.     
+
+[12:30:00 status]  Processed 786461 and generated 818207 boolean variables with a todo buffer of size 31746.     
+
+[12:30:01 status]  Processed 788712 and generated 820604 boolean variables with a todo buffer of size 31892.     
+
+[12:30:02 status]  Processed 791066 and generated 823116 boolean variables with a todo buffer of size 32050.     
+
+[12:30:03 status]  Processed 793280 and generated 825349 boolean variables with a todo buffer of size 32069.     
+
+[12:30:04 status]  Processed 795814 and generated 827842 boolean variables with a todo buffer of size 32028.     
+
+[12:30:05 status]  Processed 798459 and generated 830423 boolean variables with a todo buffer of size 31964.     
+
+[12:30:06 status]  Processed 800490 and generated 832498 boolean variables with a todo buffer of size 32008.     
+
+[12:30:07 status]  Processed 802806 and generated 834921 boolean variables with a todo buffer of size 32115.     
+
+[12:30:08 status]  Processed 805158 and generated 837316 boolean variables with a todo buffer of size 32158.     
+
+[12:30:09 status]  Processed 807599 and generated 839688 boolean variables with a todo buffer of size 32089.     
+
+[12:30:10 status]  Processed 810003 and generated 842186 boolean variables with a todo buffer of size 32183.     
+
+[12:30:11 status]  Processed 812532 and generated 844835 boolean variables with a todo buffer of size 32303.     
+
+[12:30:12 status]  Processed 815229 and generated 847586 boolean variables with a todo buffer of size 32357.     
+
+[12:30:13 status]  Processed 818324 and generated 850804 boolean variables with a todo buffer of size 32480.     
+
+[12:30:14 status]  Processed 820613 and generated 853241 boolean variables with a todo buffer of size 32628.     
+
+[12:30:15 status]  Processed 822878 and generated 855599 boolean variables with a todo buffer of size 32721.     
+
+[12:30:16 status]  Processed 825217 and generated 857924 boolean variables with a todo buffer of size 32707.     
+
+[12:30:17 status]  Processed 827901 and generated 860541 boolean variables with a todo buffer of size 32640.     
+
+[12:30:18 status]  Processed 830076 and generated 862553 boolean variables with a todo buffer of size 32477.     
+
+[12:30:19 status]  Processed 832180 and generated 864576 boolean variables with a todo buffer of size 32396.     
+
+[12:30:20 status]  Processed 834375 and generated 866856 boolean variables with a todo buffer of size 32481.     
+
+[12:30:21 status]  Processed 836900 and generated 869501 boolean variables with a todo buffer of size 32601.     
+
+[12:30:22 status]  Processed 839046 and generated 871374 boolean variables with a todo buffer of size 32328.     
+
+[12:30:23 status]  Processed 841532 and generated 873827 boolean variables with a todo buffer of size 32295.     
+
+[12:30:24 status]  Processed 842908 and generated 875139 boolean variables with a todo buffer of size 32231.     
+
+[12:30:25 status]  Processed 845713 and generated 878047 boolean variables with a todo buffer of size 32334.     
+
+[12:30:26 status]  Processed 848256 and generated 880684 boolean variables with a todo buffer of size 32428.     
+
+[12:30:27 status]  Processed 851280 and generated 883672 boolean variables with a todo buffer of size 32392.     
+
+[12:30:28 status]  Processed 853388 and generated 885943 boolean variables with a todo buffer of size 32555.     
+
+[12:30:29 status]  Processed 855584 and generated 887995 boolean variables with a todo buffer of size 32411.     
+
+[12:30:30 status]  Processed 857706 and generated 890014 boolean variables with a todo buffer of size 32308.     
+
+[12:30:31 status]  Processed 860268 and generated 892481 boolean variables with a todo buffer of size 32213.     
+
+[12:30:32 status]  Processed 862784 and generated 894723 boolean variables with a todo buffer of size 31939.     
+
+[12:30:33 status]  Processed 864726 and generated 896543 boolean variables with a todo buffer of size 31817.     
+
+[12:30:34 status]  Processed 866968 and generated 898801 boolean variables with a todo buffer of size 31833.     
+
+[12:30:35 status]  Processed 869473 and generated 901399 boolean variables with a todo buffer of size 31926.     
+
+[12:30:36 status]  Processed 871607 and generated 903012 boolean variables with a todo buffer of size 31405.     
+
+[12:30:37 status]  Processed 873920 and generated 905091 boolean variables with a todo buffer of size 31171.     
+
+[12:30:38 status]  Processed 876577 and generated 907766 boolean variables with a todo buffer of size 31189.     
+
+[12:30:39 status]  Processed 879126 and generated 910164 boolean variables with a todo buffer of size 31038.     
+
+[12:30:40 status]  Processed 881084 and generated 912133 boolean variables with a todo buffer of size 31049.     
+
+[12:30:41 status]  Processed 883736 and generated 914647 boolean variables with a todo buffer of size 30911.     
+
+[12:30:42 status]  Processed 885748 and generated 916735 boolean variables with a todo buffer of size 30987.     
+
+[12:30:43 status]  Processed 887820 and generated 918517 boolean variables with a todo buffer of size 30697.     
+
+[12:30:44 status]  Processed 889876 and generated 920388 boolean variables with a todo buffer of size 30512.     
+
+[12:30:45 status]  Processed 892216 and generated 922611 boolean variables with a todo buffer of size 30395.     
+
+[12:30:46 status]  Processed 894590 and generated 924656 boolean variables with a todo buffer of size 30066.     
+
+[12:30:47 status]  Processed 896472 and generated 926336 boolean variables with a todo buffer of size 29864
+.     
+
+[12:30:48 status]  Processed 898467 and generated 928383 boolean variables with a todo buffer of size 29916.     
+
+[12:30:49 status]  Processed 900541 and generated 930605 boolean variables with a todo buffer of size 30064.     
+
+[12:30:50 status]  Processed 902412 and generated 931897 boolean variables with a todo buffer of size 29485.     
+
+[12:30:51 status]  Processed 904632 and generated 933671 boolean variables with a todo buffer of size 29039.     
+
+[12:30:52 status]  Processed 906828 and generated 935705 boolean variables with a todo buffer of size 28877.     
+
+[12:30:53 status]  Processed 908497 and generated 937301 boolean variables with a todo buffer of size 28804.     
+
+[12:30:54 status]  Processed 910549 and generated 939060 boolean variables with a todo buffer of size 28511.     
+
+[12:30:55 status]  Processed 913253 and generated 941692 boolean variables with a todo buffer of size 28439.     
+
+[12:30:56 status]  Processed 915387 and generated 943441 boolean variables with a todo buffer of size 28054.     
+
+[12:30:57 status]  Processed 917422 and generated 945322 boolean variables with a todo buffer of size 27900.     
+
+[12:30:58 status]  Processed 919458 and generated 947160 boolean variables with a todo buffer of size 27702.     
+
+[12:30:59 status]  Processed 921642 and generated 949146 boolean variables with a todo buffer of size 27504.     
+
+[12:31:00 status]  Processed 923983 and generated 951198 boolean variables with a todo buffer of size 27215.     
+
+[12:31:01 status]  Processed 925963 and generated 953004 boolean variables with a todo buffer of size 27041.     
+
+[12:31:02 status]  Processed 927668 and generated 954778 boolean variables with a todo buffer of size 27110.     
+
+[12:31:03 status]  Processed 929910 and generated 956869 boolean variables with a todo buffer of size 26959.     
+
+[12:31:04 status]  Processed 932050 and generated 958583 boolean variables with a todo buffer of size 26533.     
+
+[12:31:05 status]  Processed 934218 and generated 960449 boolean variables with a todo buffer of size 26231.     
+
+[12:31:06 status]  Processed 936634 and generated 962548 boolean variables with a todo buffer of size 25914.     
+
+[12:31:07 status]  Processed 939038 and generated 964502 boolean variables with a todo buffer of size 25464.     
+
+[12:31:08 status]  Processed 941645 and generated 966905 boolean variables with a todo buffer of size 25260.     
+
+[12:31:09 status]  Processed 943753 and generated 968569 boolean variables with a todo buffer of size 24816.     
+
+[12:31:10 status]  Processed 945843 and generated 970480 boolean variables with a todo buffer of size 24637.     
+
+[12:31:11 status]  Processed 947801 and generated 972206 boolean variables with a todo buffer of size 24405.     
+
+[12:31:12 status]  Processed 949964 and generated 974201 boolean variables with a todo buffer of size 24237.     
+
+[12:31:13 status]  Processed 952170 and generated 976272 boolean variables with a todo buffer of size 24102.     
+
+[12:31:14 status]  Processed 954149 and generated 978287 boolean variables with a todo buffer of size 24138.     
+
+[12:31:15 status]  Processed 956221 and generated 980213 boolean variables with a todo buffer of size 23992.     
+
+[12:31:16 status]  Processed 958417 and generated 982206 boolean variables with a todo buffer of size 23789.     
+
+[12:31:17 status]  Processed 960546 and generated 984106 boolean variables with a todo buffer of size 23560.     
+
+[12:31:18 status]  Processed 962849 and generated 986010 boolean variables with a todo buffer of size 23161.     
+
+[12:31:19 status]  Processed 964978 and generated 987653 boolean variables with a todo buffer of size 22675.     
+
+[12:31:20 status]  Processed 967494 and generated 989754 boolean variables with a todo buffer of size 22260.     
+
+[12:31:21 status]  Processed 969505 and generated 991620 boolean variables with a todo buffer of size 22115.     
+
+[12:31:22 status]  Processed 971490 and generated 993413 boolean variables with a todo buffer of size 21923.     
+
+[12:31:23 status]  Processed 973538 and generated 995266 boolean variables with a todo buffer of size 21728.     
+
+[12:31:24 status]  Processed 975629 and generated 997376 boolean variables with a todo buffer of size 21747.     
+
+[12:31:25 status]  Processed 977450 and generated 999173 boolean variables with a todo buffer of size 21723.     
+
+[12:31:26 status]  Processed 979457 and generated 1001323 boolean variables with a todo buffer of size 21866.     
+
+[12:31:27 status]  Processed 981634 and generated 1003315 boolean variables with a todo buffer of size 21681.     
+
+[12:31:28 status]  Processed 982967 and generated 1004495 boolean variables with a todo buffer of size 21528.     
+
+[12:31:29 status]  Processed 984682 and generated 1006076 boolean variables with a todo buffer of size 21394.     
+
+[12:31:30 status]  Processed 986986 and generated 1007903 boolean variables with a todo buffer of size 20917.     
+
+[12:31:31 status]  Processed 989247 and generated 1009807 boolean variables with a todo buffer of size 20560.     
+
+[12:31:32 status]  Processed 991264 and generated 1011510 boolean variables with a todo buffer of size 20246.     
+
+[12:31:33 status]  Processed 993237 and generated 1013372 boolean variables with a todo buffer of size 20135.     
+
+[12:31:34 status]  Processed 995214 and generated 1015143 boolean variables with a todo buffer of size 19929.     
+
+[12:31:35 status]  Processed 997498 and generated 1017619 boolean variables with a todo buffer of size 20121.     
+
+[12:31:36 status]  Processed 999481 and generated 1019661 boolean variables with a todo buffer of size 20180.     
+
+[12:31:37 status]  Processed 1001432 and generated 1021793 boolean variables with a todo buffer of size 20361.     
+
+[12:31:38 status]  Processed 1003586 and generated 1023734 boolean variables with a todo buffer of size 20148.     
+
+[12:31:39 status]  Processed 1005419 and generated 1025421 boolean variables with a todo buffer of size 20002.     
+
+[12:31:40 status]  Processed 1007601 and generated 1027302 boolean variables with a todo buffer of size 19701.     
+
+[12:31:41 status]  Processed 1009899 and generated 1029266 boolean variables with a todo buffer of size 19367.     
+
+[12:31:42 status]  Processed 1011797 and generated 1031007 boolean variables with a todo buffer of size 19210.     
+
+[12:31:43 status]  Processed 1013569 and generated 1032633 boolean variables with a todo buffer of size 19064.     
+
+[12:31:44 status]  Processed 1015413 and generated 1034246 boolean variables with a todo buffer of size 18833.     
+
+[12:31:45 status]  Processed 1017686 and generated 1036710 boolean variables with a todo buffer of size 19024.     
+
+[12:31:46 status]  Processed 1019600 and generated 1038730 boolean variables with a todo buffer of size 19130.     
+
+[12:31:47 status]  Processed 1021424 and generated 1040785 boolean variables with a todo buffer of size 19361.     
+
+[12:31:48 status]  Processed 1023522 and generated 1042740 boolean variables with a todo buffer of size 19218.     
+
+[12:31:49 status]  Processed 1025228 and generated 1044209 boolean variables with a todo buffer of size 18981.     
+
+[12:31:50 status]  Processed 1027203 and generated 1046083 boolean variables with a todo buffer of size 18880.     
+
+[12:31:51 status]  Processed 1029423 and generated 1048213 boolean variables with a todo buffer of size 18790.     
+
+[12:31:52 status]  Processed 1031173 and generated 1049874 boolean variables with a todo buffer of size 18701.     
+
+[12:31:53 status]  Processed 1032908 and generated 1051398 boolean variables with a todo buffer of size 18490.     
+
+[12:31:54 status]  Processed 1034801 and generated 1053231 boolean variables with a todo buffer of size 18430.     
+
+[12:31:55 status]  Processed 1036987 and generated 1055470 boolean variables with a todo buffer of size 18483.     
+
+[12:31:56 status]  Processed 1038842 and generated 1057451 boolean variables with a todo buffer of size 18609.     
+
+[12:31:57 status]  Processed 1040633 and generated 1059405 boolean variables with a todo buffer of size 18772.     
+
+[12:31:58 status]  Processed 1042615 and generated 1061297 boolean variables with a todo buffer of size 18682.     
+
+[12:31:59 status]  Processed 1044240 and generated 1062539 boolean variables with a todo buffer of size 18299.     
+
+[12:32:00 status]  Processed 1046375 and generated 1064763 boolean variables with a todo buffer of size 18388.     
+
+[12:32:01 status]  Processed 1048556 and generated 1067145 boolean variables with a todo buffer of size 18589.     
+
+[12:32:02 status]  Processed 1050023 and generated 1068375 boolean variables with a todo buffer of size 18352.     
+
+[12:32:03 status]  Processed 1051679 and generated 1069863 boolean variables with a todo buffer of size 18184.     
+
+[12:32:04 status]  Processed 1053747 and generated 1071958 boolean variables with a todo buffer of size 18211.     
+
+[12:32:05 status]  Processed 1055787 and generated 1073941 boolean variables with a todo buffer of size 18154.     
+
+[12:32:06 status]  Processed 1057682 and generated 1076099 boolean variables with a todo buffer of size 18417.     
+
+[12:32:07 status]  Processed 1059340 and generated 1077796 boolean variables with a todo buffer of size 18456.     
+
+[12:32:08 status]  Processed 1061295 and generated 1079587 boolean variables with a todo buffer of size 18292.     
+
+[12:32:09 status]  Processed 1062860 and generated 1080808 boolean variables with a todo buffer of size 17948.     
+
+[12:32:10 status]  Processed 1065136 and generated 1083341 boolean variables with a todo buffer of size 18205.     
+
+[12:32:11 status]  Processed 1067283 and generated 1085684 boolean variables with a todo buffer of size 18401.     
+
+[12:32:12 status]  Processed 1067875 and generated 1086162 boolean variables with a todo buffer of size 18287.     
+
+[12:32:13 status]  Processed 1069537 and generated 1087427 boolean variables with a todo buffer of size 17890.     
+
+[12:32:14 status]  Processed 1071505 and generated 1089476 boolean variables with a todo buffer of size 17971.     
+
+[12:32:15 status]  Processed 1073622 and generated 1091587 boolean variables with a todo buffer of size 17965.     
+
+[12:32:16 status]  Processed 1075367 and generated 1093547 boolean variables with a todo buffer of size 18180.     
+
+[12:32:17 status]  Processed 1077144 and generated 1095327 boolean variables with a todo buffer of size 18183.     
+
+[12:32:18 status]  Processed 1079133 and generated 1097265 boolean variables with a todo buffer of size 18132.     
+
+[12:32:19 status]  Processed 1080846 and generated 1098642 boolean variables with a todo buffer of size 17796.     
+
+[12:32:20 status]  Processed 1083149 and generated 1101148 boolean variables with a todo buffer of size 17999.     
+
+[12:32:21 status]  Processed 1085366 and generated 1103502 boolean variables with a todo buffer of size 18136.     
+
+[12:32:22 status]  Processed 1086820 and generated 1104644 boolean variables with a todo buffer of size 17824.     
+
+[12:32:23 status]  Processed 1088541 and generated 1106323 boolean variables with a todo buffer of size 17782.     
+
+[12:32:24 status]  Processed 1090731 and generated 1108644 boolean variables with a todo buffer of size 17913.     
+
+[12:32:25 status]  Processed 1092486 and generated 1110394 boolean variables with a todo buffer of size 17908.     
+
+[12:32:26 status]  Processed 1094435 and generated 1112561 boolean variables with a todo buffer of size 18126.     
+
+[12:32:27 status]  Processed 1096129 and generated 1114251 boolean variables with a todo buffer of size 18122.     
+
+[12:32:28 status]  Processed 1097992 and generated 1115913 boolean variables with a todo buffer of size 17921.     
+
+[12:32:29 status]  Processed 1100061 and generated 1118011 boolean variables with a todo buffer of size 17950.     
+
+[12:32:30 status]  Processed 1102372 and generated 1120503 boolean variables with a todo buffer of size 18131.     
+
+[12:32:31 status]  Processed 1104117 and generated 1122218 boolean variables with a todo buffer of size 18101.     
+
+[12:32:32 status]  Processed 1105772 and generated 1123724 boolean variables with a todo buffer of size 17952.     
+
+[12:32:33 status]  Processed 1107823 and generated 1125937 boolean variables with a todo buffer of size 18114.     
+
+[12:32:34 status]  Processed 1109683 and generated 1127759 boolean variables with a todo buffer of size 18076.     
+
+[12:32:35 status]  Processed 1111336 and generated 1129648 boolean variables with a todo buffer of size 18312.     
+
+[12:32:36 status]  Processed 1113226 and generated 1131485 boolean variables with a todo buffer of size 18259.     
+
+[12:32:37 status]  Processed 1115064 and generated 1133540 boolean variables with a todo buffer of size 18476.     
+
+[12:32:38 status]  Processed 1117004 and generated 1135461 boolean variables with a todo buffer of size 18457.     
+
+[12:32:39 status]  Processed 1119141 and generated 1137696 boolean variables with a todo buffer of size 18555.     
+
+[12:32:40 status]  Processed 1121390 and generated 1140066 boolean variables with a todo buffer of size 18676.     
+
+[12:32:41 status]  Processed 1122841 and generated 1141347 boolean variables with a todo buffer of size 18506.     
+
+[12:32:42 status]  Processed 1124783 and generated 1143377 boolean variables with a todo buffer of size 18594.     
+
+[12:32:43 status]  Processed 1126773 and generated 1145531 boolean variables with a todo buffer of size 18758.     
+
+[12:32:44 status]  Processed 1128462 and generated 1147207 boolean variables with a todo buffer of size 18745.     
+
+[12:32:45 status]  Processed 1130304 and generated 1149231 boolean variables with a todo buffer of size 18927.     
+
+[12:32:46 status]  Processed 1132046 and generated 1151086 boolean variables with a todo buffer of size 19040.     
+
+[12:32:47 status]  Processed 1134050 and generated 1153219 boolean variables with a todo buffer of size 19169.     
+
+[12:32:48 status]  Processed 1136014 and generated 1155268 boolean variables with a todo buffer of size 19254.     
+
+[12:32:49 status]  Processed 1138154 and generated 1157683 boolean variables with a todo buffer of size 19529.     
+
+[12:32:50 status]  Processed 1140217 and generated 1159884 boolean variables with a todo buffer of size 19667.     
+
+[12:32:51 status]  Processed 1141922 and generated 1161684 boolean variables with a todo buffer of size 19762.     
+
+[12:32:52 status]  Processed 1143926 and generated 1163766 boolean variables with a todo buffer of size 19840.     
+
+[12:32:53 status]  Processed 1145795 and generated 1165590 boolean variables with a todo buffer of size 19795.     
+
+[12:32:54 status]  Processed 1147438 and generated 1167377 boolean variables with a todo buffer of size 19939.     
+
+[12:32:55 status]  Processed 1149288 and generated 1169306 boolean variables with a todo buffer of size 20018.     
+
+[12:32:56 status]  Processed 1150949 and generated 1170959 boolean variables with a todo buffer of size 20010.     
+
+[12:32:57 status]  Processed 1152717 and generated 1172986 boolean variables with a todo buffer of size 20269.     
+
+[12:32:58 status]  Processed 1154653 and generated 1174976 boolean variables with a todo buffer of size 20323.     
+
+[12:32:59 status]  Processed 1156689 and generated 1177278 boolean variables with a todo buffer of size 20589.     
+
+[12:33:00 status]  Processed 1158668 and generated 1179572 boolean variables with a todo buffer of size 20904.     
+
+[12:33:01 status]  Processed 1160599 and generated 1181679 boolean variables with a todo buffer of size 21080.     
+
+[12:33:02 status]  Processed 1161786 and generated 1183063 boolean variables with a todo buffer of size 21277.     
+
+[12:33:03 status]  Processed 1163321 and generated 1184639 boolean variables with a todo buffer of size 21318.     
+
+[12:33:04 status]  Processed 1165260 and generated 1186487 boolean variables with a todo buffer of size 21227.     
+
+[12:33:05 status]  Processed 1167028 and generated 1188299 boolean variables with a todo buffer of size 21271.     
+
+[12:33:06 status]  Processed 1168759 and generated 1190090 boolean variables with a todo buffer of size 21331.     
+
+[12:33:07 status]  Processed 1170558 and generated 1191921 boolean variables with a todo buffer of size 21363.     
+
+[12:33:08 status]  Processed 1172179 and generated 1193432 boolean variables with a todo buffer of size 21253.     
+
+[12:33:09 status]  Processed 1174162 and generated 1195589 boolean variables with a todo buffer of size 21427.     
+
+[12:33:10 status]  Processed 1176279 and generated 1198009 boolean variables with a todo buffer of size 21730.     
+
+[12:33:11 status]  Processed 1178175 and generated 1200137 boolean variables with a todo buffer of size 21962.     
+
+[12:33:12 status]  Processed 1180458 and generated 1202628 boolean variables with a todo buffer of size 22170.     
+
+[12:33:13 status]  Processed 1182186 and generated 1204695 boolean variables with a todo buffer of size 22509.     
+
+[12:33:14 status]  Processed 1184067 and generated 1206671 boolean variables with a todo buffer of size 22604.     
+
+[12:33:15 status]  Processed 1186041 and generated 1208483 boolean variables with a todo buffer of size 22442.     
+
+[12:33:16 status]  Processed 1187859 and generated 1210303 boolean variables with a todo buffer of size 22444.     
+
+[12:33:17 status]  Processed 1189529 and generated 1212132 boolean variables with a todo buffer of size 22603.     
+
+[12:33:18 status]  Processed 1191341 and generated 1213903 boolean variables with a todo buffer of size 22562.     
+
+[12:33:19 status]  Processed 1192793 and generated 1215119 boolean variables with a todo buffer of size 22326.     
+
+[12:33:20 status]  Processed 1194803 and generated 1217081 boolean variables with a todo buffer of size 22278.     
+
+[12:33:21 status]  Processed 1196720 and generated 1219193 boolean variables with a todo buffer of size 22473.     
+
+[12:33:22 status]  Processed 1198741 and generated 1221300 boolean variables with a todo buffer of size 22559.     
+
+[12:33:23 status]  Processed 1200644 and generated 1223238 boolean variables with a todo buffer of size 22594.     
+
+[12:33:24 status]  Processed 1202763 and generated 1225513 boolean variables with a todo buffer of size 22750.     
+
+[12:33:25 status]  Processed 1204472 and generated 1227481 boolean variables with a todo buffer of size 23009.     
+
+[12:33:26 status]  Processed 1206175 and generated 1229320 boolean variables with a todo buffer of size 23145.     
+
+[12:33:27 status]  Processed 1208086 and generated 1231040 boolean variables with a todo buffer of size 22954.     
+
+[12:33:28 status]  Processed 1209842 and generated 1232698 boolean variables with a todo buffer of size 22856.     
+
+[12:33:29 status]  Processed 1211399 and generated 1234433 boolean variables with a todo buffer of size 23034.     
+
+[12:33:30 status]  Processed 1213194 and generated 1236121 boolean variables with a todo buffer of size 22927.     
+
+[12:33:31 status]  Processed 1214706 and generated 1237398 boolean variables with a todo buffer of size 22692.     
+
+[12:33:32 status]  Processed 1216578 and generated 1239114 boolean variables with a todo buffer of size 22536.     
+
+[12:33:33 status]  Processed 1218338 and generated 1240847 boolean variables with a todo buffer of size 22509.     
+
+[12:33:34 status]  Processed 1220310 and generated 1242839 boolean variables with a todo buffer of size 22529.     
+
+[12:33:35 status]  Processed 1222119 and generated 1244493 boolean variables with a todo buffer of size 22374.     
+
+[12:33:36 status]  Processed 1224008 and generated 1246499 boolean variables with a todo buffer of size 22491.     
+
+[12:33:37 status]  Processed 1225900 and generated 1248337 boolean variables with a todo buffer of size 22437.     
+
+[12:33:38 status]  Processed 1227541 and generated 1250044 boolean variables with a todo buffer of size 22503.     
+
+[12:33:39 status]  Processed 1229013 and generated 1251527 boolean variables with a todo buffer of size 22514.     
+
+[12:33:40 status]  Processed 1230576 and generated 1252934 boolean variables with a todo buffer of size 22358.     
+
+[12:33:41 status]  Processed 1232373 and generated 1254609 boolean variables with a todo buffer of size 22236.     
+
+[12:33:42 status]  Processed 1233842 and generated 1256012 boolean variables with a todo buffer of size 22170.     
+
+[12:33:43 status]  Processed 1235272 and generated 1257486 boolean variables with a todo buffer of size 22214.     
+
+[12:33:44 status]  Processed 1236744 and generated 1258862 boolean variables with a todo buffer of size 22118.     
+
+[12:33:45 status]  Processed 1238019 and generated 1259750 boolean variables with a todo buffer of size 21731.     
+
+[12:33:46 status]  Processed 1239745 and generated 1261450 boolean variables with a todo buffer of size 21705.     
+
+[12:33:47 status]  Processed 1241259 and generated 1262917 boolean variables with a todo buffer of size 21658.     
+
+[12:33:48 status]  Processed 1242878 and generated 1264379 boolean variables with a todo buffer of size 21501.     
+
+[12:33:49 status]  Processed 1244431 and generated 1265654 boolean variables with a todo buffer of size 21223.     
+
+[12:33:50 status]  Processed 1246027 and generated 1267172 boolean variables with a todo buffer of size 21145.     
+
+[12:33:51 status]  Processed 1247983 and generated 1268935 boolean variables with a todo buffer of size 20952.     
+
+[12:33:52 status]  Processed 1249497 and generated 1270470 boolean variables with a todo buffer of size 20973.     
+
+[12:33:53 status]  Processed 1250979 and generated 1271891 boolean variables with a todo buffer of size 20912.     
+
+[12:33:54 status]  Processed 1252656 and generated 1273418 boolean variables with a todo buffer of size 20762.     
+
+[12:33:55 status]  Processed 1254410 and generated 1275039 boolean variables with a todo buffer of size 20629.     
+
+[12:33:56 status]  Processed 1255888 and generated 1276345 boolean variables with a todo buffer of size 20457.     
+
+[12:33:57 status]  Processed 1257229 and generated 1277775 boolean variables with a todo buffer of size 20546.     
+
+[12:33:58 status]  Processed 1258597 and generated 1279002 boolean variables with a todo buffer of size 20405.     
+
+[12:33:59 status]  Processed 1259909 and generated 1279940 boolean variables with a todo buffer of size 20031.     
+
+[12:34:00 status]  Processed 1261591 and generated 1281612 boolean variables with a todo buffer of size 20021.     
+
+[12:34:01 status]  Processed 1263223 and generated 1283066 boolean variables with a todo buffer of size 19843.     
+
+[12:34:02 status]  Processed 1264739 and generated 1284459 boolean variables with a todo buffer of size 19720.     
+
+[12:34:03 status]  Processed 1265469 and generated 1284899 boolean variables with a todo buffer of size 19430.     
+
+[12:34:04 status]  Processed 1267138 and generated 1286397 boolean variables with a todo buffer of size 19259.     
+
+[12:34:05 status]  Processed 1269020 and generated 1288012 boolean variables with a todo buffer of size 18992.     
+
+[12:34:06 status]  Processed 1270476 and generated 1289448 boolean variables with a todo buffer of size 18972.     
+
+[12:34:07 status]  Processed 1271892 and generated 1290782 boolean variables with a todo buffer of size 18890.     
+
+[12:34:08 status]  Processed 1273454 and generated 1292073 boolean variables with a todo buffer of size 18619.     
+
+[12:34:09 status]  Processed 1275109 and generated 1293582 boolean variables with a todo buffer of size 18473.     
+
+[12:34:10 status]  Processed 1276485 and generated 1294859 boolean variables with a todo buffer of size 18374.     
+
+[12:34:11 status]  Processed 1277824 and generated 1296239 boolean variables with a todo buffer of size 18415.     
+
+[12:34:12 status]  Processed 1279251 and generated 1297494 boolean variables with a todo buffer of size 18243.     
+
+[12:34:13 status]  Processed 1280997 and generated 1298911 boolean variables with a todo buffer of size 17914.     
+
+[12:34:14 status]  Processed 1282471 and generated 1300283 boolean variables with a todo buffer of size 17812.     
+
+[12:34:15 status]  Processed 1284252 and generated 1301898 boolean variables with a todo buffer of size 17646.     
+
+[12:34:16 status]  Processed 1285788 and generated 1303111 boolean variables with a todo buffer of size 17323.     
+
+[12:34:17 status]  Processed 1287636 and generated 1304729 boolean variables with a todo buffer of size 17093.     
+
+[12:34:18 status]  Processed 1289014 and generated 1305994 boolean variables with a todo buffer of size 16980.     
+
+[12:34:19 status]  Processed 1290354 and generated 1307359 boolean variables with a todo buffer of size 17005.     
+
+[12:34:20 status]  Processed 1291760 and generated 1308490 boolean variables with a todo buffer of size 16730.     
+
+[12:34:21 status]  Processed 1293387 and generated 1309927 boolean variables with a todo buffer of size 16540.     
+
+[12:34:22 status]  Processed 1294739 and generated 1311182 boolean variables with a todo buffer of size 16443.     
+
+[12:34:23 status]  Processed 1295925 and generated 1312464 boolean variables with a todo buffer of size 16539.     
+
+[12:34:24 status]  Processed 1297326 and generated 1313634 boolean variables with a todo buffer of size 16308.     
+
+[12:34:25 status]  Processed 1298990 and generated 1314986 boolean variables with a todo buffer of size 15996.     
+
+[12:34:26 status]  Processed 1300375 and generated 1316254 boolean variables with a todo buffer of size 15879.     
+
+[12:34:27 status]  Processed 1302133 and generated 1317870 boolean variables with a todo buffer of size 15737.     
+
+[12:34:28 status]  Processed 1303673 and generated 1319234 boolean variables with a todo buffer of size 15561.     
+
+[12:34:29 status]  Processed 1305289 and generated 1320610 boolean variables with a todo buffer of size 15321.     
+
+[12:34:30 status]  Processed 1306580 and generated 1321808 boolean variables with a todo buffer of size 15228.     
+
+[12:34:31 status]  Processed 1307817 and generated 1323002 boolean variables with a todo buffer of size 15185.     
+
+[12:34:32 status]  Processed 1309300 and generated 1324227 boolean variables with a todo buffer of size 14927.     
+
+[12:34:33 status]  Processed 1310628 and generated 1325411 boolean variables with a todo buffer of size 14783.     
+
+[12:34:34 status]  Processed 1311830 and generated 1326621 boolean variables with a todo buffer of size 14791.     
+
+[12:34:35 status]  Processed 1313033 and generated 1327738 boolean variables with a todo buffer of size 14705.     
+
+[12:34:36 status]  Processed 1314334 and generated 1328835 boolean variables with a todo buffer of size 14501.     
+
+[12:34:37 status]  Processed 1315695 and generated 1330039 boolean variables with a todo buffer of size 14344.     
+
+[12:34:38 status]  Processed 1317363 and generated 1331511 boolean variables with a todo buffer of size 14148.     
+
+[12:34:39 status]  Processed 1318924 and generated 1332979 boolean variables with a todo buffer of size 14055.     
+
+[12:34:40 status]  Processed 1320491 and generated 1334256 boolean variables with a todo buffer of size 13765.     
+
+[12:34:41 status]  Processed 1321553 and generated 1335291 boolean variables with a todo buffer of size 13738.     
+
+[12:34:42 status]  Processed 1322713 and generated 1336358 boolean variables with a todo buffer of size 13645.     
+
+[12:34:43 status]  Processed 1323973 and generated 1337402 boolean variables with a todo buffer of size 13429.     
+
+[12:34:44 status]  Processed 1325255 and generated 1338489 boolean variables with a todo buffer of size 13234.     
+
+[12:34:45 status]  Processed 1326288 and generated 1339486 boolean variables with a todo buffer of size 13198.     
+
+[12:34:46 status]  Processed 1327474 and generated 1340613 boolean variables with a todo buffer of size 13139.     
+
+[12:34:47 status]  Processed 1328571 and generated 1341485 boolean variables with a todo buffer of size 12914.     
+
+[12:34:48 status]  Processed 1329924 and generated 1342589 boolean variables with a todo buffer of size 12665.     
+
+[12:34:49 status]  Processed 1331421 and generated 1343899 boolean variables with a todo buffer of size 12478.     
+
+[12:34:50 status]  Processed 1332847 and generated 1345220 boolean variables with a todo buffer of size 12373.     
+
+[12:34:51 status]  Processed 1334336 and generated 1346445 boolean variables with a todo buffer of size 12109.     
+
+[12:34:52 status]  Processed 1335343 and generated 1347351 boolean variables with a todo buffer of size 12008.     
+
+[12:34:53 status]  Processed 1336412 and generated 1348279 boolean variables with a todo buffer of size 11867.     
+
+[12:34:54 status]  Processed 1337647 and generated 1349236 boolean variables with a todo buffer of size 11589.     
+
+[12:34:55 status]  Processed 1338734 and generated 1350175 boolean variables with a todo buffer of size 11441.     
+
+[12:34:56 status]  Processed 1339799 and generated 1351198 boolean variables with a todo buffer of size 11399.     
+
+[12:34:57 status]  Processed 1340869 and generated 1352030 boolean variables with a todo buffer of size 11161.     
+
+[12:34:58 status]  Processed 1342029 and generated 1352796 boolean variables with a todo buffer of size 10767.     
+
+[12:34:59 status]  Processed 1343047 and generated 1353571 boolean variables with a todo buffer of size 10524.     
+
+[12:35:00 status]  Processed 1344344 and generated 1354709 boolean variables with a todo buffer of size 10365.     
+
+[12:35:01 status]  Processed 1345528 and generated 1355789 boolean variables with a todo buffer of size 10261.     
+
+[12:35:02 status]  Processed 1346778 and generated 1356793 boolean variables with a todo buffer of size 10015.     
+
+[12:35:03 status]  Processed 1347716 and generated 1357495 boolean variables with a todo buffer of size 9779.     
+
+[12:35:04 status]  Processed 1348641 and generated 1358151 boolean variables with a todo buffer of size 9510.     
+
+[12:35:05 status]  Processed 1349831 and generated 1359178 boolean variables with a todo buffer of size 9347.     
+
+[12:35:06 status]  Processed 1350744 and generated 1359876 boolean variables with a todo buffer of size 9132.     
+
+[12:35:07 status]  Processed 1351749 and generated 1360742 boolean variables with a todo buffer of size 8993.     
+
+[12:35:08 status]  Processed 1352796 and generated 1361307 boolean variables with a todo buffer of size 8511.     
+
+[12:35:09 status]  Processed 1353898 and generated 1362121 boolean variables with a todo buffer of size 8223.     
+
+[12:35:10 status]  Processed 1355233 and generated 1363339 boolean variables with a todo buffer of size 8106.     
+
+[12:35:11 status]  Processed 1356496 and generated 1364146 boolean variables with a todo buffer of size 7650.     
+
+[12:35:12 status]  Processed 1357389 and generated 1364733 boolean variables with a todo buffer of size 7344.     
+
+[12:35:13 status]  Processed 1358325 and generated 1365393 boolean variables with a todo buffer of size 7068.     
+
+[12:35:14 status]  Processed 1359369 and generated 1366266 boolean variables with a todo buffer of size 6897.     
+
+[12:35:15 status]  Processed 1360357 and generated 1367081 boolean variables with a todo buffer of size 6724.     
+
+[12:35:16 status]  Processed 1361348 and generated 1367649 boolean variables with a todo buffer of size 6301.     
+
+[12:35:17 status]  Processed 1362546 and generated 1368491 boolean variables with a todo buffer of size 5945.     
+
+[12:35:18 status]  Processed 1363830 and generated 1369440 boolean variables with a todo buffer of size 5610.     
+
+[12:35:19 status]  Processed 1364699 and generated 1369900 boolean variables with a todo buffer of size 5201.     
+
+[12:35:20 status]  Processed 1365690 and generated 1370672 boolean variables with a todo buffer of size 4982.     
+
+[12:35:21 status]  Processed 1366621 and generated 1371453 boolean variables with a todo buffer of size 4832.     
+
+[12:35:22 status]  Processed 1367630 and generated 1372307 boolean variables with a todo buffer of size 4677.     
+
+[12:35:23 status]  Processed 1368777 and generated 1373099 boolean variables with a todo buffer of size 4322.     
+
+[12:35:24 status]  Processed 1369820 and generated 1373692 boolean variables with a todo buffer of size 3872.     
+
+[12:35:25 status]  Processed 1370865 and generated 1374713 boolean variables with a todo buffer of size 3848.     
+
+[12:35:26 status]  Processed 1371886 and generated 1375688 boolean variables with a todo buffer of size 3802.     
+
+[12:35:27 status]  Processed 1373047 and generated 1376652 boolean variables with a todo buffer of size 3605.     
+
+[12:35:28 status]  Processed 1374063 and generated 1377340 boolean variables with a todo buffer of size 3277.     
+
+[12:35:29 status]  Processed 1375256 and generated 1378679 boolean variables with a todo buffer of size 3423.     
+
+[12:35:30 status]  Processed 1376572 and generated 1380143 boolean variables with a todo buffer of size 3571.     
+
+[12:35:31 status]  Processed 1377787 and generated 1381344 boolean variables with a todo buffer of size 3557.     
+
+[12:35:32 status]  Processed 1379069 and generated 1382807 boolean variables with a todo buffer of size 3738.     
+
+[12:35:33 status]  Processed 1380411 and generated 1384300 boolean variables with a todo buffer of size 3889.     
+
+[12:35:34 status]  Processed 1381782 and generated 1385736 boolean variables with a todo buffer of size 3954.     
+
+[12:35:35 status]  Processed 1382189 and generated 1386178 boolean variables with a todo buffer of size 3989.     
+
+[12:35:36 status]  Processed 1383601 and generated 1387725 boolean variables with a todo buffer of size 4124.     
+
+[12:35:37 status]  Processed 1385057 and generated 1389450 boolean variables with a todo buffer of size 4393.     
+
+[12:35:38 status]  Processed 1386416 and generated 1390823 boolean variables with a todo buffer of size 4407.     
+
+[12:35:39 status]  Processed 1387827 and generated 1392286 boolean variables with a todo buffer of size 4459.     
+
+[12:35:40 status]  Processed 1389324 and generated 1394057 boolean variables with a todo buffer of size 4733.     
+
+[12:35:41 status]  Processed 1390679 and generated 1395387 boolean variables with a todo buffer of size 4708.     
+
+[12:35:42 status]  Processed 1391912 and generated 1396806 boolean variables with a todo buffer of size 4894.     
+
+[12:35:43 status]  Processed 1393411 and generated 1398438 boolean variables with a todo buffer of size 5027.     
+
+[12:35:44 status]  Processed 1394744 and generated 1399785 boolean variables with a todo buffer of size 5041.     
+
+[12:35:45 status]  Processed 1396013 and generated 1401193 boolean variables with a todo buffer of size 5180.     
+
+[12:35:46 status]  Processed 1397236 and generated 1402538 boolean variables with a todo buffer of size 5302.     
+
+[12:35:47 status]  Processed 1398654 and generated 1404104 boolean variables with a todo buffer of size 5450.     
+
+[12:35:48 status]  Processed 1399815 and generated 1405312 boolean variables with a todo buffer of size 5497.     
+
+[12:35:49 status]  Processed 1401004 and generated 1406624 boolean variables with a todo buffer of size 5620.     
+
+[12:35:50 status]  Processed 1402054 and generated 1407853 boolean variables with a todo buffer of size 5799.     
+
+[12:35:51 status]  Processed 1403348 and generated 1409260 boolean variables with a todo buffer of size 5912.     
+
+[12:35:52 status]  Processed 1404712 and generated 1410724 boolean variables with a todo buffer of size 6012.     
+
+[12:35:53 status]  Processed 1405853 and generated 1411843 boolean variables with a todo buffer of size 5990.     
+
+[12:35:54 status]  Processed 1406950 and generated 1412958 boolean variables with a todo buffer of size 6008.     
+
+[12:35:55 status]  Processed 1407849 and generated 1414023 boolean variables with a todo buffer of size 6174.     
+
+[12:35:56 status]  Processed 1409124 and generated 1415421 boolean variables with a todo buffer of size 6297.     
+
+[12:35:57 status]  Processed 1410367 and generated 1416728 boolean variables with a todo buffer of size 6361.     
+
+[12:35:58 status]  Processed 1411435 and generated 1417674 boolean variables with a todo buffer of size 6239.     
+
+[12:35:59 status]  Processed 1412567 and generated 1418830 boolean variables with a todo buffer of size 6263.     
+
+[12:36:00 status]  Processed 1413451 and generated 1419642 boolean variables with a todo buffer of size 6191.     
+
+[12:36:01 status]  Processed 1414320 and generated 1420515 boolean variables with a todo buffer of size 6195.     
+
+[12:36:02 status]  Processed 1415493 and generated 1421845 boolean variables with a todo buffer of size 6352.     
+
+[12:36:03 status]  Processed 1416669 and generated 1423018 boolean variables with a todo buffer of size 6349.     
+
+[12:36:04 status]  Processed 1417649 and generated 1423761 boolean variables with a todo buffer of size 6112.     
+
+[12:36:05 status]  Processed 1418685 and generated 1424751 boolean variables with a todo buffer of size 6066.     
+
+[12:36:06 status]  Processed 1419518 and generated 1425387 boolean variables with a todo buffer of size 5869.     
+
+[12:36:07 status]  Processed 1420340 and generated 1426074 boolean variables with a todo buffer of size 5734.     
+
+[12:36:08 status]  Processed 1421444 and generated 1427265 boolean variables with a todo buffer of size 5821.     
+
+[12:36:09 status]  Processed 1422537 and generated 1428422 boolean variables with a todo buffer of size 5885.     
+
+[12:36:10 status]  Processed 1423484 and generated 1429128 boolean variables with a todo buffer of size 5644.     
+
+[12:36:11 status]  Processed 1424431 and generated 1429868 boolean variables with a todo buffer of size 5437.     
+
+[12:36:12 status]  Processed 1425235 and generated 1430370 boolean variables with a todo buffer of size 5135.     
+
+[12:36:13 status]  Processed 1426003 and generated 1430927 boolean variables with a todo buffer of size 4924.     
+
+[12:36:14 status]  Processed 1427042 and generated 1431948 boolean variables with a todo buffer of size 4906.     
+
+[12:36:15 status]  Processed 1428042 and generated 1432889 boolean variables with a todo buffer of size 4847.     
+
+[12:36:16 status]  Processed 1429045 and generated 1433621 boolean variables with a todo buffer of size 4576.     
+
+[12:36:17 status]  Processed 1429954 and generated 1434230 boolean variables with a todo buffer of size 4276.     
+
+[12:36:18 status]  Processed 1430661 and generated 1434594 boolean variables with a todo buffer of size 3933.     
+
+[12:36:19 status]  Processed 1431524 and generated 1435281 boolean variables with a todo buffer of size 3757.     
+
+[12:36:20 status]  Processed 1432496 and generated 1436033 boolean variables with a todo buffer of size 3537.     
+
+[12:36:21 status]  Processed 1433474 and generated 1436793 boolean variables with a todo buffer of size 3319.     
+
+[12:36:22 status]  Processed 1434296 and generated 1437225 boolean variables with a todo buffer of size 2929.     
+
+[12:36:23 status]  Processed 1434984 and generated 1437584 boolean variables with a todo buffer of size 2600.     
+
+[12:36:24 status]  Processed 1435912 and generated 1438201 boolean variables with a todo buffer of size 2289.     
+
+[12:36:25 status]  Processed 1436833 and generated 1438789 boolean variables with a todo buffer of size 1956.     
+
+[12:36:26 status]  Processed 1437492 and generated 1439065 boolean variables with a todo buffer of size 1573.     
+
+[12:36:27 status]  Processed 1438335 and generated 1439502 boolean variables with a todo buffer of size 1167.     
+
+[12:36:28 status]  Processed 1439073 and generated 1439823 boolean variables with a todo buffer of size 750.     
+
+[12:36:29 status]  Processed 1439822 and generated 1440109 boolean variables with a todo buffer of size 287.     
+
+[12:36:29 verbose] Solving a BES with 1440201 equations.
+
+[12:36:33 verbose] Solve equations of rank 1.
+
+[12:36:37 verbose] The solution for the initial variable of the pbes is true
+
+true

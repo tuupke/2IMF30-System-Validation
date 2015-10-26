@@ -2,10 +2,20 @@
 
 Our model consists of 7 parallel processes that communicate.
 \begin{enumerate}
- \item Two identical processes managing a single sluice each. They control the sluice doors and the pumps and communicate with the robots about whether or not they may reach into the sluice.
+ \item Two identical processes managing a single sluice each. They steer the sluice doors and the pumps and communicate with the robots about whether or not they may reach into the sluice.
  \item A process controlling $R3$ and the projector.
  \item A process controlling $R2$.
  \item A process controlling $R1$.
  \item Position tracker, which tracks the positions and state of each wafer. This process communicates with the three processes controlling the robots and projector, both in order to track the wafer, as well as to prevent the robots from making illegal moves (e.g. placing a token on an occupied rack).
- \item A safeguard process, which monitors the doors. This process itself consists of 4 parallel processes, each monitoring a single door. Each of these processes communicate with the process controlling their door. A safeguard terminates when a door gets stuck, which will prevent the door controlling from moving the stuck door (because it can no longer communicate with the terminated process).
+ \item A safeguard process, which monitors the doors. This process itself consists of 4 parallel processes, each monitoring a single door.
 \end{enumerate}
+
+The safeguards are very simple processes. The function as a layer between the processes steering the doors and the doors themselves. When a process wants a door to open, it signals the guard of the door. When the guard is stil running, this signal is redirected to the door itself. When the guard has terminated, the door can no longer be controlled. A guard terminates when it receives a signal that the door is stuck. In the description of the other processes, when we say that the process opens or closes a door, we mean that it sends the guard a signal (which moves the door and is only possible when the door is not stuck).
+
+Since the sluice doors are initialised as closed, the sluice process starts in a state ClosedSluice. From this state it can operate the pump (since both doors are closed), or it can a open one of the doors after checking the airpressure ok. When one of the doors is opened, the process can communicate with $R1$ or $R2$ (depending on which door is open). When it signaled that the door is open the process must wait until it received a signal that it can close the door again. The process can close the door again and go back to the initial state where both doors are closed.
+
+The position tracker, like the safeguards, forms a layer between the processes steering the robots and the robots itself. When a process sends a signal to move a wafer from one place to another, this signal is received by the wafertracker, which updates its state accordingly and relays the to the robots. The tracker does not allow illegal movements: movements from an empty place, or to an occupied place. $RI$ and $RO$ are special cases, $RI$ only contains unprojected wafers, and $RO$ only projected wafers. It is always possible to move an unprojected wafer to $RI$ or a projected wafer to $RO$, because $RI$ and $RO$ are assumed to be of infinite size.
+
+This leaved the three processes steering the robots and projector. $R1$ only moves between sluice and rack, never between $RI$ and $RO$ or between $S1$ and $S2$. $R2$ only moves from a sluice to $I$ or from $O$ to a sluice. $R3$ simply moves from $I$ to $P$, then starts projected, waits for the signal that the projection is finished and moves from $P$ to $O$.
+
+You might have noticed that the restrictions on $R2$ mean that a wafer, that is inside a sluice with an door that is stuck, cannot be removed from the sluice. This is not a problem since \textcolor{red}{we allow for one wafer to be lost when a sluice breaks down}.
