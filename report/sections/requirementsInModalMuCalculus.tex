@@ -80,8 +80,6 @@
 	\end{align*}
 	
  \item[6. A sluice door cannot open until the pressure on both sides is equal]
-%		&[true^*.vacuum(s).stopPumping(s).\overline{readAirPressure(s,0)^*}.openInside(s)]false \\
-%		&[true^*.deVacuum(s).stopPumping(s).\overline{readAirPressure(s,1)^*}.openOutside(s)]false \\
 	\begin{align*}
 &[true^*]\forall s:Sluice . ( \\
 &\tab  [vacuum(s).stopPumping(s).\overline{readAirPressure(s, vacuum)}^*\\
@@ -101,27 +99,28 @@
  \end{align*}
 
  \item[8. No robot can place a projected wafer in $RI$]\mbox{}\\
- 
- \begin{align*}
-&[true^*] \nu X(status:Place \to WaferState=emptyPlaces).(\\
-  & \tab \tab [\overline{((\exists a,b:Place.move(a,b)) \cup detectInputWafer \cup endProject)}]X(status)\\
- & \tab \tab  \wedge [detectInputWafer]X(status[RI \to unprojected])\\
-  & \tab \tab \wedge \forall a,b:Place.[move(a, b)](val((b == RI) \implies (status(a) != projected))\\
-  & \tab \tab \tab \wedge X(status[b \to status(a)][a \to empty]))\\
-  & \tab \tab \wedge [endProject]X(status[P \to projected])\\
+
+\begin{align*}
+&[true^*] \nu X(status:Place \to WaferState=emptyPlaces).( \\
+&\tab  [\overline{(\exists a,b:Place.move(a,b)) \vee detectInputWafer \vee endProject}]X(status) \\
+&\tab  \wedge [detectInputWafer]X(status[RI \to unprojected]) \\
+&\tab  \wedge \forall a,b:Place.[move(a, b)](((b \approx RI) \implies (status(a) \not \approx projected)) \\
+&\tab\tab\tab \wedge X(status[b \to status(a)][a \to empty])) \\
+&\tab  \wedge [endProject]X(status[P \to projected]) \\
 &)
-	\end{align*}
+\end{align*}
 
  \item[9. No robot can place an unprojected wafer in $RO$] \mbox{}\\
-$
-[true^* \cdot detectInputWafer]\\
-\nu X(position:Place=RI, projecting:Bool=false, projected:Bool=false)\\
-.\forall a,b:Place.[move(a,b)]X(if(a \approx position, b, position), projecting \wedge a \not \approx position, projected)\\
-\wedge [\overline{\exists a,b:Place.move(a,b) \cup beginProject \cup endProject)}]X(position, projecting, projected)\\
-\wedge [beginProject]X(position, position \approx P, projected)\\
-\wedge [endProject]X(position, false, projected \vee (projecting \wedge position \approx P))\\
-\wedge (position \approx RO \implies projected)
-$
+
+\begin{align*}
+&[true^*] \nu X(status:Place \to WaferState=emptyPlaces).( \\
+&\tab  [\overline{(\exists a,b:Place.move(a,b)) \vee detectInputWafer \vee endProject}]X(status) \\
+&\tab  \wedge [detectInputWafer]X(status[RI \to unprojected]) \\
+&\tab  \wedge \forall a,b:Place.[move(a, b)](((b \approx RO) \implies (status(a) \not \approx unprojected)) \\
+&\tab\tab\tab \wedge X(status[b \to status(a)][a \to empty])) \\
+&\tab  \wedge [endProject]X(status[P \to projected]) \\
+&)
+\end{align*}
 
  \item[10. No robot can take a wafer from $RO$]
 
