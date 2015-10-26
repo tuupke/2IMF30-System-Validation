@@ -27,5 +27,5 @@
                                                   brokenDoors[sluiceDoor(s,d)->true]
                                                 )
   )
-  || val((position == RO && projected) || stuck)
+  || val((position == RO && projected) || stuck || (position != RO && exists s1,s2:Sluice,d1,d2:Door.(brokenDoors(sluiceDoor(s1, d1)) && brokenDoors(sluiceDoor(s2, d2)) && s1 != s2 && sluiceDoor(s1, d1) != sluiceDoor(s2, d2))))
 )
