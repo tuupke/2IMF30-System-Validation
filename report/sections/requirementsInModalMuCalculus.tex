@@ -47,14 +47,19 @@
 &  \tab\tab  \wedge [\overline{(\exists a,b:Place.move(a,b)) \cup beginProject \cup endProject} \\
 & \tab\tab\tab\tab \overline{ \cup (\exists d:Door,s:Sluice.doorStuck(d, s))}]X( \\
 & \tab\tab\tab\tab\tab\tab position, projecting, projected, stuck, brokenDoors) \\
-&  \tab\tab  \wedge [beginProject]X(position, position \approx P, projected, stuck, brokenDoors)
-&  \tab\tab  \wedge [endProject]X(position, false, projected \vee (projecting \wedge position \approx P), stuck, brokenDoors) \\
+&  \tab\tab  \wedge [beginProject]X(position, position \approx P, projected, stuck, brokenDoors) \\
+&  \tab\tab  \wedge [endProject]X(position, \\
+& \tab\tab\tab\tab false, \\
+& \tab\tab\tab\tab  projected \vee (projecting \wedge position \approx P), \\
+& \tab\tab\tab\tab  stuck, \\
+& \tab\tab\tab\tab  brokenDoors \\
+& \tab\tab\tab ) \\
 &  \tab\tab  \wedge \forall d:Door,s:Sluice.[doorStuck(d, s)]X( \\
 &  \tab\tab                        \tab                        position, \\
 &  \tab\tab                        \tab                        projecting, \\
 &  \tab\tab                        \tab                        projected, \\
-&  \tab\tab                        \tab                        if(sluicePlace(s) \approx position \wedge ((\neg projected \wedge d == insideDoor) \\
-& \tab\tab\tab\tab\tab \vee (projected \wedge d == outsideDoor)), true, stuck), \\
+&  \tab\tab                        \tab                        if(sluicePlace(s) \approx position \wedge ((\neg projected \wedge d \approx insideDoor) \\
+& \tab\tab\tab\tab\tab \vee (projected \wedge d \approx outsideDoor)), true, stuck), \\
 &  \tab\tab                       \tab brokenDoors[sluiceDoor(s,d)\to true] \\
 &  \tab\tab                                              ) \\
 &  \tab ) \\
