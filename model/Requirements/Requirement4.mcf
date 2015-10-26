@@ -1,2 +1,9 @@
 % Internal racks, sluices and the projector each contain at most one wafer
-[true*]forall p:Place . exists p1,p2,p3:Place . [move(p1,p).!move(p,p3)*.move(p2,p)]false
+%OLD [true*]forall p:Place . exists p1,p2,p3:Place . [move(p1,p).!move(p,p3)*.move(p2,p)]false OLD
+
+%status unprojected is simply used as a "not empty" status, so isn't updated when projecting
+[true*] nu X(status:Place->WaferState=emptyPlaces).(
+  [!((exists a,b:Place.move(a,b)) || detectInputWafer)]X(status)
+  && [detectInputWafer]X(status[RI->unprojected])
+  && forall a,b:Place.[move(a, b)](val(status(a) != empty) && val(status(b) == empty) && X(status[b->status(a)][a->empty]))
+)
