@@ -12,10 +12,10 @@
 For any sluice $s$:
 
 \begin{itemize}
-	\item Between any \action{move}{$RI, s$} and its most recent preceding \action{closeDoor}{outside,$s$}, there must be a \action{openDoor}{outside, $s$}.
-	\item between any \action{move}{$s, a$} with $a \in \{ I, O \}$ and its most recent preceding \action{closeDoor}{inside, $s$}, there must be a \action{openDoor}{inside, $s$}.
-	\item between any \action{move}{$a, s$} with $a \in \{ I, O \}$ and its most recent preceding \action{closeDoor}{inside, $s$}, there must be a \action{openDoor}{inside, $s$}.
-	\item between any \action{move}{$s, a$} with $a \in \{ RI, RO \}$ and its most recent preceding \action{closeDoor}{outside, $s$}, there must be a \action{openDoor}{outside, $s$}.
+	\item Between any \action{move}{$RI, s$} and its most recent preceding \action{closeDoor}{outside,$s$}, there must be an \action{openDoor}{outside, $s$}.
+	\item between any \action{move}{$s, a$} with $a \in \{ I, O \}$ and its most recent preceding \action{closeDoor}{inside, $s$}, there must be an \action{openDoor}{inside, $s$}.
+	\item between any \action{move}{$a, s$} with $a \in \{ I, O \}$ and its most recent preceding \action{closeDoor}{inside, $s$}, there must be an \action{openDoor}{inside, $s$}.
+	\item between any \action{move}{$s, a$} with $a \in \{ RI, RO \}$ and its most recent preceding \action{closeDoor}{outside, $s$}, there must be an \action{openDoor}{outside, $s$}.
 \end{itemize}
  
  \item[\smash{\shortstack[l]{3. Any wafer in the system will eventually be processed unless the system breaks,\\ or the wafer is inside a sluice when the sluice itself breaks}}] \hfill 
@@ -32,10 +32,10 @@ For any sluice $s$:
  
  
 \item[4. Internal racks, sluices and the projector each contain at most one wafer] \hfill \\
-For any internal place $p_i \in \{S1, S2, I, O, P\}$ and any three places $p_1, p_2, p_3 \in \{S1, S2, I, O, P, RI, RO\}$: between any \action{move}{$p_1, p_i$} and its most recent preceding \action{move}{$p_2, p_i$}, there must be a \action{move}{$p_i, p_3$}. 
+For any internal place $p_i \in \{S1, S2, I, O, P\}$ and any of the three places $p_1, p_2, p_3 \in \{S1, S2, I, O, P, RI, RO\}$: between any \action{move}{$p_1, p_i$} and its most recent preceding \action{move}{$p_2, p_i$}, there must be a \action{move}{$p_i, p_3$}. 
  
 \item[5. When the projector is at work, no interaction with the wafer is permissible] \hfill \\
-For any place $p$: between any \action{move}{$P, p$} or \action{move}{$p, P$} and its most recent preceding \action{beginProject}{}, there must be a \action{endProject}{}. 
+For any place $p$: between any \action{move}{$P, p$} or \action{move}{$p, P$} and its most recent preceding \action{beginProject}{}, there must be an \action{endProject}{}. 
  
  \item[6. A sluice door cannot open until the pressure on both sides is equal] \hfill \\
  For any sluice $s$:
