@@ -24,8 +24,8 @@
 \end{align*}
  
  \item[\smash{\shortstack[l]{3. Any wafer in the system will eventually be processed unless the system breaks,\\ or the wafer is inside a sluice when the sluice itself breaks}}]
-
-	\begin{align*}
+ 
+\begin{align*}\allowdisplaybreaks
 & [true^*.detectInputWafer] \mu X( \\
 &          \tab                          position: Place = RI,    \\  
 &          \tab                          projecting: Bool = false,  \\
@@ -104,7 +104,7 @@
  &)
  \end{align*}
 
- \item[8. No robot can place a projected wafer in $RI$]\mbox{}\\
+ \item[8. No robot can place a projected wafer in $RI$]
 
 \begin{align*}
 &[true^*] \nu X(status:Place \to WaferState=emptyPlaces).( \\
@@ -116,7 +116,7 @@
 &)
 \end{align*}
 
- \item[9. No robot can place an unprojected wafer in $RO$] \mbox{}\\
+ \item[9. No robot can place an unprojected wafer in $RO$]
 
 \begin{align*}
 &[true^*] \nu X(status:Place \to WaferState=emptyPlaces).( \\
