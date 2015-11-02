@@ -3,16 +3,16 @@
 \begin{enumerate}
   \item A wafer is considered projected when the projector has finished projecting the wafer.
   \item A wafer is considered processed when the wafer is projected and the wafer has been placed in \textit{RO}.
-  \item A sluice is considered broken if one or more of its doors are stuck.
+  \item A sluice is considered broken when one or more of its doors are stuck.
   \item The system is considered broken when both sluices are broken.
 \end{enumerate}
 
 \subsection{Assumptions}
 \begin{enumerate}
-  \item The doors are the only part of the machines that can malfunction. They can get stuck at any point in time. Since opening and closing a door is assumed to be an atomic action taking no time, doors only get stuck in either an open position or a closed position, never a half open position.
+  \item The doors are the only part of the machines that can malfunction. They can get stuck at any point in time. Since opening and closing a door is assumed to be an atomic action taking no time, doors only get stuck in either an open or a closed position, never at half open position.
   \item The main room is assumed to always be a vacuum.
   \item The external input and output racks are assumed to be infinite in size.
-  \item Sluice pumps change the air pressure to be normal or vacuum.
+  \item Sluice pumps change the air pressure to be either normal or vacuum.
   \item The physical waferstepper is initialised to a state where all doors are closed and no wafers are in the system.
 \end{enumerate}
 
