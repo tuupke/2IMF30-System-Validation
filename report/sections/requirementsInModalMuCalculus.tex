@@ -88,9 +88,9 @@
  \item[6. A sluice door cannot open until the pressure on both sides is equal]
 	\begin{align*}
 &[true^*]\forall s:Sluice . ( \\
-&\tab  [vacuum(s).stopPumping(s).\overline{readAirPressure(s, vacuum)}^*\\
+&\tab  [stopPumping(s).\overline{readAirPressure(s, vacuum)}^*\\
 &\tab\tab\tab.openDoor(insideDoor,s)]false \\
-&\tab  \wedge [deVacuum(s).stopPumping(s).\overline{readAirPressure(s, normal)}^*\\
+&\tab  \wedge [stopPumping(s).\overline{readAirPressure(s, normal)}^*\\
 &\tab\tab\tab.openDoor(outsideDoor,s)]false \\
 &)		
 	\end{align*}
