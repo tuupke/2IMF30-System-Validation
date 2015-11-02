@@ -95,11 +95,20 @@ proc
     + signalClose(outsideDoor, s)
   ).RobotOutside;
 
-  RobotInside  = sum s:Sluice.moveThrough(insideDoor, s).((
+  RobotInside  = sum s:Sluice.moveThrough(insideDoor, s).(
+    sum s':Sluice.(s' != s)->(
+      moveThrough(insideDoor, s').(
+        moveRequest(sluicePlace(s), sluicePlace(s')).signalClose(insideDoor, s).signalClose(insideDoor, s')
+        + signalClose(insideDoor, s).signalClose(insideDoor, s')
+      )
+    )
+    +
+    (
       moveRequest(O, sluicePlace(s)) +
       moveRequest(sluicePlace(s), I)
     ).signalClose(insideDoor, s)
-    + signalClose(insideDoor, s)
+    +
+    signalClose(insideDoor, s)
   ).RobotInside;
 
   ProjectorRobot = moveRequest(I, P).beginProject.endProject_internal.moveRequest(P,O).ProjectorRobot;
