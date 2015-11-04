@@ -1,6 +1,6 @@
 % Internal racks, sluices and the projector each contain at most one wafer
-[true*] nu X(status:Place->WaferState=emptyPlaces).(
-  [!((exists a,b:Place.move(a,b)) || detectInputWafer)]X(status)
-  && [detectInputWafer]X(status[RI->unprojected])
-  && forall a,b:Place.[move(a, b)](val(status(a) != empty => status(b) == empty) && X(status[b->status(a)][a->empty]))
+nu X(occupied: Place -> Bool = placesFalse).(
+  [!(exists a, b: Place.move(a,b)) && !detectInputWafer]X(occupied)
+  && [detectInputWafer]X(occupied[RI -> true])
+  && forall a, b: Place . [move(a, b)](val(b == RO || (occupied(a) => !occupied(b))) && X(occupied[b -> occupied(a)][a -> false]))
 )

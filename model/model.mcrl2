@@ -5,7 +5,7 @@ sort
   WaferState = struct empty?isEmpty | unprojected?isUnprojected | projected?isProjected;
   WaferPlacement = Place -> WaferState;
   Pressure = struct vacuum | normal;
-  
+
   % used for requirements checking
   SluiceDoor = struct InsideDoor1 | OutsideDoor1 | InsideDoor2 | OutsideDoor2;
 
@@ -15,15 +15,16 @@ map
 
   sluicePlace: Sluice -> Place;
   sluicePressure: Sluice -> Pressure;
-  
+
   % used for requirements checking
   nothingBroken: SluiceDoor -> Bool;
   sluiceDoor: Sluice # Door -> SluiceDoor;
+  placesFalse: Place -> Bool;
 
 var
   p,p':Place;
   wp:WaferPlacement;
-  
+
   % used for requirements checking
   sd:SluiceDoor;
 eqn
@@ -38,6 +39,7 @@ eqn
 
   % used for requirements checking
   nothingBroken(sd) = false;
+  placesFalse(p) = false;
   sluiceDoor(Sluice1, insideDoor) = InsideDoor1;
   sluiceDoor(Sluice1, outsideDoor) = OutsideDoor1;
   sluiceDoor(Sluice2, insideDoor) = InsideDoor2;
