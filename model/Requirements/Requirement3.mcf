@@ -1,31 +1,24 @@
-% Any wafer in the system will eventually be processed unless the system breaks, or the wafer is inside a sluice when the sluice itself breaks
+% Any wafer in the system will eventually be processed unless for each sluice at least one door gets stuck, or the wafer is in a sluice with two broken, closed doors
 
-[true*.detectInputWafer] mu X(
-                              position: Place = RI,                             % Position of the wafer
-                              projecting: Bool = false,                         % Whether the projector is currently projecting the wafer
-                              projected: Bool = false,                          % Whether the wafer is projected or not
-                              stuck: Bool = false,                              % Whether the wafer got stuck
-                              brokenDoors: SluiceDoor -> Bool = nothingBroken   % Maps sluice doors to whether the door is broken
-                             )
-.(
-  (
-    forall a,b:Place.[move(a,b)]X(
-                                  if(a == position, b, position),
-                                  projecting && a != position,
-                                  projected,
-                                  if(a == position && exists s:Sluice . sluicePlace(s) == b && ((!projected && brokenDoors(sluiceDoor(s, insideDoor))) || (projected && brokenDoors(sluiceDoor(s, outsideDoor)))), true, stuck),
-                                  brokenDoors
-                                 )
-    && [!((exists a,b:Place.move(a,b)) && beginProject && endProject && (exists d:Door,s:Sluice.doorStuck(d, s)))]X(position, projecting, projected, stuck, brokenDoors)
-    && [beginProject]X(position, position == P, projected, stuck, brokenDoors)
-    && [endProject]X(position, false, projected || (projecting && position == P), stuck, brokenDoors)
-    && forall d:Door,s:Sluice.[doorStuck(d, s)]X(
-                                                  position,
-                                                  projecting,
-                                                  projected,
-                                                  if(sluicePlace(s) == position && ((!projected && d == insideDoor) || (projected && d == outsideDoor)), true, stuck),
-                                                  brokenDoors[sluiceDoor(s,d)->true]
-                                                )
-  )
-  || val((position == RO && projected) || stuck || (position != RO && exists s1,s2:Sluice,d1,d2:Door.(brokenDoors(sluiceDoor(s1, d1)) && brokenDoors(sluiceDoor(s2, d2)) && s1 != s2 && sluiceDoor(s1, d1) != sluiceDoor(s2, d2))))
-)
+nu X(openDoors: SluiceDoor -> Bool = nothingBroken, brokenDoors: SluiceDoor -> Bool = nothingBroken)
+  . ([!(exists d: Door, s: Sluice . openDoor(d, s)) && !(exists d: Door, s: Sluice . closeDoor(d, s)) && !(exists d: Door, s: Sluice . doorStuck(d, s)) && !detectInputWafer]X(openDoors, brokenDoors)
+      && forall d: Door, s: Sluice . ([openDoor(d, s)]X(openDoors[sluiceDoor(s, d) -> true], brokenDoors)
+                                      && [closeDoor(d, s)]X(openDoors[sluiceDoor(s, d) -> false], brokenDoors)
+                                      && [doorStuck(d, s)]X(openDoors, brokenDoors[sluiceDoor(s, d) -> true])
+                                     )
+      && [detectInputWafer]mu Y(position: Place = RI, projecting: Bool = false, projected: Bool = false, openDoorsLocal: SluiceDoor -> Bool = openDoors, brokenDoorsLocal: SluiceDoor -> Bool = brokenDoors)
+                            . (([!(exists a, b: Place . move(a, b)) && !beginProject && !endProject && !(exists d: Door, s: Sluice . doorStuck(d, s)) && !(exists d: Door, s: Sluice . openDoor(d, s)) && !(exists d: Door, s: Sluice . closeDoor(d, s))]Y(position, projecting, projected, openDoorsLocal, brokenDoorsLocal)
+                                && forall a, b: Place . [move(a, b)]Y(if(a == position, b, position), projecting && a != position, projected, openDoorsLocal, brokenDoorsLocal)
+                                && [beginProject]Y(position, position == P, projected, openDoorsLocal, brokenDoorsLocal)
+                                && [endProject]Y(position, false, projected || (position == P && projecting), openDoorsLocal, brokenDoorsLocal)
+                                && forall d: Door, s: Sluice . ([doorStuck(d, s)]Y(position, projecting, projected, openDoorsLocal, brokenDoorsLocal[sluiceDoor(s, d) -> true])
+                                                                && [closeDoor(d, s)]Y(position, projecting, projected, openDoorsLocal[sluiceDoor(s, d) -> false], brokenDoorsLocal)
+                                                                && [openDoor(d, s)]Y(position, projecting, projected, openDoorsLocal[sluiceDoor(s, d) -> true], brokenDoorsLocal)
+                                                               )
+                                && <true>true
+                               ) || val(position == RO && projected)
+                                 || val(exists s1, s2: Sluice, d1, d2 : Door . s1 != s2 && brokenDoorsLocal(sluiceDoor(s1, d1)) && brokenDoorsLocal(sluiceDoor(s2, d2)))
+                                 || val(exists s: Sluice . forall d: Door . !openDoorsLocal(sluiceDoor(s, d)) && brokenDoorsLocal(sluiceDoor(s, d)) && position == sluicePlace(s))
+                                 %|| val(exists sd: SluiceDoor . brokenDoorsLocal(sd))
+                              )
+    )
