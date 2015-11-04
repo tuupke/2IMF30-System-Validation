@@ -1,20 +1,21 @@
 sort
-  Place    = struct RI | RO | S1 | S2 | I | O | P;
-  Door     = struct outsideDoor | insideDoor;
-  Sluice   = struct sluice1 | sluice2;
+  Place      = struct RI | RO | S1 | S2 | I | O | P;
+  Door       = struct outsideDoor | insideDoor;
+  Sluice     = struct sluice1 | sluice2;
   SluiceDoor = struct insideDoor1 | outsideDoor1 | insideDoor2 | outsideDoor2;
-  Pressure = struct vacuum | normal;
-  Status   = struct empty | projected | unprojected;
+  Pressure   = struct vacuum | normal;
+  WaferState = struct empty | projected | unprojected | stuck;
 
 map
   sluicePlace: Sluice -> Place;
-  emptyPlaces: Place -> Status;
+  emptyPlaces: Place -> WaferState;
+  placesFalse: Place -> Bool;
   nothingBroken: SluiceDoor -> Bool;
   sluiceDoor: Sluice # Door -> SluiceDoor;
 
 var
-  place:Place;
-  sd:SluiceDoor;
+  place: Place;
+  sd: SluiceDoor;
 
 eqn
   sluicePlace(sluice1) = S1;
@@ -22,6 +23,7 @@ eqn
   sluicePlace(sluice2) = S2;
 
   emptyPlaces(place) = empty;
+  placesFalse(place) = false;
 
   sluiceDoor(sluice1, insideDoor) = insideDoor1;
   sluiceDoor(sluice1, outsideDoor) = outsideDoor1;
@@ -29,120 +31,205 @@ eqn
   sluiceDoor(sluice2, outsideDoor) = outsideDoor2;
 
 act
+  % external actions
   move: Place # Place;
   closeDoor, openDoor, doorStuck: Door # Sluice;
   vacuum, deVacuum, stopPumping: Sluice;
   readAirPressure: Sluice # Pressure;
   beginProject, endProject, detectInputWafer;
 
-  sMoveRequest, rMoveRequest, cMoveRequest: Sluice # Door;
-  sMoveResponse, rMoveResponse, cMoveResponse: Sluice # Door;
-  sInputWafer, rInputWafer, cInputWafer;
-  sStatus, rStatus, cStatus: Place # Status;
-  sStatus, rStatus, cStatus: Place # Status # Place # Status;
-  sPositionUpdate, rPositionUpdate, cPositionUpdate: Place # Place;
-  sProjected, rProjected, cProjected;
+  % communication actions (s = send, r = receive, c = communicate)
+  sWaferStateUpdateRequest, rWaferStateUpdateRequest, cWaferStateUpdateRequest: Place # WaferState;
+  sWaferStateUpdateResponse, rWaferStateUpdateResponse, cWaferStateUpdateResponse: Place # WaferState;
+  sMoveRequest, rMoveRequest, cMoveRequest: Place # Place # WaferState;
+  sMoveResponse, rMoveResponse, cMoveResponse: Place # Place;
+  sMoveCancel, rMoveCancel, cMoveCancel: Place # Place;
+  sSluiceRequest, rSluiceRequest, cSluiceRequest: Sluice # Door # Place;
+  sSluiceResponse, rSluiceResponse, cSluiceResponse: Sluice # Door # Place;
+  sSluiceFailedResponse, rSluiceFailedResponse, cSluiceFailedResponse: Sluice # Door # Place;
+  sSluiceMoveDone, rSluiceMoveDone, cSluiceMoveDone: Sluice # Door;
+  sSluiceStuck, rSluiceStuck, cSluiceStuck: Sluice # Bool # Bool;
 
   debug;
 
 proc
-  WaferTracker(status:Place->Status)
-    = (sum a,b:Place.rPositionUpdate(a, b).WaferTracker(status[b->status(a)][a->empty]))
-    + (sum p:Place.sStatus(p, status(p)).WaferTracker(status))
-    + (sum a,b:Place.sStatus(a, status(a), b, status(b)).WaferTracker(status))
-    + (rInputWafer.WaferTracker(status[RI->unprojected]))
-    + rProjected.WaferTracker(status[P->projected]);
+  WaferTracker(status: Place -> WaferState, locked: Place -> Bool)
+    = sum a, b: Place, s, t: WaferState . ((!locked(a) && !locked(b) && status(a) == s && status(b) == empty
+                                            && (((exists s: Sluice . sluicePlace(s) == b) && status(a) == unprojected)
+                                                => (status(I) == empty && (forall s: Sluice . (status(sluicePlace(s)) != unprojected || sluicePlace(s) == a)))
+                                               )
+                                            && (((exists s: Sluice . sluicePlace(s) == b) && status(a) == projected)
+                                                => (forall s: Sluice . (status(sluicePlace(s)) != projected || sluicePlace(s) == a))
+                                               )
+                                           ) -> rMoveRequest(a, b, s) . WaferTracker(status, locked[a -> true][b -> true])
+                                           + (locked(a) && locked(b)) -> (sMoveResponse(a, b) . WaferTracker(status[b -> status(a)][a -> empty], locked[a -> false][b -> false])
+                                                                          + rMoveCancel(a, b) . WaferTracker(status, locked[a -> false][b -> false])
+                                                                         )
+                                           + (!locked(a) && status(a) == s) -> rWaferStateUpdateRequest(a, s).WaferTracker(status, locked[a -> true])
+                                           + locked(a) -> sWaferStateUpdateResponse(a, s).WaferTracker(status[a -> s], locked[a -> false])
+                                          );
 
-  %RobotOutsideStart = rStatus(RI, empty).detectInputWafer.sInputWafer.RobotOutside;
-
-  RobotOutside
-    = rStatus(RI, empty).detectInputWafer.sInputWafer.RobotOutside
-      +
-      sum s:Sluice.(rStatus(RI, unprojected, sluicePlace(s), empty)
-                    .sMoveRequest(s, outsideDoor)
-                    .rMoveResponse(s, outsideDoor)
-                    .Move(RI, sluicePlace(s))
-                    +
-                    rStatus(sluicePlace(s), projected)
-                    .sMoveRequest(s, outsideDoor)
-                    .rMoveResponse(s, outsideDoor)
-                    .Move(sluicePlace(s), RO)
-                   ).RobotOutside;
+  RobotOutside(limited: Bool, limit: Int, repeat: Bool)
+    = (limit > 0 || !limited) -> sWaferStateUpdateRequest(RI, empty) . detectInputWafer . rWaferStateUpdateResponse(RI, unprojected) . RobotOutside(limit = if(limited, limit - 1, limit))
+      + sWaferStateUpdateRequest(RO, projected) . rWaferStateUpdateResponse(RO, empty) . RobotOutside(limit = if(limited && repeat, limit + 1, limit))
+      + (MoveToSluice(RI, outsideDoor, unprojected)
+         + MoveFromSluice(RO, outsideDoor, projected)
+         + MoveFromSluiceToSluice(outsideDoor, unprojected)
+        ) . RobotOutside();
 
   RobotInside
-    = sum s:Sluice.(rStatus(sluicePlace(s), unprojected, I, empty)
-                    .sMoveRequest(s, insideDoor)
-                    .rMoveResponse(s, insideDoor)
-                    .Move(sluicePlace(s), I)
-                    +
-                    rStatus(O, projected, sluicePlace(s), empty)
-                    .sMoveRequest(s, insideDoor)
-                    .rMoveResponse(s, insideDoor)
-                    .Move(O, sluicePlace(s))
-                   ).RobotInside;
+    = (MoveToSluice(O, insideDoor, projected)
+       + MoveFromSluice(I, insideDoor, unprojected)
+       + MoveFromSluiceToSluice(insideDoor, projected)
+      ) . RobotInside;
 
-  ProjectorRobot = rStatus(I, unprojected, P, empty)
-                   .Move(I, P)
-                   .ProjectorRobot
-                   +
-                   rStatus(P, unprojected)
-                   .beginProject.endProject
-                   .sProjected
-                   .ProjectorRobot
-                   +
-                   rStatus(P, projected, O, empty)
-                   .Move(P, O)
-                   .ProjectorRobot;
+  MoveToSluice(place: Place, door: Door, status: WaferState)
+    = sum s:Sluice . ((sMoveRequest(place, sluicePlace(s), status) | sSluiceRequest(s, door, place))
+                      + rSluiceResponse(s, door, place)
+                      . move(place, sluicePlace(s))
+                      . (rMoveResponse(place, sluicePlace(s)) | sSluiceMoveDone(s, door))
+                      + rSluiceFailedResponse(s, door, place)
+                      . sMoveCancel(place, sluicePlace(s))
+                     );
+
+  MoveFromSluice(place: Place, door: Door, status: WaferState)
+    = sum s: Sluice . ((sMoveRequest(sluicePlace(s), place, status) | sSluiceRequest(s, door, place))
+                        + rSluiceResponse(s, door, place)
+                        . move(sluicePlace(s), place)
+                        . (rMoveResponse(sluicePlace(s), place) | sSluiceMoveDone(s, door))
+                        + rSluiceFailedResponse(s, door, place)
+                        . sMoveCancel(sluicePlace(s), place)
+                      );
+
+  MoveFromSluiceToSluice(door: Door, status: WaferState)
+    = sum s, t: Sluice . ((sMoveRequest(sluicePlace(t), sluicePlace(s), status) | sSluiceRequest(s, door, sluicePlace(t)) | sSluiceStuck(t, door == outsideDoor, door == insideDoor))
+                          + rSluiceResponse(s, door, sluicePlace(t))
+                          . move(sluicePlace(t), sluicePlace(s))
+                          . (rMoveResponse(sluicePlace(t), sluicePlace(s)) | sSluiceMoveDone(s, door))
+                          + rSluiceFailedResponse(s, door, sluicePlace(t))
+                          . sMoveCancel(sluicePlace(t), sluicePlace(s))
+                         );
+
+  ProjectorRobot
+    = (sMoveRequest(I, P, unprojected) . move(I, P) . rMoveResponse(I, P)
+       + sMoveRequest(P, O, projected) . move(P, O) . rMoveResponse(P, O)
+       + sWaferStateUpdateRequest(P, unprojected) . beginProject . endProject . rWaferStateUpdateResponse(P, projected)
+      ) . ProjectorRobot;
 
 
-  Sluice(sluice:Sluice, outsideOpen:Bool, insideOpen:Bool, pressure:Pressure)
-    = rMoveRequest(sluice, outsideDoor)
-      .(insideOpen -> closeDoor(insideDoor, sluice).deVacuum(sluice).readAirPressure(sluice, normal).stopPumping(sluice) <> tau)
-      .(!outsideOpen -> openDoor(outsideDoor, sluice) <> tau)
-      .sMoveResponse(sluice, outsideDoor)
-      .Sluice(sluice, true, false, normal)
-      +
-      rMoveRequest(sluice, insideDoor)
-      .(outsideOpen -> closeDoor(outsideDoor, sluice).vacuum(sluice).readAirPressure(sluice, vacuum).stopPumping(sluice) <> tau)
-      .(!insideOpen -> openDoor(insideDoor, sluice) <> tau)
-      .sMoveResponse(sluice, insideDoor)
-      .Sluice(sluice, false, true, vacuum);
-
-  Move(a:Place, b:Place) = move(a, b).sPositionUpdate(a, b);
+  Sluice(sluice: Sluice, outsideOpen: Bool, insideOpen: Bool, outsideStuck: Bool, insideStuck: Bool)
+    = (outsideStuck && !outsideOpen && !insideStuck && !insideOpen)
+      -> vacuum(sluice)
+          . readAirPressure(sluice, vacuum)
+          . stopPumping(sluice)
+          . (openDoor(insideDoor, sluice) . Sluice(insideOpen = true)
+              + doorStuck(insideDoor, sluice) . Sluice(insideStuck = true)
+            )
+    + (insideStuck && !insideOpen && !outsideStuck && !outsideOpen)
+      -> deVacuum(sluice)
+          . readAirPressure(sluice, normal)
+          . stopPumping(sluice)
+          . (openDoor(outsideDoor, sluice) . Sluice(outsideOpen = true)
+              + doorStuck(outsideDoor, sluice) . Sluice(outsideStuck = true)
+            )
+    + (insideStuck || outsideStuck) -> rSluiceStuck(sluice, outsideOpen, insideOpen) . Sluice()
+    + (insideStuck && outsideStuck && !insideOpen && !outsideOpen) -> (sWaferStateUpdateRequest(sluicePlace(sluice), projected)
+                                                                        + sWaferStateUpdateRequest(sluicePlace(sluice), unprojected)
+                                                                      ) . rWaferStateUpdateResponse(sluicePlace(sluice), stuck) . Sluice()
+    + (!insideStuck && !outsideStuck)
+      ->
+      sum p: Place . (rSluiceRequest(sluice, outsideDoor, p)
+                      . (outsideOpen -> (sSluiceResponse(sluice, outsideDoor, p)
+                                          . rSluiceMoveDone(sluice, outsideDoor)
+                                          . Sluice()
+                                        )
+                                     <> (closeDoor(insideDoor, sluice)
+                                          . deVacuum(sluice)
+                                          . readAirPressure(sluice, normal)
+                                          . stopPumping(sluice)
+                                          . (openDoor(outsideDoor, sluice)
+                                              . sSluiceResponse(sluice, outsideDoor, p)
+                                              . rSluiceMoveDone(sluice, outsideDoor)
+                                              . Sluice(outsideOpen = true, insideOpen = false)
+                                              + doorStuck(outsideDoor, sluice)
+                                              . sSluiceFailedResponse(sluice, outsideDoor, p)
+                                              . Sluice(insideOpen = false, outsideStuck = true)
+                                            )
+                                          + doorStuck(insideDoor, sluice)
+                                          . sSluiceFailedResponse(sluice, outsideDoor, p)
+                                          . Sluice(insideStuck = true)
+                                        )
+                        )
+                      +
+                      rSluiceRequest(sluice, insideDoor, p)
+                      . (insideOpen -> (sSluiceResponse(sluice, insideDoor, p)
+                                          . rSluiceMoveDone(sluice, insideDoor)
+                                          . Sluice()
+                                        )
+                                     <> (closeDoor(outsideDoor, sluice)
+                                          . vacuum(sluice)
+                                          . readAirPressure(sluice, vacuum)
+                                          . stopPumping(sluice)
+                                          . (openDoor(insideDoor, sluice)
+                                              . sSluiceResponse(sluice, insideDoor, p)
+                                              . rSluiceMoveDone(sluice, insideDoor)
+                                              . Sluice(outsideOpen = false, insideOpen = true)
+                                              + doorStuck(insideDoor, sluice)
+                                              . sSluiceFailedResponse(sluice, insideDoor, p)
+                                              . Sluice(outsideOpen = false, insideStuck = true)
+                                            )
+                                          + doorStuck(outsideDoor, sluice)
+                                          . sSluiceFailedResponse(sluice, insideDoor, p)
+                                          . Sluice(outsideStuck = true)
+                                        )
+                        )
+                     );
 
 init
   hide({
-    cStatus,
-    cInputWafer,
+    cWaferStateUpdateRequest,
+    cWaferStateUpdateResponse,
     cMoveRequest,
     cMoveResponse,
-    cPositionUpdate,
-    cProjected,
+    cMoveCancel,
+    cSluiceRequest,
+    cSluiceResponse,
+    cSluiceFailedResponse,
+    cSluiceMoveDone,
     debug
   },
   allow({
     move,
     closeDoor, openDoor,
+    doorStuck,
     vacuum, deVacuum,
     stopPumping,
     readAirPressure,
     beginProject, endProject,
     detectInputWafer,
 
-    cStatus,
-    cInputWafer,
+    cWaferStateUpdateRequest,
+    cWaferStateUpdateResponse,
     cMoveRequest,
     cMoveResponse,
-    cPositionUpdate,
-    cProjected
+    cMoveCancel,
+    cSluiceRequest | cMoveRequest,
+    cSluiceRequest | cMoveRequest | cSluiceStuck,
+    cSluiceResponse,
+    cSluiceFailedResponse,
+    cSluiceMoveDone | cMoveResponse
   },
   comm({
-    sStatus         | rStatus         -> cStatus,
-    sInputWafer     | rInputWafer     -> cInputWafer,
-    sMoveRequest    | rMoveRequest    -> cMoveRequest,
-    sMoveResponse   | rMoveResponse   -> cMoveResponse,
-    sPositionUpdate | rPositionUpdate -> cPositionUpdate,
-    sProjected      | rProjected      -> cProjected
+    sWaferStateUpdateRequest  | rWaferStateUpdateRequest  -> cWaferStateUpdateRequest,
+    sWaferStateUpdateResponse | rWaferStateUpdateResponse -> cWaferStateUpdateResponse,
+    sMoveRequest              | rMoveRequest              -> cMoveRequest,
+    sMoveResponse             | rMoveResponse             -> cMoveResponse,
+    sMoveCancel               | rMoveCancel               -> cMoveCancel,
+    sSluiceRequest            | rSluiceRequest            -> cSluiceRequest,
+    sSluiceResponse           | rSluiceResponse           -> cSluiceResponse,
+    sSluiceFailedResponse     | rSluiceFailedResponse     -> cSluiceFailedResponse,
+    sSluiceMoveDone           | rSluiceMoveDone           -> cSluiceMoveDone,
+    sSluiceStuck              | rSluiceStuck              -> cSluiceStuck
   },
-    RobotOutside || RobotInside || ProjectorRobot || Sluice(sluice1, false, false, normal) || Sluice(sluice2, false, false, normal) || WaferTracker(emptyPlaces)
+    WaferTracker(emptyPlaces, placesFalse) || RobotOutside(false, 0, false) || Sluice(sluice1, false, false, false, false) || RobotInside || ProjectorRobot || Sluice(sluice2, false, false, false, false)
   )));
