@@ -3,11 +3,11 @@ sort
   Door       = struct outsideDoor | insideDoor;
   Sluice     = struct sluice1 | sluice2;
   Pressure   = struct vacuum | normal;
-  WaferState = struct empty | projected | unprojected | stuck;
+  Status = struct empty | projected | unprojected | stuck;
 
 map
   sluicePlace: Sluice -> Place;
-  placesEmpty: Place -> WaferState;
+  placesEmpty: Place -> Status;
   placesFalse: Place -> Bool;
 
   % Only used for model checking
@@ -39,9 +39,9 @@ act
   beginProject, endProject, detectInputWafer;
 
   % communication actions (s = send, r = receive, c = communicate)
-  sWaferStateUpdateRequest, rWaferStateUpdateRequest, cWaferStateUpdateRequest: Place # WaferState;
-  sWaferStateUpdateResponse, rWaferStateUpdateResponse, cWaferStateUpdateResponse: Place # WaferState;
-  sMoveRequest, rMoveRequest, cMoveRequest: Place # Place # WaferState;
+  sStatusUpdateRequest, rStatusUpdateRequest, cStatusUpdateRequest: Place # Status;
+  sStatusUpdateResponse, rStatusUpdateResponse, cStatusUpdateResponse: Place # Status;
+  sMoveRequest, rMoveRequest, cMoveRequest: Place # Place # Status;
   sMoveResponse, rMoveResponse, cMoveResponse: Place # Place;
   sMoveCancel, rMoveCancel, cMoveCancel: Place # Place;
   sSluiceRequest, rSluiceRequest, cSluiceRequest: Sluice # Door # Place;
@@ -51,8 +51,8 @@ act
   sSluiceStuck, rSluiceStuck, cSluiceStuck: Sluice # Bool # Bool;
 
 proc
-  WaferTracker(status: Place -> WaferState, locked: Place -> Bool)
-    = sum a, b: Place, s, t: WaferState . ((!locked(a) && !locked(b) && status(a) == s && status(b) == empty
+  WaferTracker(status: Place -> Status, locked: Place -> Bool)
+    = sum a, b: Place, s, t: Status . ((!locked(a) && !locked(b) && status(a) == s && status(b) == empty
                                             && (((exists s: Sluice . sluicePlace(s) == b) && status(a) == unprojected)
                                                 => (status(I) == empty && (forall s: Sluice . (status(sluicePlace(s)) != unprojected || sluicePlace(s) == a)))
                                                )
@@ -63,13 +63,13 @@ proc
                                            + (locked(a) && locked(b)) -> (sMoveResponse(a, b) . WaferTracker(status[b -> status(a)][a -> empty], locked[a -> false][b -> false])
                                                                           + rMoveCancel(a, b) . WaferTracker(status, locked[a -> false][b -> false])
                                                                          )
-                                           + (!locked(a) && status(a) == s) -> rWaferStateUpdateRequest(a, s).WaferTracker(status, locked[a -> true])
-                                           + locked(a) -> sWaferStateUpdateResponse(a, s).WaferTracker(status[a -> s], locked[a -> false])
+                                           + (!locked(a) && status(a) == s) -> rStatusUpdateRequest(a, s).WaferTracker(status, locked[a -> true])
+                                           + locked(a) -> sStatusUpdateResponse(a, s).WaferTracker(status[a -> s], locked[a -> false])
                                           );
 
   RobotOutside(limited: Bool, limit: Int, repeat: Bool)
-    = (limit > 0 || !limited) -> sWaferStateUpdateRequest(RI, empty) . detectInputWafer . rWaferStateUpdateResponse(RI, unprojected) . RobotOutside(limit = if(limited, limit - 1, limit))
-      + sWaferStateUpdateRequest(RO, projected) . rWaferStateUpdateResponse(RO, empty) . RobotOutside(limit = if(limited && repeat, limit + 1, limit))
+    = (limit > 0 || !limited) -> sStatusUpdateRequest(RI, empty) . detectInputWafer . rStatusUpdateResponse(RI, unprojected) . RobotOutside(limit = if(limited, limit - 1, limit))
+      + sStatusUpdateRequest(RO, projected) . rStatusUpdateResponse(RO, empty) . RobotOutside(limit = if(limited && repeat, limit + 1, limit))
       + (MoveToSluice(RI, outsideDoor, unprojected)
          + MoveFromSluice(RO, outsideDoor, projected)
          + MoveFromSluiceToSluice(outsideDoor, unprojected)
@@ -81,7 +81,7 @@ proc
        + MoveFromSluiceToSluice(insideDoor, projected)
       ) . RobotInside;
 
-  MoveToSluice(place: Place, door: Door, status: WaferState)
+  MoveToSluice(place: Place, door: Door, status: Status)
     = sum s:Sluice . ((sMoveRequest(place, sluicePlace(s), status) | sSluiceRequest(s, door, place))
                       + rSluiceResponse(s, door, place)
                       . move(place, sluicePlace(s))
@@ -90,7 +90,7 @@ proc
                       . sMoveCancel(place, sluicePlace(s))
                      );
 
-  MoveFromSluice(place: Place, door: Door, status: WaferState)
+  MoveFromSluice(place: Place, door: Door, status: Status)
     = sum s: Sluice . ((sMoveRequest(sluicePlace(s), place, status) | sSluiceRequest(s, door, place))
                         + rSluiceResponse(s, door, place)
                         . move(sluicePlace(s), place)
@@ -99,7 +99,7 @@ proc
                         . sMoveCancel(sluicePlace(s), place)
                       );
 
-  MoveFromSluiceToSluice(door: Door, status: WaferState)
+  MoveFromSluiceToSluice(door: Door, status: Status)
     = sum s, t: Sluice . ((sMoveRequest(sluicePlace(t), sluicePlace(s), status) | sSluiceRequest(s, door, sluicePlace(t)) | sSluiceStuck(t, door == outsideDoor, door == insideDoor))
                           + rSluiceResponse(s, door, sluicePlace(t))
                           . move(sluicePlace(t), sluicePlace(s))
@@ -111,7 +111,7 @@ proc
   ProjectorRobot
     = (sMoveRequest(I, P, unprojected) . move(I, P) . rMoveResponse(I, P)
        + sMoveRequest(P, O, projected) . move(P, O) . rMoveResponse(P, O)
-       + sWaferStateUpdateRequest(P, unprojected) . beginProject . endProject . rWaferStateUpdateResponse(P, projected)
+       + sStatusUpdateRequest(P, unprojected) . beginProject . endProject . rStatusUpdateResponse(P, projected)
       ) . ProjectorRobot;
 
 
@@ -131,9 +131,9 @@ proc
               + doorStuck(outsideDoor, sluice) . Sluice(outsideStuck = true)
             )
     + (insideStuck || outsideStuck) -> rSluiceStuck(sluice, outsideOpen, insideOpen) . Sluice()
-    + (insideStuck && outsideStuck && !insideOpen && !outsideOpen) -> (sWaferStateUpdateRequest(sluicePlace(sluice), projected)
-                                                                        + sWaferStateUpdateRequest(sluicePlace(sluice), unprojected)
-                                                                      ) . rWaferStateUpdateResponse(sluicePlace(sluice), stuck) . Sluice()
+    + (insideStuck && outsideStuck && !insideOpen && !outsideOpen) -> (sStatusUpdateRequest(sluicePlace(sluice), projected)
+                                                                        + sStatusUpdateRequest(sluicePlace(sluice), unprojected)
+                                                                      ) . rStatusUpdateResponse(sluicePlace(sluice), stuck) . Sluice()
     + (!insideStuck && !outsideStuck)
       ->
       sum p: Place . (rSluiceRequest(sluice, outsideDoor, p)
@@ -185,8 +185,8 @@ proc
 
 init
   hide({
-    cWaferStateUpdateRequest,
-    cWaferStateUpdateResponse,
+    cStatusUpdateRequest,
+    cStatusUpdateResponse,
     cMoveRequest,
     cMoveResponse,
     cMoveCancel,
@@ -205,8 +205,8 @@ init
     beginProject, endProject,
     detectInputWafer,
 
-    cWaferStateUpdateRequest,
-    cWaferStateUpdateResponse,
+    cStatusUpdateRequest,
+    cStatusUpdateResponse,
     cMoveRequest,
     cMoveResponse,
     cMoveCancel,
@@ -217,8 +217,8 @@ init
     cSluiceMoveDone | cMoveResponse
   },
   comm({
-    sWaferStateUpdateRequest  | rWaferStateUpdateRequest  -> cWaferStateUpdateRequest,
-    sWaferStateUpdateResponse | rWaferStateUpdateResponse -> cWaferStateUpdateResponse,
+    sStatusUpdateRequest  | rStatusUpdateRequest  -> cStatusUpdateRequest,
+    sStatusUpdateResponse | rStatusUpdateResponse -> cStatusUpdateResponse,
     sMoveRequest              | rMoveRequest              -> cMoveRequest,
     sMoveResponse             | rMoveResponse             -> cMoveResponse,
     sMoveCancel               | rMoveCancel               -> cMoveCancel,
