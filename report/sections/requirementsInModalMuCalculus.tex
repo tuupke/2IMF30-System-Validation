@@ -5,7 +5,7 @@
 \begin{description}
  \item[1. At least one door of a sluice is closed at any point in time]\mbox{}\\
 \[
-[true^*]\forall s:Sluice,d:Door.[openDoor(d, s).\overline{closeDoor(d, s)}^*.openDoor(d, s)]false
+[true^*]\forall s:Sluice,d:Door.[openDoor(d, s) \cdot \overline{closeDoor(d, s)}^* \cdot openDoor(d, s)]false
 \]
 
 
@@ -23,50 +23,88 @@
 & )
 \end{align*}
  
- \item[\smash{\shortstack[l]{3. Any wafer in the system will eventually be processed unless the system breaks,\\ or the wafer is inside a sluice when the sluice itself breaks}}]
+ \item[\smash{\shortstack[l]{3. Any wafer in the system will eventually be processed unless for each sluice at \\ least one door gets stuck, or the wafer is in a sluice with two broken, closed doors}}]
+ 
+This requirement is quite complex to express in modal $\mu$-calculus. In the first place, we need to keep track for each door whether it is open and whether it is stuck. We do this with a greatest fixed point $X$ with two functions $openDoors$ and $brokenDoors$. We update those functions when $closeDoor$, $openDoor$, or $doorStuck$ actions happen. Whenever a $detectInputWafer$ occurs, we need to keep track of the wafer that enters the system. We do this with a least fixed point $Y$ (note that this is nested within $X$). However, within this fixed point we need to continue tracking the doors. So we use $openDoorsLocal$ and $brokenDoorsLocal$ as data within this fixed point $Y$, take over the values of $openDoors$ and $brokenDoors$ and update the local versions of those functions when necessary in this least fixed point. We also need to keep track of position of the wafer, and whether is $projected$ or currently $projecting$. We use $position$, $projected$, and $projecting$ for this. We update this data when $move$, $beginProject$ and $endProject$ actions occur. Finally, the least fixed point can get a true value when $position$ equals $RO$, or when each sluice has at least one broken door, or when the position is a sluice of which all doors are closed and broken.
  
 \begin{align*}\allowdisplaybreaks
-& [true^*.detectInputWafer] \mu X( \\
-&          \tab                          position: Place = RI,    \\  
-&          \tab                          projecting: Bool = false,  \\
-&          \tab                          projected: Bool = false,   \\
-&          \tab                          stuck: Bool = false,       \\
-&          \tab                          brokenDoors: SluiceDoor \to Bool = nothingBroken   \\
-&                                 ).( \\
-&  \tab ( \\
-&  \tab\tab  \forall a,b:Place.[move(a,b)]X( \\
-&  \tab\tab  \tab                              if(a \approx position, b, position), \\
-&  \tab\tab  \tab                              projecting \wedge a \not \approx position, \\
-&  \tab\tab  \tab                              projected, \\
-&  \tab\tab  \tab                              if(a \approx position \wedge \exists s:Sluice . sluicePlace(s) \approx b \wedge ( \\
-& \tab\tab\tab\tab (\neg projected \wedge brokenDoors(sluiceDoor(s, insideDoor))) \\ 
-& \tab\tab\tab\tab \vee (projected \wedge brokenDoors(sluiceDoor(s, outsideDoor))) \\
-& \tab\tab\tab ), true, stuck), \\
-&  \tab\tab  \tab                              brokenDoors \\
-&  \tab\tab                               ) \\
-&  \tab\tab  \wedge [\overline{(\exists a,b:Place.move(a,b)) \cup beginProject \cup endProject} \\
-& \tab\tab\tab\tab \overline{ \cup (\exists d:Door,s:Sluice.doorStuck(d, s))}]X( \\
-& \tab\tab\tab\tab\tab\tab position, projecting, projected, stuck, brokenDoors) \\
-&  \tab\tab  \wedge [beginProject]X(position, position \approx P, projected, stuck, brokenDoors) \\
-&  \tab\tab  \wedge [endProject]X(\\
-& \tab\tab\tab\tab position, false, projected \vee (projecting \wedge position \approx P),  stuck, brokenDoors \\
-& \tab\tab\tab ) \\
-&  \tab\tab  \wedge \forall d:Door,s:Sluice.[doorStuck(d, s)]X( \\
-&  \tab\tab    \tab position,   projecting,  projected, \\
-&  \tab\tab   \tab                        if(sluicePlace(s) \approx position \wedge ((\neg projected \wedge d \approx insideDoor) \\
-& \tab\tab\tab\tab\tab \vee (projected \wedge d \approx outsideDoor)), true, stuck), \\
-&  \tab\tab                       \tab brokenDoors[sluiceDoor(s,d)\to true] \\
-&  \tab\tab                                              ) \\
-&  \tab ) \\
-&  \vee (position \approx RO \wedge projected) \\
-& \vee stuck \\
-& \vee (position != RO \\ 
-& \tab \wedge \exists s1,s2:Sluice,d1,d2:Door.( \\
-& \tab \tab brokenDoors(sluiceDoor(s1, d1)) \wedge brokenDoors(sluiceDoor(s2, d2)) \\
-&\tab\tab \wedge s1 \not \approx s2 \wedge sluiceDoor(s1, d1) \not \approx sluiceDoor(s2, d2)) \\
-&\tab ) \\
-&)
-	\end{align*}
+& \nu X(openDoors: Sluice \to (Door \to Bool) = sluiceDoorsFalse, \\
+& \tab\tab brokenDoors: Sluice \to (Door \to Bool) = sluiceDoorsFalse) \\
+& \tab . ([\overline{\exists d: Door, s: Sluice . openDoor(d, s)} \\
+& \tab\tab\tab \cap \overline{\exists d: Door, s: Sluice . closeDoor(d, s)} \\
+& \tab\tab\tab \cap \overline{exists d: Door, s: Sluice . doorStuck(d, s)} \\
+& \tab\tab\tab \cap \overline{detectInputWafer}]X(openDoors, brokenDoors) \\
+& \tab\tab \wedge \forall d: Door, s: Sluice . ( \\
+& \tab\tab\tab [openDoor(d, s)]X(openDoors[s \to openDoors(s)[d \to true]], brokenDoors) \\
+& \tab\tab\tab \wedge [closeDoor(d, s)]X(openDoors[s \to openDoors(s)[d \to false]], brokenDoors) \\
+& \tab\tab\tab \wedge [doorStuck(d, s)]X(openDoors, brokenDoors[s \to brokenDoors(s)[d \to false]])) \\
+& \tab\tab \wedge [detectInputWafer]\mu Y( \\ 
+& \tab\tab\tab\tab\tab position: Place = RI, \\
+& \tab\tab\tab\tab\tab projecting: Bool = false, \\
+& \tab\tab\tab\tab\tab projected: Bool = false, \\
+& \tab\tab\tab\tab\tab openDoorsLocal: Sluice \to (Door \to Bool) = openDoors, \\
+& \tab\tab\tab\tab\tab brokenDoorsLocal: Sluice \to (Door \to Bool) = brokenDoors \\
+& \tab\tab\tab\tab ) . (([\overline{\exists a, b: Place . move(a, b)} \\
+& \tab\tab\tab\tab\tab\tab \cap \overline{beginProject} \\
+& \tab\tab\tab\tab\tab\tab \cap \overline{endProject} \\
+& \tab\tab\tab\tab\tab\tab \cap \overline{\exists d: Door, s: Sluice . doorStuck(d, s)} \\
+& \tab\tab\tab\tab\tab\tab \cap \overline{\exists d: Door, s: Sluice . openDoor(d, s)} \\
+& \tab\tab\tab\tab\tab\tab \cap \overline{\exists d: Door, s: Sluice . closeDoor(d, s)}]Y( \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab position, projecting, projected, openDoorsLocal, brokenDoorsLocal \\
+& \tab\tab\tab\tab\tab\tab\tab\tab ) \\
+& \tab\tab\tab\tab\tab\tab  \wedge \forall a, b: Place . [move(a, b)]Y( \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab if(a \approx position, b, position), \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projecting \wedge a \not\approx position, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projected, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab openDoorsLocal, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab brokenDoorsLocal \\
+& \tab\tab\tab\tab\tab\tab\tab\tab ) \\
+& \tab\tab\tab\tab\tab\tab  \wedge [beginProject]Y( \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab position, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab position \approx P, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projected, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab openDoorsLocal, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab brokenDoorsLocal \\
+& \tab\tab\tab\tab\tab\tab\tab\tab ) \\
+& \tab\tab\tab\tab\tab\tab  \wedge [endProject]Y( \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab position, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab false, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projected \vee (position \approx P \wedge projecting), \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab openDoorsLocal, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab brokenDoorsLocal \\
+& \tab\tab\tab\tab\tab\tab\tab\tab ) \\
+& \tab\tab\tab\tab\tab\tab  \wedge \forall d: Door, s: Sluice . ( \\ 
+& \tab\tab\tab\tab\tab\tab\tab [doorStuck(d, s)]Y( \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab position, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projecting, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projected, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab openDoorsLocal, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab brokenDoorsLocal[s \to brokenDoorsLocal(s)[d \to true]] \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab ) \\
+& \tab\tab\tab\tab\tab\tab\tab  \wedge [closeDoor(d, s)]Y( \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab position, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projecting, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projected, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab openDoorsLocal[s \to openDoorsLocal(s)[d \to true]], \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab brokenDoorsLocal \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab ) \\
+& \tab\tab\tab\tab\tab\tab\tab \wedge [openDoor(d, s)]Y( \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab position, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projecting, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projected, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab openDoorsLocal[s \to openDoorsLocal(s)[d \to false]], \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab brokenDoorsLocal \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab ) \\
+& \tab\tab\tab\tab\tab\tab ) \\
+& \tab\tab\tab\tab\tab\tab \wedge \langle true \rangle true \\
+& \tab\tab\tab\tab\tab ) \\
+& \tab\tab\tab\tab\tab \vee (position \approx RO \wedge projected) \\
+& \tab\tab\tab\tab\tab \vee (\forall s: Sluice . \exists d: Door . brokenDoorsLocal(s)(d)) \\
+& \tab\tab\tab\tab\tab \vee (\exists s: Sluice . position \approx sluicePlace(s) \\
+& \tab\tab\tab\tab\tab\tab\tab \wedge \forall d: Door . !openDoorsLocal(s)(d) \wedge brokenDoorsLocal(s)(d)) \\
+& \tab\tab ) \\
+& \tab ) \\
+\end{align*}
 
  
  \item[4. Internal racks, sluices and the projector each contain at most one wafer]
@@ -87,12 +125,12 @@
 	
  \item[6. A sluice door cannot open until the pressure on both sides is equal]
 	\begin{align*}
-&[true^*]\forall s:Sluice . ( \\
-&\tab  [stopPumping(s).\overline{readAirPressure(s, vacuum)}^*\\
-&\tab\tab\tab.openDoor(insideDoor,s)]false \\
-&\tab  \wedge [stopPumping(s).\overline{readAirPressure(s, normal)}^*\\
-&\tab\tab\tab.openDoor(outsideDoor,s)]false \\
-&)		
+& \forall s: Sluice . \nu X(pressure: Pressure = normal) . ( \\
+&   [\overline{\exists d: Door . openDoor(d, s)} \cap \overline{\exists p: Pressure . readAirPressure(s, p)}]X(pressure) \\
+&   \wedge [openDoor(insideDoor, s)](pressure \approx vacuum \wedge X(pressure)) \\
+&   \wedge [openDoor(outsideDoor, s)](pressure \approx normal \wedge X(pressure)) \\
+&   \wedge \forall p: Pressure . [readAirPressure(s, p)]X(p) \\
+& ) \\
 	\end{align*}
 	
  \item[7. Sluice pumps cannot operate until both of its doors are closed]

@@ -2,9 +2,9 @@
 
 [true*]forall s:Sluice . (
   [closeDoor(outsideDoor, s).(!openDoor(outsideDoor, s))*.(
-    move(RI, sluicePlace(s)) + move(sluicePlace(s), RI) + move(RO, sluicePlace(s)) + move(sluicePlace(s), RO)
+    move(RI, sluicePlace(s)) || move(sluicePlace(s), RI) || move(RO, sluicePlace(s)) || move(sluicePlace(s), RO)
   )]false &&
   [closeDoor(insideDoor , s).(!openDoor(insideDoor , s))*.(
-    move(I, sluicePlace(s)) + move(sluicePlace(s), I) + move(O, sluicePlace(s)) + move(sluicePlace(s), O)
+    move(I, sluicePlace(s)) || move(sluicePlace(s), I) || move(O, sluicePlace(s)) || move(sluicePlace(s), O)
   )]false
 )
