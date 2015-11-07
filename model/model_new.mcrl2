@@ -1,14 +1,16 @@
 sort
-  Place      = struct RI | RO | S1 | S2 | I | O | P;
-  Door       = struct outsideDoor | insideDoor;
-  Sluice     = struct sluice1 | sluice2;
-  Pressure   = struct vacuum | normal;
-  Status = struct empty | projected | unprojected | stuck;
+  Place    = struct RI | RO | S1 | S2 | I | O | P;
+  Door     = struct outsideDoor | insideDoor;
+  Sluice   = struct sluice1 | sluice2;
+  Pressure = struct vacuum | normal;
+  Status   = struct empty | projected | projecting | unprojected | stuck;
 
 map
   sluicePlace: Sluice -> Place;
   placesEmpty: Place -> Status;
   placesFalse: Place -> Bool;
+  isSluice: Place -> Bool;
+  isInside: Place -> Bool;
 
   % Only used for model checking
   doorsFalse: Door -> Bool;
@@ -25,6 +27,9 @@ eqn
 
   placesEmpty(place) = empty;
   placesFalse(place) = false;
+
+  isSluice(place) = exists s: Sluice . sluicePlace(s) == place;
+  isInside(place) = place in {I, P, O};
 
   % Only used for model checking
   doorsFalse(door) = false;
@@ -51,21 +56,72 @@ act
   sSluiceStuck, rSluiceStuck, cSluiceStuck: Sluice # Bool # Bool;
 
 proc
+
+  %
+  % WaferTracker keeps track of the place statuses. There are two kind of status
+  % updates: single place status updates and move statues updates. When a
+  % process wants to update the status of a single place it sends a
+  % StatusUpdateRequest with parameters place and the 'from status'. When there
+  % is an unlocked place with that state, the WaferTracker can receive the
+  % StatusUpdateRequest and consequently locks that state. The WaferTracker is
+  % then able to send back the StatusUpdateResponse with all possible 'to
+  % statuses', which the other process will receive after it has done possible
+  % other necessary actions. The WaferTracker will then unlock the corresponding
+  % state again. A move status update works similar, however it works with a
+  % MoveRequest that has two place parameters and one status parameter. The
+  % conditions are that the 'to' place must be empty and the 'from' place must
+  % have the given status. Of course both states must be unlocked. When two
+  % places a and b are locked, the WaferTracker can send a MoveResponse with
+  % the two places, which the other process will receive when the actual move
+  % action is done.
+  %
+  % MoveRequests to a sluice have extra conditions: other sluices must not
+  % contain a wafer with the same status and additionally, if the status is
+  % unprojected, there must be at least one place inside that is empty.
+  %
+
   WaferTracker(status: Place -> Status, locked: Place -> Bool)
-    = sum a, b: Place, s, t: Status . ((!locked(a) && !locked(b) && status(a) == s && status(b) == empty
-                                            && (((exists s: Sluice . sluicePlace(s) == b) && status(a) == unprojected)
-                                                => (status(I) == empty && (forall s: Sluice . (status(sluicePlace(s)) != unprojected || sluicePlace(s) == a)))
-                                               )
-                                            && (((exists s: Sluice . sluicePlace(s) == b) && status(a) == projected)
-                                                => (forall s: Sluice . (status(sluicePlace(s)) != projected || sluicePlace(s) == a))
-                                               )
-                                           ) -> rMoveRequest(a, b, s) . WaferTracker(status, locked[a -> true][b -> true])
-                                           + (locked(a) && locked(b)) -> (sMoveResponse(a, b) . WaferTracker(status[b -> status(a)][a -> empty], locked[a -> false][b -> false])
-                                                                          + rMoveCancel(a, b) . WaferTracker(status, locked[a -> false][b -> false])
-                                                                         )
-                                           + (!locked(a) && status(a) == s) -> rStatusUpdateRequest(a, s).WaferTracker(status, locked[a -> true])
-                                           + locked(a) -> sStatusUpdateResponse(a, s).WaferTracker(status[a -> s], locked[a -> false])
-                                          );
+
+    % Receive StatusUpdateRequest(p, s) when place p is not locked and the status of p is s. Lock place p.
+
+    = sum p: Place, s: Status . (!locked(p) && status(p) == s) -> rStatusUpdateRequest(p, s).WaferTracker(status, locked[p -> true])
+
+    % Send StatusUpdateResponse when p is locked. Set status of place p to s and unlock place p.
+
+    + sum p: Place, s: Status . locked(p) -> sStatusUpdateResponse(p, s).WaferTracker(status[p -> s], locked[p -> false])
+
+    % Receive MoveRequest(a, b, s) if both places a and b are unlocked and status of place a is s and place b is empty. Lock places a and b.
+    % When b is a sluice, extra conditions holds: other sluices must not contain a wafer with the same status.
+    % Additionally, if the status is unprojected, there must be at least one place inside that is empty.
+
+    + sum a, b: Place, s: Status . (!locked(a) && !locked(b) && status(a) == s && status(b) == empty
+                                    && (isSluice(b) => (forall sluice: Sluice . (sluicePlace(sluice) != a => status(sluicePlace(sluice)) != s)
+                                                        && (s == unprojected => status(I) == empty)
+                                                       )
+                                       )
+                                   ) -> rMoveRequest(a, b, s) . WaferTracker(status, locked[a -> true][b -> true])
+
+    % Send MoveResponse(a, b) when places a and b are locked. Set status of place b to the status of place a, make a empty and unlock a and b.
+
+    + sum a, b: Place . (locked(a) && locked(b)) -> sMoveResponse(a, b) . WaferTracker(status[b -> status(a)][a -> empty], locked[a -> false][b -> false])
+
+    % Receive MoveCancel(a, b) when places a and b are locked. Unlock places a and b.
+
+    + sum a, b: Place . (locked(a) && locked(b)) -> rMoveCancel(a, b) . WaferTracker(status, locked[a -> false][b -> false]);
+
+  %
+  % RobotOutside performs detectInputWafer actions and moves unprojected wafers
+  % from RI to a sluice and projected wafers from sluices to RO. It can also
+  % move unprojected wafers from a broken sluice to another sluice. When there
+  % is a projected wafer in RO, it can remove that wafer from the system. The
+  % variables limited, limit and repeat can be used to limit the number of
+  % wafers (useful while debugging). When limited is false, wafers can always
+  % arrive (provided that RI is empty). Otherwise, when repeat is false, the
+  % maximum number of detectInputWafer actions that can be executed is equal to
+  % the variable limit; when repeat is true, the maximum number of wafers that
+  % is present in the system simultaneously is equal to the variable limit.
+  % In production, the limited variable must be set to false.
+  %
 
   RobotOutside(limited: Bool, limit: Int, repeat: Bool)
     = (limit > 0 || !limited) -> sStatusUpdateRequest(RI, empty) . detectInputWafer . rStatusUpdateResponse(RI, unprojected) . RobotOutside(limit = if(limited, limit - 1, limit))
@@ -75,11 +131,31 @@ proc
          + MoveFromSluiceToSluice(outsideDoor, unprojected)
         ) . RobotOutside();
 
+  %
+  % RobotInside can move projected wafers from a sluice to O and unprojected
+  % wafers from I to a sluice. It can also move projected wafers from a broken
+  % sluice to another sluice.
+  %
+
   RobotInside
     = (MoveToSluice(O, insideDoor, projected)
        + MoveFromSluice(I, insideDoor, unprojected)
        + MoveFromSluiceToSluice(insideDoor, projected)
       ) . RobotInside;
+
+  %
+  % MoveToSluice is a terminating auxiliary process used by RobotInside and
+  % RobotOutside. It is able to execute a multi-action, consisting of sending
+  % a SluiceRequest and a MoveRequest. It can also receive a SluiceResponse.
+  % This means that the SluiceRequest is processed and the specified door is
+  % open. Then it can perform a move action to that sluice and consequently
+  % send a SluiceMoveDone message and receive a MoveResponse simultaneously, to
+  % indicate that the sluice is allowed to close its door and the statuses can
+  % be updated by the WaferTracker. It can also receive a SluiceFailedResponse.
+  % This means that something wrong happened with the sluice door and a move
+  % action is not possible. It then sends a MoveCancel message to the
+  % WaferTracker to unlock the places again.
+  %
 
   MoveToSluice(place: Place, door: Door, status: Status)
     = sum s:Sluice . ((sMoveRequest(place, sluicePlace(s), status) | sSluiceRequest(s, door, place))
@@ -90,6 +166,10 @@ proc
                       . sMoveCancel(place, sluicePlace(s))
                      );
 
+  %
+  % Similar to MoveToSluice, but the move is in the other direction.
+  %
+
   MoveFromSluice(place: Place, door: Door, status: Status)
     = sum s: Sluice . ((sMoveRequest(sluicePlace(s), place, status) | sSluiceRequest(s, door, place))
                         + rSluiceResponse(s, door, place)
@@ -98,6 +178,14 @@ proc
                         + rSluiceFailedResponse(s, door, place)
                         . sMoveCancel(sluicePlace(s), place)
                       );
+
+  %
+  % Similar to MoveToSluice and MoveFromSluice, but now the move is from a
+  % sluice to a sluice. Moreover, the first multi-action includes now a
+  % SluiceStuck action too, which indicates that at least one door is broken and
+  % it specifies which doors are currently open. The remaining actions are
+  % similar to MoveToSluice and MoveFromSluice.
+  %
 
   MoveFromSluiceToSluice(door: Door, status: Status)
     = sum s, t: Sluice . ((sMoveRequest(sluicePlace(t), sluicePlace(s), status) | sSluiceRequest(s, door, sluicePlace(t)) | sSluiceStuck(t, door == outsideDoor, door == insideDoor))
@@ -108,14 +196,47 @@ proc
                           . sMoveCancel(sluicePlace(t), sluicePlace(s))
                          );
 
+  %
+  % ProjectorRobot can move unprojected wafers from I to P and projected wafers
+  % from P to O. It can also execute beginProject when an unprojected wafer is
+  % at P, changing the status of P into projecting and it can execute endProject
+  % when the status of P is projecting.
+  %
+
   ProjectorRobot
     = (sMoveRequest(I, P, unprojected) . move(I, P) . rMoveResponse(I, P)
        + sMoveRequest(P, O, projected) . move(P, O) . rMoveResponse(P, O)
-       + sStatusUpdateRequest(P, unprojected) . beginProject . endProject . rStatusUpdateResponse(P, projected)
+       + sStatusUpdateRequest(P, unprojected) . beginProject . rStatusUpdateResponse(P, projecting)
+       + sStatusUpdateRequest(P, projecting) . endProject . rStatusUpdateResponse(P, projected)
       ) . ProjectorRobot;
 
+  %
+  % Sluice keeps track of the state of one sluice: which doors are open and
+  % which doors are stuck. It can only receive a SluiceRequest when both doors
+  % are not broken. It will make sure that the specified door will be opened,
+  % while taking care of closing other doors and making the air pressure right.
+  % Then, it sends a SluiceResponse, indicating that the move action can be
+  % executed, and afterwards receives a SluiceMoveDone message. It any time that
+  % a door can be opened or closed, it is also possible to send a doorStuck
+  % action. This results in a broken door and a SluiceFailedResponse will be
+  % sent, instead of a SluiceResponse, indicating that the MoveRequest has to
+  % be canceled.
+  % In the case that one door is broken and the other is not, it tries to open
+  % the door that is not broken, in order to give the robots the opportunity
+  % to move a wafer from a broken sluice to the other.
+  % It is also possible to receive a SluiceStuck message when one of the doors
+  % is stuck. This makes it possible for other processes to know if a sluice is
+  % broken.
+  % When both doors are closed and stuck, it will mark that place as stuck. This
+  % necessary because there is a condition in the WaferTracker that makes it
+  % impossible to move a wafer to a sluice when there is another sluice
+  % containing a wafer with the same status.
+  %
 
   Sluice(sluice: Sluice, outsideOpen: Bool, insideOpen: Bool, outsideStuck: Bool, insideStuck: Bool)
+
+    % If the inside door is stuck and closed, open the outside door if it is not stuck and closed
+
     = (outsideStuck && !outsideOpen && !insideStuck && !insideOpen)
       -> vacuum(sluice)
           . readAirPressure(sluice, vacuum)
@@ -123,6 +244,9 @@ proc
           . (openDoor(insideDoor, sluice) . Sluice(insideOpen = true)
               + doorStuck(insideDoor, sluice) . Sluice(insideStuck = true)
             )
+
+    % If the outside door is stuck and closed, open the inside door if it is not stuck and closed
+
     + (insideStuck && !insideOpen && !outsideStuck && !outsideOpen)
       -> deVacuum(sluice)
           . readAirPressure(sluice, normal)
@@ -130,10 +254,19 @@ proc
           . (openDoor(outsideDoor, sluice) . Sluice(outsideOpen = true)
               + doorStuck(outsideDoor, sluice) . Sluice(outsideStuck = true)
             )
+
+    % Allow sending a SluiceStuck message if at least one door is stuck
+
     + (insideStuck || outsideStuck) -> rSluiceStuck(sluice, outsideOpen, insideOpen) . Sluice()
+
+    % If both doors are stuck and closed, and there is a wafer inside, mark it stuck.
+
     + (insideStuck && outsideStuck && !insideOpen && !outsideOpen) -> (sStatusUpdateRequest(sluicePlace(sluice), projected)
                                                                         + sStatusUpdateRequest(sluicePlace(sluice), unprojected)
                                                                       ) . rStatusUpdateResponse(sluicePlace(sluice), stuck) . Sluice()
+
+    % If no doors are stuck, receive a SluiceRequest and open de specified door while making sure that all sluice invariants hold.
+
     + (!insideStuck && !outsideStuck)
       ->
       sum p: Place . (rSluiceRequest(sluice, outsideDoor, p)
@@ -219,14 +352,14 @@ init
   comm({
     sStatusUpdateRequest  | rStatusUpdateRequest  -> cStatusUpdateRequest,
     sStatusUpdateResponse | rStatusUpdateResponse -> cStatusUpdateResponse,
-    sMoveRequest              | rMoveRequest              -> cMoveRequest,
-    sMoveResponse             | rMoveResponse             -> cMoveResponse,
-    sMoveCancel               | rMoveCancel               -> cMoveCancel,
-    sSluiceRequest            | rSluiceRequest            -> cSluiceRequest,
-    sSluiceResponse           | rSluiceResponse           -> cSluiceResponse,
-    sSluiceFailedResponse     | rSluiceFailedResponse     -> cSluiceFailedResponse,
-    sSluiceMoveDone           | rSluiceMoveDone           -> cSluiceMoveDone,
-    sSluiceStuck              | rSluiceStuck              -> cSluiceStuck
+    sMoveRequest          | rMoveRequest          -> cMoveRequest,
+    sMoveResponse         | rMoveResponse         -> cMoveResponse,
+    sMoveCancel           | rMoveCancel           -> cMoveCancel,
+    sSluiceRequest        | rSluiceRequest        -> cSluiceRequest,
+    sSluiceResponse       | rSluiceResponse       -> cSluiceResponse,
+    sSluiceFailedResponse | rSluiceFailedResponse -> cSluiceFailedResponse,
+    sSluiceMoveDone       | rSluiceMoveDone       -> cSluiceMoveDone,
+    sSluiceStuck          | rSluiceStuck          -> cSluiceStuck
   },
     WaferTracker(placesEmpty, placesFalse) || RobotOutside(false, 0, false) || Sluice(sluice1, false, false, false, false) || RobotInside || ProjectorRobot || Sluice(sluice2, false, false, false, false)
   )));
