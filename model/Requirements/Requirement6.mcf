@@ -1,19 +1,8 @@
 % A sluice door cannot open until the pressure on both sides is equal
 
-[true*]forall s:Sluice . (
-  [
-    readAirPressure(s, vacuum).
-    (!(readAirPressure(s, vacuum) || openDoor(insideDoor, s)))*.
-    deVacuum(s).
-    (!(readAirPressure(s, vacuum) || openDoor(insideDoor, s)))*.
-    openDoor(insideDoor,s)
-  ]false
-  &&
-  [
-    readAirPressure(s, normal).
-    (!(readAirPressure(s, normal) || openDoor(outsideDoor, s)))*.
-    vacuum(s).
-    (!(readAirPressure(s, normal) || openDoor(outsideDoor, s)))*.
-    openDoor(outsideDoor,s)
-  ]false
+forall s: Sluice . nu X(pressure: Pressure = normal) . (
+  [!(exists d: Door . openDoor(d, s)) && !(exists p: Pressure . readAirPressure(s, p))]X(pressure)
+  && [openDoor(insideDoor, s)](val(pressure == vacuum) && X(pressure))
+  && [openDoor(outsideDoor, s)](val(pressure == normal) && X(pressure))
+  && forall p: Pressure . [readAirPressure(s, p)]X(p)
 )
