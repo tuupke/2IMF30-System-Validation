@@ -2,7 +2,6 @@ sort
   Place      = struct RI | RO | S1 | S2 | I | O | P;
   Door       = struct outsideDoor | insideDoor;
   Sluice     = struct sluice1 | sluice2;
-  SluiceDoor = struct insideDoor1 | outsideDoor1 | insideDoor2 | outsideDoor2;
   Pressure   = struct vacuum | normal;
   WaferState = struct empty | projected | unprojected | stuck;
 
@@ -10,25 +9,23 @@ map
   sluicePlace: Sluice -> Place;
   emptyPlaces: Place -> WaferState;
   placesFalse: Place -> Bool;
-  nothingBroken: SluiceDoor -> Bool;
-  sluiceDoor: Sluice # Door -> SluiceDoor;
+  doorsFalse: Door -> Bool;
+  sluiceDoorsFalse: Sluice -> (Door -> Bool);
 
 var
   place: Place;
-  sd: SluiceDoor;
+  sluice: Sluice;
+  door: Door;
 
 eqn
   sluicePlace(sluice1) = S1;
-  nothingBroken(sd) = false;
   sluicePlace(sluice2) = S2;
 
   emptyPlaces(place) = empty;
   placesFalse(place) = false;
 
-  sluiceDoor(sluice1, insideDoor) = insideDoor1;
-  sluiceDoor(sluice1, outsideDoor) = outsideDoor1;
-  sluiceDoor(sluice2, insideDoor) = insideDoor2;
-  sluiceDoor(sluice2, outsideDoor) = outsideDoor2;
+  doorsFalse(door) = false;
+  sluiceDoorsFalse(sluice) = doorsFalse;
 
 act
   % external actions
