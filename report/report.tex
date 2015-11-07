@@ -1,11 +1,11 @@
 	\documentclass[a4paper,twoside,11pt]{article}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{a4wide,graphicx,fancyhdr,amsmath,amssymb,float,longtable,chronology,caption,subcaption,appendix}
 \usepackage{algorithmic}
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{url}
 \usepackage{pgffor}
-\usepackage{color}
 
 %----------------------- Macros and Definitions --------------------------
 
@@ -13,21 +13,36 @@
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
 
+\lstdefinelanguage{mcrl2}
+	{
+	  morekeywords=[1]{sort, cons, map, var, eqn, act, proc, init, struct},
+	  morekeywords=[2]{delta, tau},
+	  morekeywords=[3]{sum, block, allow, hide, rename, comm},
+	  morekeywords=[4]{Bool, Pos, Nat, Int, Real, Place, Door, Sluice, Pressure, Status},
+	  morekeywords=[5]{List, Set, Bag},
+	  morekeywords=[6]{true ,false, RI, RO, S1, S2, I, O, P, outsideDoor, insideDoor, sluice1, sluice2, vacuum, normal, empty, projected, projecting, unprojected, stuck},
+	  morekeywords=[7]{whr, end, lambda, forall, exists, div, mod, in},
+	  morekeywords=[8]{contained, TODO, FIXME, XXX},
+	  morekeywords=[9]{sluicePlace, placesEmpty, placesFalse, isSluice, isInside, doorsFalse, sluiceDoorsFalse},
+	  sensitive=true,
+	  morecomment=[l]\%
+	}[keywords, comments]
+
 \lstset{ %
   backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
-  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  basicstyle=\scriptsize\ttfamily,        % the size of the fonts that are used for the code
   breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
   breaklines=true,                 % sets automatic line breaking
   captionpos=b,                    % sets the caption-position to bottom
-  commentstyle=\color{mygreen},    % comment style
-  deletekeywords={...},            % if you want to delete keywords from the given language
-  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  commentstyle=\color{Gray},    % comment style
   extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
   frame=single,	                   % adds a frame around the code
   keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
-  keywordstyle=\color{blue},       % keyword style
- % language=mcrl2,                 % the language of the code
-  otherkeywords={*,...},           % if you want to add more keywords to the set
+  keywordstyle=\color{Blue}\underbar,       % keyword style
+  keywordstyle=[4]\color{OliveGreen}\underbar,       % keyword style
+  keywordstyle=[6]\color{Brown}\underbar,       % keyword style
+  keywordstyle=[9]\color{Red}\underbar,       % keyword style
+  language=mcrl2,                 % the language of the code
   numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
   numbersep=5pt,                   % how far the line-numbers are from the code
   numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
@@ -35,7 +50,7 @@
   showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
   showstringspaces=false,          % underline spaces within strings only
   showtabs=false,                  % show tabs within strings adding particular underscores
-  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
   stringstyle=\color{mymauve},     % string literal style
   tabsize=2,	                   % sets default tabsize to 2 spaces
  % title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
@@ -127,7 +142,7 @@ http://www.mcrl2.org/
 \newpage
 \begin{appendices}
 \section{mCRL2 model}
-\lstinputlisting{../model/model.mcrl2}
+\lstinputlisting{../model/model_new.mcrl2}
 
 \newpage
 \section{mCRL2 requirements}
