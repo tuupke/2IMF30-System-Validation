@@ -5,7 +5,7 @@
 \begin{description}
  \item[1. At least one door of a sluice is closed at any point in time]\mbox{}\\
 \[
-[true^*]\forall s:Sluice,d:Door.[openDoor(d, s) \cdot \overline{closeDoor(d, s)}^* \cdot openDoor(d, s)]false
+[true^*]\forall s:Sluice,d:Door.[openDoor(d, s) \cdot \overline{closeDoor(d, s)}^* \cdot openDoor(d, s)]\mathit{false}
 \]
 
 
@@ -19,7 +19,7 @@
 & \tab [closeDoor(insideDoor, s).(\overline{openDoor(insideDoor, s)}^*.( \\
 & \tab\tab move(I, sluicePlace(s)) \cup move(sluicePlace(s), I) \cup \\
 & \tab\tab move(O, sluicePlace(s)) \cup move(sluicePlace(s), O) \\
-& \tab )]false \\
+& \tab )]\mathit{false} \\
 & )
 \end{align*}
  
@@ -36,12 +36,12 @@ This requirement is quite complex to express in modal $\mu$-calculus. In the fir
 & \tab\tab\tab \cap \overline{detectInputWafer}]X(openDoors, brokenDoors) \\
 & \tab\tab \wedge \forall d: Door, s: Sluice . ( \\
 & \tab\tab\tab [openDoor(d, s)]X(openDoors[s \to openDoors(s)[d \to true]], brokenDoors) \\
-& \tab\tab\tab \wedge [closeDoor(d, s)]X(openDoors[s \to openDoors(s)[d \to false]], brokenDoors) \\
-& \tab\tab\tab \wedge [doorStuck(d, s)]X(openDoors, brokenDoors[s \to brokenDoors(s)[d \to false]])) \\
+& \tab\tab\tab \wedge [closeDoor(d, s)]X(openDoors[s \to openDoors(s)[d \to \mathit{false}]], brokenDoors) \\
+& \tab\tab\tab \wedge [doorStuck(d, s)]X(openDoors, brokenDoors[s \to brokenDoors(s)[d \to \mathit{false}]])) \\
 & \tab\tab \wedge [detectInputWafer]\mu Y( \\ 
 & \tab\tab\tab\tab\tab position: Place = RI, \\
-& \tab\tab\tab\tab\tab projecting: Bool = false, \\
-& \tab\tab\tab\tab\tab projected: Bool = false, \\
+& \tab\tab\tab\tab\tab projecting: Bool = \mathit{false}, \\
+& \tab\tab\tab\tab\tab projected: Bool = \mathit{false}, \\
 & \tab\tab\tab\tab\tab openDoorsLocal: Sluice \to (Door \to Bool) = openDoors, \\
 & \tab\tab\tab\tab\tab brokenDoorsLocal: Sluice \to (Door \to Bool) = brokenDoors \\
 & \tab\tab\tab\tab ) . (([\overline{\exists a, b: Place . move(a, b)} \\
@@ -68,7 +68,7 @@ This requirement is quite complex to express in modal $\mu$-calculus. In the fir
 & \tab\tab\tab\tab\tab\tab\tab\tab ) \\
 & \tab\tab\tab\tab\tab\tab  \wedge [endProject]Y( \\
 & \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab position, \\
-& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab false, \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab \mathit{false}, \\
 & \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projected \vee (position \approx P \wedge projecting), \\
 & \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab openDoorsLocal, \\
 & \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab brokenDoorsLocal \\
@@ -92,7 +92,7 @@ This requirement is quite complex to express in modal $\mu$-calculus. In the fir
 & \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab position, \\
 & \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projecting, \\
 & \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab projected, \\
-& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab openDoorsLocal[s \to openDoorsLocal(s)[d \to false]], \\
+& \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab openDoorsLocal[s \to openDoorsLocal(s)[d \to \mathit{false}]], \\
 & \tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab brokenDoorsLocal \\
 & \tab\tab\tab\tab\tab\tab\tab\tab\tab ) \\
 & \tab\tab\tab\tab\tab\tab ) \\
@@ -108,19 +108,19 @@ This requirement is quite complex to express in modal $\mu$-calculus. In the fir
 
  
  \item[4. Internal racks, sluices and the projector each contain at most one wafer]
-    
 \begin{align*}
-		&[true^*] \nu X(status:Place \to WaferState=emptyPlaces).(\\
-  & \tab\tab [\overline{((\exists a,b:Place.move(a,b)) \cup detectInputWafer)}]X(status)\\
-  & \tab\tab  \wedge [detectInputWafer]X(status[RI \to unprojected])\\
-  & \tab\tab  \wedge \forall a,b:Place.[move(a, b)](val(status(a) \not \approx empty \implies status(b)  \approx empty) \wedge \\ & \tab \tab X(status[b \to status(a)][a \to empty]))\\
-&)
-	\end{align*}
+& \nu X(occupied:Place \to Bool=placesFalse).(\\
+& \tab\tab [\overline{exists a,b:Place.move(a,b)} \wedge \overline{detectInputWafer}]X(occupied) \\
+& \tab\tab \wedge [detectInputWafer]X(occupied[RI \to true]) \\
+& \tab\tab \wedge \forall a,b:Place.[move(a,b)](val(b==RO || (occupied(a) \implies \overline{occupied(b)})) \wedge \\
+& \tab\tab X(occupied[b \to occupied(a)][a \to \mathit{false}])) \\
+& )
+\end{align*}
 
  
  \item[5. When the projector is at work, no interaction with the wafer is permissible]
  	\begin{align*}
- 		&[true^*.beginProject().\overline{endProject()}^*.move(P,O)]false
+ 		&[true^*.beginProject().\overline{endProject()}^*.move(P,O)]\mathit{false}
 	\end{align*}
 	
  \item[6. A sluice door cannot open until the pressure on both sides is equal]
@@ -137,8 +137,8 @@ This requirement is quite complex to express in modal $\mu$-calculus. In the fir
  
  \begin{align*}
  &[true^*]\forall s:Sluice, d:Door . ( \\
- &\tab [openDoor(d,s).\overline{closeDoor(d,s)}*.vacuum(s)]false \\
- &\tab \wedge [openDoor(d,s).\overline{closeDoor(d,s)}*.deVacuum(s)]false \\
+ &\tab [openDoor(d,s).\overline{closeDoor(d,s)}*.vacuum(s)]\mathit{false} \\
+ &\tab \wedge [openDoor(d,s).\overline{closeDoor(d,s)}*.deVacuum(s)]\mathit{false} \\
  &)
  \end{align*}
 
@@ -169,7 +169,7 @@ This requirement is quite complex to express in modal $\mu$-calculus. In the fir
  \item[10. No robot can take a wafer from $RO$]
 
 \[
-	\forall p:Place . [true^* \cdot move(RO, p)]false
+	\forall p:Place . [true^* \cdot move(RO, p)]\mathit{false}
 \]
 
 \end{description}

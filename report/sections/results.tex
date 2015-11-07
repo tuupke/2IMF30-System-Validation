@@ -1,3 +1,5 @@
+% !TEX root = ../report.tex
+
 We have checked the requirements on the model with the mCRL2 tool set. Because the checking of some requirements takes very long, we have not obtained all results yet. The currently obtained results are:\\
 
 
@@ -31,3 +33,18 @@ We expect all requirements, except for $3$ to result in $true$. Before the proce
 It is probably best to solve this problem by addapting our model, so that $R2$ can move wafers from one sluice to another in order to safe wafers that got stuck in a sluice. This way, no wafer would get lost even if a wafer is inside a sluice while a single door gets stuck. We chose not to adapt our model, since that would leave us with barely enough time to check requirement $2$ on the new model.
 
 The reason why we have not yet been able to verify all requirements is due to the fact that checking these requirements takes a large amount of memory which we do not have available. Even using the largest amount of memory available to us, resulted in memory swaps which very long and therefore slow down the verification process. 
+
+\subsection{}
+All results were obtained using version \todo{versie nummer hier} of MCRL2, the commands used are listed below.
+
+At first the model has to be converted from the MCRL2 format to \emph{LPS} using the command:
+\begin{lstlisting}[language=bash]
+mcrl22lps model.mcrl2 model.lps --lin-method=regular --rewriter=jitty --verbose
+\end{lstlisting}
+
+Afterwards each requirement can be checked using the following two commands. In these commands \emph{$<$REQ$>$} should be replaced by the requirement number which has to get tested.
+
+\begin{lstlisting}[language=bash]
+lps2pbes model.lps model.req<REQ>.pbes --formula=Requirements/Requirement<REQ>.mcf --verbose
+pbes2bool model.req<REQ>.pbes --rewriter=jittyc --strategy=0 --verbose
+\end{lstlisting}
