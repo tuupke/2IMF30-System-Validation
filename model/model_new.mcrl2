@@ -238,22 +238,16 @@ proc
     % If the inside door is stuck and closed, open the outside door if it is not stuck and closed
 
     = (outsideStuck && !outsideOpen && !insideStuck && !insideOpen)
-      -> vacuum(sluice)
-          . readAirPressure(sluice, vacuum)
-          . stopPumping(sluice)
-          . (openDoor(insideDoor, sluice) . Sluice(insideOpen = true)
-              + doorStuck(insideDoor, sluice) . Sluice(insideStuck = true)
-            )
+      -> Vacuum(sluice) . (openDoor(insideDoor, sluice) . Sluice(insideOpen = true)
+                            + doorStuck(insideDoor, sluice) . Sluice(insideStuck = true)
+                          )
 
     % If the outside door is stuck and closed, open the inside door if it is not stuck and closed
 
     + (insideStuck && !insideOpen && !outsideStuck && !outsideOpen)
-      -> deVacuum(sluice)
-          . readAirPressure(sluice, normal)
-          . stopPumping(sluice)
-          . (openDoor(outsideDoor, sluice) . Sluice(outsideOpen = true)
-              + doorStuck(outsideDoor, sluice) . Sluice(outsideStuck = true)
-            )
+      -> DeVacuum(sluice) . (openDoor(outsideDoor, sluice) . Sluice(outsideOpen = true)
+                              + doorStuck(outsideDoor, sluice) . Sluice(outsideStuck = true)
+                            )
 
     % Allow sending a SluiceStuck message if at least one door is stuck
 
@@ -275,9 +269,7 @@ proc
                                           . Sluice()
                                         )
                                      <> (closeDoor(insideDoor, sluice)
-                                          . deVacuum(sluice)
-                                          . readAirPressure(sluice, normal)
-                                          . stopPumping(sluice)
+                                          . DeVacuum(sluice)
                                           . (openDoor(outsideDoor, sluice)
                                               . sSluiceResponse(sluice, outsideDoor, p)
                                               . rSluiceMoveDone(sluice, outsideDoor)
@@ -298,9 +290,7 @@ proc
                                           . Sluice()
                                         )
                                      <> (closeDoor(outsideDoor, sluice)
-                                          . vacuum(sluice)
-                                          . readAirPressure(sluice, vacuum)
-                                          . stopPumping(sluice)
+                                          . Vacuum(sluice)
                                           . (openDoor(insideDoor, sluice)
                                               . sSluiceResponse(sluice, insideDoor, p)
                                               . rSluiceMoveDone(sluice, insideDoor)
@@ -315,6 +305,16 @@ proc
                                         )
                         )
                      );
+  %
+  % Vacuum is a terminating auxiliary process that is used by Sluice and simply
+  % executes vacuum, readAirPressure and stopPumping actions consecutively.
+  %
+  Vacuum(sluice: Sluice) = vacuum(sluice) . readAirPressure(sluice, vacuum) . stopPumping(sluice);
+
+  %
+  % Similar to Vacuum, but now for deVacuum.
+  %
+  DeVacuum(sluice: Sluice) = deVacuum(sluice) . readAirPressure(sluice, normal) . stopPumping(sluice);
 
 init
   hide({
@@ -361,5 +361,5 @@ init
     sSluiceMoveDone       | rSluiceMoveDone       -> cSluiceMoveDone,
     sSluiceStuck          | rSluiceStuck          -> cSluiceStuck
   },
-    WaferTracker(placesEmpty, placesFalse) || RobotOutside(false, 0, false) || Sluice(sluice1, false, false, false, false) || RobotInside || ProjectorRobot || Sluice(sluice2, false, false, false, false)
+    RobotOutside(false, 0, false) || RobotInside || ProjectorRobot || Sluice(sluice1, false, false, false, false) || Sluice(sluice2, false, false, false, false) || WaferTracker(placesEmpty, placesFalse)
   )));
