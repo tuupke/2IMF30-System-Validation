@@ -7,8 +7,10 @@ sort
 
 map
   sluicePlace: Sluice -> Place;
-  emptyPlaces: Place -> WaferState;
+  placesEmpty: Place -> WaferState;
   placesFalse: Place -> Bool;
+
+  % Only used for model checking
   doorsFalse: Door -> Bool;
   sluiceDoorsFalse: Sluice -> (Door -> Bool);
 
@@ -21,9 +23,10 @@ eqn
   sluicePlace(sluice1) = S1;
   sluicePlace(sluice2) = S2;
 
-  emptyPlaces(place) = empty;
+  placesEmpty(place) = empty;
   placesFalse(place) = false;
 
+  % Only used for model checking
   doorsFalse(door) = false;
   sluiceDoorsFalse(sluice) = doorsFalse;
 
@@ -46,8 +49,6 @@ act
   sSluiceFailedResponse, rSluiceFailedResponse, cSluiceFailedResponse: Sluice # Door # Place;
   sSluiceMoveDone, rSluiceMoveDone, cSluiceMoveDone: Sluice # Door;
   sSluiceStuck, rSluiceStuck, cSluiceStuck: Sluice # Bool # Bool;
-
-  debug;
 
 proc
   WaferTracker(status: Place -> WaferState, locked: Place -> Bool)
@@ -192,8 +193,7 @@ init
     cSluiceRequest,
     cSluiceResponse,
     cSluiceFailedResponse,
-    cSluiceMoveDone,
-    debug
+    cSluiceMoveDone
   },
   allow({
     move,
@@ -228,5 +228,5 @@ init
     sSluiceMoveDone           | rSluiceMoveDone           -> cSluiceMoveDone,
     sSluiceStuck              | rSluiceStuck              -> cSluiceStuck
   },
-    WaferTracker(emptyPlaces, placesFalse) || RobotOutside(false, 0, false) || Sluice(sluice1, false, false, false, false) || RobotInside || ProjectorRobot || Sluice(sluice2, false, false, false, false)
+    WaferTracker(placesEmpty, placesFalse) || RobotOutside(false, 0, false) || Sluice(sluice1, false, false, false, false) || RobotInside || ProjectorRobot || Sluice(sluice2, false, false, false, false)
   )));
