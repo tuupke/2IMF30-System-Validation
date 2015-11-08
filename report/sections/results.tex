@@ -1,6 +1,27 @@
 % !TEX root = ../report.tex
 \cbstart
 
+
+\subsection{Method}
+All results were obtained using version 201409.1.13218 of mCRL2, the commands used are listed below.
+
+At first the model has to be converted from the mCRL2 format to \emph{LPS} using the command:
+\begin{lstlisting}[language=bash]
+mcrl22lps model.mcrl2 model.lps --lin-method=regular --rewriter=jitty --verbose
+\end{lstlisting}
+
+Afterwards each requirement can be checked using the following two commands. In these commands \emph{$<$REQ$>$} should be replaced by the requirement number which has to get tested.
+
+\begin{lstlisting}[language=bash]
+lps2pbes model.lps model.req<REQ>.pbes --formula=Requirements/Requirement<REQ>.mcf --verbose
+pbes2bool model.req<REQ>.pbes --rewriter=jittyc --strategy=0 --verbose
+\end{lstlisting}
+
+\subsection{Output}
+
+The commands above produced the following outputs.
+
+
 \begin{tabular}{|l|l|}
 \hline
 Requirement 1 & true \\
@@ -11,7 +32,7 @@ Requirement 3 & true \\
 \hline
 Requirement 4 & true \\
 \hline
-Requirement 5 & not yet known \\
+Requirement 5 & true \\
 \hline
 Requirement 6 & true \\
 \hline
@@ -25,19 +46,7 @@ Requirement 10 & true \\
 \hline
 \end{tabular}
 
-\subsection{Method}
-All results were obtained using version \todo{versie nummer hier} of MCRL2, the commands used are listed below.
 
-At first the model has to be converted from the MCRL2 format to \emph{LPS} using the command:
-\begin{lstlisting}[language=bash]
-mcrl22lps model.mcrl2 model.lps --lin-method=regular --rewriter=jitty --verbose
-\end{lstlisting}
-
-Afterwards each requirement can be checked using the following two commands. In these commands \emph{$<$REQ$>$} should be replaced by the requirement number which has to get tested.
-
-\begin{lstlisting}[language=bash]
-lps2pbes model.lps model.req<REQ>.pbes --formula=Requirements/Requirement<REQ>.mcf --verbose
-pbes2bool model.req<REQ>.pbes --rewriter=jittyc --strategy=0 --verbose
-\end{lstlisting}
+All of them return true, therefore we can guarantee that the model meet all our requirements.
 
 \cbend
