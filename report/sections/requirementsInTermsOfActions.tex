@@ -22,7 +22,7 @@ For any sluice $s$:
  
  \item[\smash{\shortstack[l]{3. Any wafer in the system will eventually be processed unless for each sluice at \\ least one door gets stuck, or the wafer is in a sluice with two broken, closed doors}}] \hfill 
  
- Define a "chain" of move actions to be a list of actions $L$  in which a set of $n$ move actions $M$ is contained. For $1 \leq i \leq n$, the destination of move $M_{i-1}$ equals the origin of move $M_{i}$ and the there is no move action between these two actions in $L$ with the same origin as $M_{i}$.
+ Define a ``chain'' of move actions to be a list of actions $L$  in which a set of $n$ move actions $M$ is contained. For $1 \leq i \leq n$, the destination of move $M_{i-1}$ equals the origin of move $M_{i}$ and the there is no move action between these two actions in $L$ with the same origin as $M_{i}$.
  
 For Sluice s, Door d, define a $brokenDoorEvent(s,d)$  to be a list of actions $L$ where between a \action{doorStuck}{d,s} and its most recent preceding \action{closeDoor}{d, s} there is no \action{openDoor}{d, s}.
  
