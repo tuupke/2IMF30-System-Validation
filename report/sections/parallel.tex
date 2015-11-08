@@ -46,7 +46,7 @@ unprojected, there must be at least one place inside that is empty.
  is present in the system simultaneously is equal to the variable limit.
  In production, the limited variable must be set to false.
  
- \emph{RobotOutside} makes use of three terminating auxiliary processes: \emph{MoveToSluice}, \emph{MoveFromSluice}, and \emph{MoveFromSluice}ToSluice
+ \emph{RobotOutside} makes use of three terminating auxiliary processes: \emph{MoveToSluice}, \emph{MoveFromSluice}, and \emph{MoveFromSluiceToSluice}
  
 \subsection{Process \emph{RobotInside}}
 
@@ -54,9 +54,9 @@ unprojected, there must be at least one place inside that is empty.
  wafers from \emph{I} to a sluice. It can also move projected wafers from a broken
  sluice to another sluice.
 
- \subsection{Auxiliary Processes \emph{MoveToSluice}, \emph{MoveFromSluice}, and \emph{MoveFromSluice}ToSluice}
+ \subsection{Auxiliary Processes \emph{MoveToSluice}, \emph{MoveFromSluice}, and \emph{MoveFromSluiceToSluice}}
 
- \emph{RobotOutside} makes use of three terminating auxiliary processes: \emph{MoveToSluice}, \emph{MoveFromSluice}, and \emph{MoveFromSluice}ToSluice.
+ \emph{RobotOutside} makes use of three terminating auxiliary processes: \emph{MoveToSluice}, \emph{MoveFromSluice}, and \emph{MoveFromSluiceToSluice}.
  
   \emph{MoveToSluice} is a terminating auxiliary process used by \emph{RobotInside} and
  \emph{RobotOutside}. It is able to execute a multi-action, consisting of sending
@@ -75,7 +75,7 @@ unprojected, there must be at least one place inside that is empty.
  \emph{MoveFromSluice} is imilar to \emph{MoveToSluice}, but the move is in the other direction.
 
 
- \emph{MoveFromSluice}ToSluice is similar to \emph{MoveToSluice} and \emph{MoveFromSluice}, but now the move is from a
+ \emph{MoveFromSluiceToSluice} is similar to \emph{MoveToSluice} and \emph{MoveFromSluice}, but now the move is from a
  sluice to a sluice. Moreover, the first multi-action includes now a
  \emph{SluiceStuck} action too, which indicates that at least one door is broken and
  it specifies which doors are currently open. The remaining actions are
