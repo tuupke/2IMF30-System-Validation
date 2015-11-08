@@ -25,3 +25,5 @@
 *.DS_Store
 *.pdf
 *.backup
+*.cb
+*.cb2

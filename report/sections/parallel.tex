@@ -1,5 +1,5 @@
 % !TEX root = ../report.tex
-
+\cbstart
 Our model consists of 6 parallel processes that communicate.
 \begin{enumerate}
  \item A process \emph{WaferTracker}, which tracks the positions and state of each wafer. This process communicates with the three processes controlling the robots and projector.
@@ -115,3 +115,5 @@ unprojected, there must be at least one place inside that is empty.
  necessary because there is a condition in the \emph{WaferTracker} that makes it
  impossible to move a wafer to a sluice when there is another sluice
  containing a wafer with the same status.
+
+\cbend

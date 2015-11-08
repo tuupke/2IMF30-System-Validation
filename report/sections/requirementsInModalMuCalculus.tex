@@ -1,8 +1,8 @@
 % !TEX root = ../report.tex
 
 \newcommand{\tab}{\hspace{1em}}
-
-This section contains a translation of the requirements from section 5 to a language that enables their unambiguous verification. Each requirement is expressed as a formula in modal $\mu$-calculus, these type of formulas can be mathematically tested against the controller model defined in section 7 to produce the results of section 8. 
+\cbstart
+This section contains a translation of the requirements from section 5 to a language that enables their unambiguous verification. Each requirement is expressed as a formula in modal $\mu$-calculus, these type of formulas can be mathematically tested against the controller model defined in section 7 to produce the results of section 8. \cbend
 
 \begin{description}
  \item[1. At least one door of a sluice is closed at any point in time]\mbox{}\\
@@ -25,6 +25,7 @@ This section contains a translation of the requirements from section 5 to a lang
 & )
 \end{align*}
  
+\cbstart
  \item[\smash{\shortstack[l]{3. Any wafer in the system will eventually be processed unless for each sluice at \\ least one door gets stuck, or the wafer is in a sluice with two broken, closed doors}}]
  
 This requirement is quite complex to express in modal $\mu$-calculus. In the first place, we need to keep track for each door whether it is open and whether it is stuck. We do this with a greatest fixed point $X$ with two functions $openDoors$ and $brokenDoors$. We update those functions when $closeDoor$, $openDoor$, or $doorStuck$ actions happen. Whenever a $detectInputWafer$ occurs, we need to keep track of the wafer that enters the system. We do this with a least fixed point $Y$ (note that this is nested within $X$). However, within this fixed point we need to continue tracking the doors. So we use $openDoorsLocal$ and $brokenDoorsLocal$ as data within this fixed point $Y$, take over the values of $openDoors$ and $brokenDoors$ and update the local versions of those functions when necessary in this least fixed point. We also need to keep track of position of the wafer, and whether is $projected$ or currently $projecting$. We use $position$, $projected$, and $projecting$ for this. We update this data when $move$, $beginProject$ and $endProject$ actions occur. Finally, the least fixed point can get a true value when $position$ equals $RO$, or when each sluice has at least one broken door, or when the position is a sluice of which all doors are closed and broken.
@@ -107,8 +108,9 @@ This requirement is quite complex to express in modal $\mu$-calculus. In the fir
 & \tab\tab ) \\
 & \tab ) \\
 \end{align*}
-
+\cbend
  
+\cbstart
  \item[4. Internal racks, sluices and the projector each contain at most one wafer]
 \begin{align*}
 & \nu X(occupied:Place \to Bool=placesFalse).(\\
@@ -118,13 +120,14 @@ This requirement is quite complex to express in modal $\mu$-calculus. In the fir
 & \tab\tab X(occupied[b \to occupied(a)][a \to \mathit{false}])) \\
 & )
 \end{align*}
-
+\cbend
  
  \item[5. When the projector is at work, no interaction with the wafer is permissible]
  	\begin{align*}
- 		&[true^*.beginProject().\overline{endProject()}^*.move(P,O)]\mathit{false}
+ 		&[true^* \cdot beginProject() \cdot \overline{endProject()}^* \cdot move(P,O)]\mathit{false}
 	\end{align*}
 	
+\cbstart
  \item[6. A sluice door cannot open until the pressure on both sides is equal]
 	\begin{align*}
 & \forall s: Sluice . \nu X(pressure: Pressure = normal) . ( \\
@@ -134,13 +137,14 @@ This requirement is quite complex to express in modal $\mu$-calculus. In the fir
 &   \wedge \forall p: Pressure . [readAirPressure(s, p)]X(p) \\
 & ) \\
 	\end{align*}
-	
+\cbend
+
  \item[7. Sluice pumps cannot operate until both of its doors are closed]
  
  \begin{align*}
  &[true^*]\forall s:Sluice, d:Door . ( \\
- &\tab [openDoor(d,s).\overline{closeDoor(d,s)}*.vacuum(s)]\mathit{false} \\
- &\tab \wedge [openDoor(d,s).\overline{closeDoor(d,s)}*.deVacuum(s)]\mathit{false} \\
+ &\tab [openDoor(d,s)\cdot\overline{closeDoor(d,s)}*\cdot vacuum(s)]\mathit{false} \\
+ &\tab \wedge [openDoor(d,s)\cdot\overline{closeDoor(d,s)}*\cdot deVacuum(s)]\mathit{false} \\
  &)
  \end{align*}
 

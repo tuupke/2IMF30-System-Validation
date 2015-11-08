@@ -6,6 +6,8 @@
 \usepackage{listings}
 \usepackage{url}
 \usepackage{pgffor}
+\usepackage[color]{changebar}
+\cbcolor{black}
 
 %----------------------- Macros and Definitions --------------------------
 
@@ -143,16 +145,42 @@ Eindhoven University of Technology . (2015, Sept 25). MCRL2 Documentation [Onlin
 
 \newpage
 \begin{appendices}
-\section{mCRL2 model}
-\lstinputlisting{../model/model_new.mcrl2}
+\section{mCRL2 model} \cbstart
+\lstinputlisting{../model/model_new.mcrl2} \cbend
 
 \newpage
 \section{mCRL2 requirements}
 
-\foreach \n in {1,...,10}{
-	\subsection{Requirement: \n}
-	\lstinputlisting{../model/Requirements/Requirement\n.mcf}
-}
+%\foreach \n in {1,...,10}{
+%	\subsection{Requirement: \n}
+%	\lstinputlisting{../model/Requirements/Requirement\n.mcf}
+%}
+
+	\subsection{Requirement: 1}
+	\lstinputlisting{../model/Requirements/Requirement1.mcf}
+	\subsection{Requirement: 2} \cbstart
+	\lstinputlisting{../model/Requirements/Requirement2.mcf}
+	\cbend
+	\subsection{Requirement: 3} \cbstart
+	\lstinputlisting{../model/Requirements/Requirement3.mcf}
+	\cbend
+	\subsection{Requirement: 4} \cbstart
+	\lstinputlisting{../model/Requirements/Requirement4.mcf}
+	\cbend
+	\subsection{Requirement: 5}
+	\lstinputlisting{../model/Requirements/Requirement5.mcf}
+	\subsection{Requirement: 6} \cbstart
+	\lstinputlisting{../model/Requirements/Requirement6.mcf}
+	\cbend
+	\subsection{Requirement: 7}
+	\lstinputlisting{../model/Requirements/Requirement7.mcf}
+	\subsection{Requirement: 8}
+	\lstinputlisting{../model/Requirements/Requirement8.mcf}
+	\subsection{Requirement: 9}
+	\lstinputlisting{../model/Requirements/Requirement9.mcf}
+	\subsection{Requirement: 10}
+	\lstinputlisting{../model/Requirements/Requirement10.mcf}
+
 
 
 \end{appendices}
