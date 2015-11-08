@@ -1,7 +1,5 @@
 % !TEX root = ../report.tex
-
-We have checked the requirements on the model with the mCRL2 tool set. Because the checking of some requirements takes very long, we have not obtained all results yet. The currently obtained results are:\\
-
+\cbstart
 
 \begin{tabular}{|l|l|}
 \hline
@@ -9,32 +7,25 @@ Requirement 1 & true \\
 \hline
 Requirement 2 & true \\
 \hline
-Requirement 3 & not yet known \\
+Requirement 3 & true \\
 \hline
-Requirement 4 & not yet known \\
+Requirement 4 & true \\
 \hline
-Requirement 5 & true \\
+Requirement 5 & not yet known \\
 \hline
-Requirement 6 & not yet known \\
+Requirement 6 & true \\
 \hline
 Requirement 7 & true \\
 \hline
-Requirement 8 & not yet known \\
+Requirement 8 & true \\
 \hline
-Requirement 9 & not yet known \\
+Requirement 9 & true \\
 \hline
 Requirement 10 & true \\
 \hline
-\end{tabular} \\
+\end{tabular}
 
-
-We expect all requirements, except for $3$ to result in $true$. Before the process checking requirement $3$ could finish, we found that it would most likely result in $false$, signaling a fault in our model. The requirement states that all wafers should end up projected in $RO$. Because doors can get stuck, in some cases this is not possible, so the requirement was adapted to make an exception for these situations. First, when both sluices have a malfunctioning door, it is clear that no wafers can be processed anymore. So this was added as an exception. Secondly, since we kept our model simple and only allow certain interactions with $R2$, a projected wafer that is in a sluice with a stuck outside door, resulting in $R2$ not being able to remove the wafer from that sluice and place it in the other - functioning - sluice. Because of this we added another exception: when a wafer is inside the sluice when one of its doors gets stuck, it is no longer required to end up in $RO$. However, we did not take into account that the system could move a wafer into the sluice \emph{after} the door got stuck. This wafer cannot be recovered in our current model either.
-
-It is probably best to solve this problem by addapting our model, so that $R2$ can move wafers from one sluice to another in order to safe wafers that got stuck in a sluice. This way, no wafer would get lost even if a wafer is inside a sluice while a single door gets stuck. We chose not to adapt our model, since that would leave us with barely enough time to check requirement $2$ on the new model.
-
-The reason why we have not yet been able to verify all requirements is due to the fact that checking these requirements takes a large amount of memory which we do not have available. Even using the largest amount of memory available to us, resulted in memory swaps which very long and therefore slow down the verification process. 
-
-\subsection{}
+\subsection{Method}
 All results were obtained using version \todo{versie nummer hier} of MCRL2, the commands used are listed below.
 
 At first the model has to be converted from the MCRL2 format to \emph{LPS} using the command:
@@ -48,3 +39,5 @@ Afterwards each requirement can be checked using the following two commands. In 
 lps2pbes model.lps model.req<REQ>.pbes --formula=Requirements/Requirement<REQ>.mcf --verbose
 pbes2bool model.req<REQ>.pbes --rewriter=jittyc --strategy=0 --verbose
 \end{lstlisting}
+
+\cbend
