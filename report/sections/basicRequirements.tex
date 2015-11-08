@@ -1,4 +1,7 @@
 % !TEX root = ../report.tex
+
+As a proof of the effectiveness of our controller we have provided the following requirements and supporting definitions. We guarantee that our controller can be verified to be subject to these requirements at all times, the argumentation supporting this guarantee will be presented in later sections.
+
 \subsection{Definitions}
 \begin{enumerate}
   \item A wafer is considered projected when the projector has finished projecting the wafer.
@@ -9,7 +12,7 @@
 
 \subsection{Assumptions}
 \begin{enumerate}
-  \item The doors are the only part of the machines that can malfunction. They can get stuck at any point in time. Since opening and closing a door is assumed to be an atomic action taking no time, doors only get stuck in either an open or a closed position, never at half open position.
+  \item The doors are the only part of the machines that can malfunction. They can get stuck at any point in time. Since opening and closing a door is assumed to be an atomic action taking no time, doors only get stuck in either an open or a closed position, never at a half open position.
   \item The main room is assumed to always be a vacuum.
   \item The external input and output racks are assumed to be infinite in size.
   \item Sluice pumps change the air pressure to be either normal or vacuum.
