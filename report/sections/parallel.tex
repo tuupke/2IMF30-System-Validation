@@ -1,19 +1,117 @@
 % !TEX root = ../report.tex
 
-Our model consists of 7 parallel processes that communicate.
+Our model consists of 6 parallel processes that communicate.
 \begin{enumerate}
- \item Two identical processes managing a single sluice each. They steer the sluice doors, the pumps and communicate with the robots about whether or not they may reach into the sluice.
- \item A process controlling $R3$ and the projector.
- \item A process controlling $R2$.
- \item A process controlling $R1$.
- \item Position tracker, which tracks the positions and state of each wafer. This process communicates with the three processes controlling the robots and projector, both in order to track the wafer, as well as to prevent the robots from making illegal moves (e.g. placing a token in an occupied rack).
- \item A safeguard process, which monitors the doors. This process itself consists of 4 parallel processes, each monitoring a single door.
+ \item A process \emph{WaferTracker}, which tracks the positions and state of each wafer. This process communicates with the three processes controlling the robots and projector.
+ \item A process \emph{RobotOutside}, controlling \emph{R1}.
+ \item A process \emph{RobotInside}, controlling \emph{R2}.
+ \item A process \emph{ProjectorRobot}, controlling \emph{R3} and the projector.
+ \item Two identical processes Sluice managing a single sluice each. They steer the sluice doors, the pumps and communicate with the robots about whether or not they may reach into the sluice.
 \end{enumerate}
 
-The safeguards are very simple processes. They function as a layer between the processes steering the doors and the doors themselves. When a process wants a door to open, it signals the guard of the door. When the guard is still running, this signal is redirected to the door itself. When the guard has terminated, the door can no longer be controlled. A guard terminates when it receives a signal that the door is stuck. In the description of the other processes, when we say that the process opens or closes a door, we mean that it sends the guard a signal (which moves the door and is only possible when the door is not stuck).
+\subsection{Process \emph{WaferTracker}}
 
-Since the sluice doors are assumed to be initially closed, the sluice process starts in a state called \emph{ClosedSluice}. From this state it can operate the pump (since both doors are closed), or it can a open one of the doors after checking whether the airpressure is ok. When one of the doors is opened, the process can communicate with $R1$ or $R2$ (depending on which door is open). When it signals that the door is open the process must wait until it receives a signal that it can close the door again. After receiving the signal the process can close the door again and go back to the initial state where both doors are closed.
+\emph{WaferTracker} keeps track of the place statuses. There are two kind of status
+updates: single place status updates and move statues updates. When a
+process wants to update the status of a single place it sends a
+\emph{StatusUpdateRequest} with parameters place and the 'from status'. When there
+is an unlocked place with that state, the \emph{WaferTracker} can receive the
+\emph{StatusUpdateRequest} and consequently locks that state. The \emph{WaferTracker} is
+then able to send back the \emph{StatusUpdateResponse} with all possible 'to
+statuses', which the other process will receive after it has done possible
+other necessary actions. The \emph{WaferTracker} will then unlock the corresponding
+state again. A move status update works similar, however it works with a
+\emph{MoveRequest} that has two place parameters and one status parameter. The
+conditions are that the 'to' place must be empty and the 'from' place must
+have the given status. Of course both states must be unlocked. When two
+places a and b are locked, the \emph{WaferTracker} can send a \emph{MoveResponse} with
+the two places, which the other process will receive when the actual move
+action is done.
 
-The position tracker, like the safeguards, forms a layer between the processes steering the robots and the robots itself. When a process sends a signal to move a wafer from one place to another, it is received by the wafertracker, which updates its state accordingly and relays the signal to the robots. The tracker will not allow illegal movements: movements from an empty place, or to an occupied place. $RI$ and $RO$ are special cases, $RI$ only contains unprojected wafers, and $RO$ only projected wafers. It is always possible to move an unprojected wafer to $RI$ or a projected wafer to $RO$, because $RI$ and $RO$ are assumed to be of infinite size.
+\emph{MoveRequest}s to a sluice have extra conditions: other sluices must not
+contain a wafer with the same status and additionally, if the status is
+unprojected, there must be at least one place inside that is empty.
 
-This leaves the three processes steering the robots and projector. $R1$ only moves between sluice and rack, never between $RI$ and $RO$ or between $S1$ and $S2$. $R2$ only moves from a sluice to $I$ or from $O$ to a sluice. $R3$ simply moves from $I$ to $P$, then starts projected, waits for the signal that the projection is finished and moves from $P$ to $O$.
+\subsection{Process \emph{RobotOutside}}
+
+ \emph{RobotOutside} performs \emph{detectInputWafer} actions and moves unprojected wafers
+ from \emph{RI} to a sluice and projected wafers from sluices to \emph{RO}. It can also
+ move unprojected wafers from a broken sluice to another sluice. When there
+ is a projected wafer in \emph{RO}, it can remove that wafer from the system. The
+ variables limited, limit and repeat can be used to limit the number of
+ wafers (useful while debugging). When limited is false, wafers can always
+ arrive (provided that \emph{RI} is empty). Otherwise, when repeat is false, the
+ maximum number of \emph{detectInputWafer} actions that can be executed is equal to
+ the variable limit; when repeat is true, the maximum number of wafers that
+ is present in the system simultaneously is equal to the variable limit.
+ In production, the limited variable must be set to false.
+ 
+ \emph{RobotOutside} makes use of three terminating auxiliary processes: \emph{MoveToSluice}, \emph{MoveFromSluice}, and \emph{MoveFromSluice}ToSluice
+ 
+\subsection{Process \emph{RobotInside}}
+
+ \emph{RobotInside} can move projected wafers from a sluice to \emph{O} and unprojected
+ wafers from \emph{I} to a sluice. It can also move projected wafers from a broken
+ sluice to another sluice.
+
+ \subsection{Auxiliary Processes \emph{MoveToSluice}, \emph{MoveFromSluice}, and \emph{MoveFromSluice}ToSluice}
+
+ \emph{RobotOutside} makes use of three terminating auxiliary processes: \emph{MoveToSluice}, \emph{MoveFromSluice}, and \emph{MoveFromSluice}ToSluice.
+ 
+  \emph{MoveToSluice} is a terminating auxiliary process used by \emph{RobotInside} and
+ \emph{RobotOutside}. It is able to execute a multi-action, consisting of sending
+ a \emph{SluiceRequest} and a \emph{MoveRequest}. It can also receive a \emph{SluiceResponse}.
+ This means that the \emph{SluiceRequest} is processed and the specified door is
+ open. Then it can perform a move action to that sluice and consequently
+ send a \emph{SluiceMoveDone} message and receive a \emph{MoveResponse} simultaneously, to
+ indicate that the sluice is allowed to close its door and the statuses can
+ be updated by the \emph{WaferTracker}. It can also receive a \emph{SluiceFailedResponse}.
+ This means that something wrong happened with the sluice door and a move
+ action is not possible. It then sends a \emph{MoveCancel} message to the
+ \emph{WaferTracker} to unlock the places again.
+
+
+
+ \emph{MoveFromSluice} is imilar to \emph{MoveToSluice}, but the move is in the other direction.
+
+
+ \emph{MoveFromSluice}ToSluice is similar to \emph{MoveToSluice} and \emph{MoveFromSluice}, but now the move is from a
+ sluice to a sluice. Moreover, the first multi-action includes now a
+ \emph{SluiceStuck} action too, which indicates that at least one door is broken and
+ it specifies which doors are currently open. The remaining actions are
+ similar to \emph{MoveToSluice} and \emph{MoveFromSluice}.
+
+ 
+\subsection{Process \emph{ProjectorRobot}}
+
+
+ \emph{ProjectorRobot} can move unprojected wafers from \emph{I} to \emph{P} and projected wafers
+ from \emph{P} to \emph{O}. It can also execute \emph{beginProject} when an unprojected wafer is
+ at \emph{P}, changing the status of \emph{P} into projecting and it can execute \emph{endProject}
+ when the status of \emph{P} is projecting.
+
+\subsection{Process Sluice}
+
+
+ \emph{Sluice} keeps track of the state of one sluice: which doors are open and
+ which doors are stuck. It can only receive a \emph{SluiceRequest} when both doors
+ are not broken. It will make sure that the specified door will be opened,
+ while taking care of closing other doors and making the air pressure right.
+ Then, it sends a \emph{SluiceResponse}, indicating that the move action can be
+ executed, and afterwards receives a \emph{SluiceMoveDone} message. It any time that
+ a door can be opened or closed, it is also possible to send a doorStuck
+ action. This results in a broken door and a \emph{SluiceFailedResponse} will be
+ sent, instead of a \emph{SluiceResponse}, indicating that the \emph{MoveRequest} has to
+ be canceled.
+ 
+ In the case that one door is broken and the other is not, it tries to open
+ the door that is not broken, in order to give the robots the opportunity
+ to move a wafer from a broken sluice to the other.
+ It is also possible to receive a \emph{SluiceStuck} message when one of the doors
+ is stuck. This makes it possible for other processes to know if a sluice is
+ broken.
+ 
+ When both doors are closed and stuck, it will mark that place as stuck. This
+ necessary because there is a condition in the \emph{WaferTracker} that makes it
+ impossible to move a wafer to a sluice when there is another sluice
+ containing a wafer with the same status.
