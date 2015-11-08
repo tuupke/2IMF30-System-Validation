@@ -1,6 +1,6 @@
 % !TEX root = ../report.tex
-
-This section clarifies the textual requirements proposed in section 3.3 by defining them more accurately in terms of the actions described in section 4. These definitions serve as a bridge between the intuitive textual description and the logical formulas in section 6 that can be mathematically tested against the model of the wafer stepper controller.
+\cbstart
+This section clarifies the textual requirements proposed in section 3.3 by defining them more accurately in terms of the actions described in section 4. These definitions serve as a bridge between the intuitive textual description and the logical formulas in section 6 that can be mathematically tested against the model of the wafer stepper controller. \cbend
 
 \begin{description}
  \item[1. At least one door of a sluice is closed at any point in time] \hfill \\
@@ -20,9 +20,10 @@ For any sluice $s$:
 	\item between any \action{move}{$s, a$} with $a \in \{ RI, RO \}$ and its most recent preceding \action{closeDoor}{outside, $s$}, there must be an \action{openDoor}{outside, $s$}.
 \end{itemize}
  
+ \cbstart
  \item[\smash{\shortstack[l]{3. Any wafer in the system will eventually be processed unless for each sluice at \\ least one door gets stuck, or the wafer is in a sluice with two broken, closed doors}}] \hfill 
  
- Define a "chain" of move actions to be a list of actions $L$  in which a set of $n$ move actions $M$ is contained. For $1 \leq i \leq n$, the destination of move $M_{i-1}$ equals the origin of move $M_{i}$ and the there is no move action between these two actions in $L$ with the same origin as $M_{i}$.
+ Define a ``chain'' of move actions to be a list of actions $L$  in which a set of $n$ move actions $M$ is contained. For $1 \leq i \leq n$, the destination of move $M_{i-1}$ equals the origin of move $M_{i}$ and the there is no move action between these two actions in $L$ with the same origin as $M_{i}$.
  
 For Sluice s, Door d, define a $brokenDoorEvent(s,d)$  to be a list of actions $L$ where between a \action{doorStuck}{d,s} and its most recent preceding \action{closeDoor}{d, s} there is no \action{openDoor}{d, s}.
  
@@ -34,7 +35,7 @@ For Sluice s, Door d, define a $brokenDoorEvent(s,d)$  to be a list of actions $
  
  \item For any Sluice s, Door $d_1,d_2$, Place $p_1,p_2$: a $brokenDoorEvent(s,d_1)$ , $brokenDoorEvent(s,d_2)$ and  \action{move}{$p_1$, s} precede a \action{move}{s, $p_2$} 
  \end{itemize}
- 
+ \cbend
  
 \item[4. Internal racks, sluices and the projector each contain at most one wafer] \hfill \\
 For any internal place $p_i \in \{S1, S2, I, O, P\}$ and any of the three places $p_1, p_2, p_3 \in \{S1, S2, I, O, P, RI, RO\}$: between any \action{move}{$p_1, p_i$} and its most recent preceding \action{move}{$p_2, p_i$}, there must be a \action{move}{$p_i, p_3$}. 
@@ -43,12 +44,13 @@ For any internal place $p_i \in \{S1, S2, I, O, P\}$ and any of the three places
 For any place $p$: between any \action{move}{$P, p$} or \action{move}{$p, P$} and its most recent preceding \action{beginProject}{}, there must be an \action{endProject}{}. 
  
  \item[6. A sluice door cannot open until the pressure on both sides is equal] \hfill \\
- For any sluice $s$:
+ \cbstart For any sluice $s$:
  \begin{itemize}
   \item There exists a most recent \action{readAirPressure}{s, p} before any \action{openDoor}{insideDoor, s} where $p = \texttt{vacuum}$
   \item The most recent \action{readAirPressure}{s, p'} before any \action{openDoor}{outsideDoor, s} must have $p' = \texttt{normal}$
 
  \end{itemize}
+ \cbend
 
  \item[7. Sluice pumps cannot operate until both of its doors are closed] \hfill \\
  For any sluice $s$:
