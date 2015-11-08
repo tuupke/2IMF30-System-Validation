@@ -120,14 +120,15 @@ This requirement is quite complex to express in modal $\mu$-calculus. In the fir
 & \tab\tab X(occupied[b \to occupied(a)][a \to \mathit{false}])) \\
 & )
 \end{align*}
-\cbend
+
  
  \item[5. When the projector is at work, no interaction with the wafer is permissible]
  	\begin{align*}
- 		&[true^* \cdot beginProject() \cdot \overline{endProject()}^* \cdot move(P,O)]\mathit{false}
+ 		&[true^* \cdot beginProject() \cdot \overline{endProject()}^* \cdot move(P,O)]\mathit{false}\\
+ 		\wedge\\
+ 		&[true^* \cdot beginProject() \cdot \overline{endProject()}^* \cdot move(I,P)]\mathit{false}
 	\end{align*}
 	
-\cbstart
  \item[6. A sluice door cannot open until the pressure on both sides is equal]
 	\begin{align*}
 & \forall s: Sluice . \nu X(pressure: Pressure = normal) . ( \\
