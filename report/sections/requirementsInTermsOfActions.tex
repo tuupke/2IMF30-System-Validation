@@ -18,16 +18,19 @@ For any sluice $s$:
 	\item between any \action{move}{$s, a$} with $a \in \{ RI, RO \}$ and its most recent preceding \action{closeDoor}{outside, $s$}, there must be an \action{openDoor}{outside, $s$}.
 \end{itemize}
  
- \item[\smash{\shortstack[l]{3. Any wafer in the system will eventually be processed unless the system breaks,\\ or the wafer is inside a sluice when the sluice itself breaks}}] \hfill 
+ \item[\smash{\shortstack[l]{3. Any wafer in the system will eventually be processed unless for each sluice at \\ least one door gets stuck, or the wafer is in a sluice with two broken, closed doors}}] \hfill 
  
  Define a "chain" of move actions to be a list of actions $L$  in which a set of $n$ move actions $M$ is contained. For $1 \leq i \leq n$, the destination of move $M_{i-1}$ equals the origin of move $M_{i}$ and the there is no move action between these two actions in $L$ with the same origin as $M_{i}$.
  
- After any \action{detectInputWafer}{}, there must be a chain of move actions connecting $RI$ to $P$, followed by a \action{beginProject}{} and \action{endProject}{} without intervening move actions with $P$, followed by a chain of move actions from $P$ to $RO$.
+For Sluice s, Door d, define a $brokenDoorEvent(s,d)$  to be a list of actions $L$ where between a \action{doorStuck}{d,s} and its most recent preceding \action{closeDoor}{d, s} there is no \action{openDoor}{d, s}.
  
- Unless:
+ After any \action{detectInputWafer}{}, there must be a chain of move actions $C1$ connecting $RI$ to $P$, followed by a \action{beginProject}{} and \action{endProject}{} without intervening move actions with $P$, followed by a chain of move actions $C2$ from $P$ to $RO$.
+ 
+ Unless either:
  \begin{itemize}
- \item For any Door $d_1$,$d_2$: \action{doorStuck}{$d_1$, Sluice1} and \action{doorStuck}{$d_2$, Sluice2} both happen.
- \item For any Sluice s, Door d, Place $p_1,p_2$: Between a \action{doorStuck}{d,s} and most recent preceding \action{move}{$p_1$, s} there is no \action{move}{s, $p_2$}. 
+ \item For any Door $d_1$,$d_2$: \action{doorStuck}{$d_1$, Sluice1} and \action{doorStuck}{$d_2$, Sluice2} both happen before the end of $C2$
+ 
+ \item For any Sluice s, Door $d_1,d_2$, Place $p_1,p_2$: a $brokenDoorEvent(s,d_1)$ , $brokenDoorEvent(s,d_2)$ and  \action{move}{$p_1$, s} precede a \action{move}{s, $p_2$} 
  \end{itemize}
  
  
